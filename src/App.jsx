@@ -1,14 +1,32 @@
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 import { papers } from './data/papers'
+import ComparisonMatrix from './ComparisonMatrix'
 import './App.css'
 
+const views = [{ id: 'papers', label: 'Papers' }, { id: 'across', label: 'Across Papers' }]
+
 function App() {
+  const [activeView, setActiveView] = useState('papers')
+  const tabRefs = useRef([])
+
+  function handleTabKey(event, index) {
+    let nextIndex
+    if (event.key === 'ArrowRight') nextIndex = (index + 1) % views.length
+    else if (event.key === 'ArrowLeft') nextIndex = (index - 1 + views.length) % views.length
+    else if (event.key === 'Home') nextIndex = 0
+    else if (event.key === 'End') nextIndex = views.length - 1
+    else return
+    event.preventDefault()
+    setActiveView(views[nextIndex].id)
+    tabRefs.current[nextIndex].focus()
+  }
+
   const [selectedPaperId, setSelectedPaperId] = useState(papers[0].id)
   const selectedPaper = papers.find((paper) => paper.id === selectedPaperId)
 
   return (
     <div className="app-shell">
-      <a className="skip-link" href="#paper-detail">Skip to selected paper</a>
+      <a className="skip-link" href={`#panel-${activeView}`}>Skip to workspace content</a>
       <header className="app-header">
         <a className="brand" href="./" aria-label="Beyond the Query home">
           <span className="brand-mark" aria-hidden="true">bq.</span>
@@ -24,6 +42,18 @@ function App() {
           <p className="intro">Explore the papers in your collection and open their original sources.</p>
         </div>
 
+        <div className="workspace-tabs" role="tablist" aria-label="Workspace views">
+          {views.map((view, index) => (
+            <button key={view.id} id={`tab-${view.id}`} type="button" role="tab"
+              ref={(element) => { tabRefs.current[index] = element }}
+              aria-selected={activeView === view.id} aria-controls={`panel-${view.id}`}
+              tabIndex={activeView === view.id ? 0 : -1}
+              onClick={() => setActiveView(view.id)} onKeyDown={(event) => handleTabKey(event, index)}>
+              {view.label}
+            </button>
+          ))}
+        </div>
+        <div id="panel-papers" role="tabpanel" aria-labelledby="tab-papers" hidden={activeView !== 'papers'} tabIndex={0}>
         <div className="workspace-layout">
           <aside className="collection" aria-labelledby="collection-heading">
             <div className="collection-heading">
@@ -96,6 +126,10 @@ function App() {
               </div>
             </div>
           </section>
+        </div>
+        </div>
+        <div id="panel-across" role="tabpanel" aria-labelledby="tab-across" hidden={activeView !== 'across'} tabIndex={0}>
+          <ComparisonMatrix />
         </div>
       </main>
     </div>
