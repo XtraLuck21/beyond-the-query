@@ -1,9 +1,10 @@
 import { useRef, useState } from 'react'
 import { papers } from './data/papers'
 import ComparisonMatrix from './ComparisonMatrix'
+import PaperVisuals from './PaperVisuals'
 import './App.css'
 
-const views = [{ id: 'papers', label: 'Papers' }, { id: 'across', label: 'Across Papers' }]
+const views = [{ id: 'papers', label: 'Papers' }, { id: 'across', label: 'Across Papers' }, { id: 'visuals', label: 'Paper Visuals' }]
 
 function App() {
   const [activeView, setActiveView] = useState('papers')
@@ -130,6 +131,9 @@ function App() {
         </div>
         <div id="panel-across" role="tabpanel" aria-labelledby="tab-across" hidden={activeView !== 'across'} tabIndex={0}>
           <ComparisonMatrix />
+        </div>
+        <div id="panel-visuals" role="tabpanel" aria-labelledby="tab-visuals" hidden={activeView !== 'visuals'} tabIndex={0}>
+          <PaperVisuals />
         </div>
       </main>
     </div>
