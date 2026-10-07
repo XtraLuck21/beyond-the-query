@@ -158,3 +158,65 @@
   .map-node, .map-design { min-height: 0; }
   .compact-connections { display: block; margin-top: 10px; font-size: 11px; color: #476b58; border-top: 1px solid #dce4da; padding-top: 8px; }
 }
+
+/* Paper-specific scenes share the same step/action structure. */
+.tutorial-step:nth-child(4) .tutorial-step-heading { background: #f1edf7; }
+.facet-legend { display: flex; flex-wrap: wrap; gap: 7px; margin-bottom: 16px; }
+.facet-tag { display: inline-block; padding: 3px 7px; border: 1px solid #53665830; border-radius: 4px; font: 600 10px/1.5 system-ui, sans-serif; color: #28352d; }
+.facet-objective { background: #d9edcc; }
+.facet-novelty { background: #ffe3bc; }
+.facet-method { background: #d8e7fb; }
+.facet-result { background: #f6d4d4; }
+.density-controls { border: 1px solid #d4dfd1; padding: 12px; border-radius: 8px; margin: 12px 0; min-width: 0; }
+.density-controls legend { font-size: 12px; font-weight: 650; padding: 0 5px; }
+.density-controls label { display: grid; grid-template-columns: 70px minmax(55px, 1fr) 40px; align-items: center; gap: 10px; font-size: 12px; margin: 5px 0; }
+.density-controls input { width: 100%; accent-color: #346a56; }
+.demo-status { font-size: 12px; line-height: 1.7; color: #41654d; margin: 12px 0; }
+.demo-status:empty { display: none; }
+.skim-document { display: grid; grid-template-columns: minmax(0, 1fr) 10px; gap: 12px; }
+.skim-section { margin: 0 0 22px; }
+.skim-section h5 { font-size: 13px; margin: 0 0 8px; }
+.skim-section p { font-family: Georgia, serif; font-size: 16px; line-height: 1.9; margin: 0; }
+.skim-sentence { box-decoration-break: clone; -webkit-box-decoration-break: clone; }
+.located-sentence { outline: 3px solid #84601a; outline-offset: 3px; box-shadow: 0 0 0 5px #fff4d1; border-radius: 2px; }
+.location-strip { display: grid; grid-template-rows: repeat(6, 1fr); gap: 12px; background: #f2f4f0; padding: 2px; border: 1px solid #dfe5dc; }
+.location-strip span { align-self: center; height: 16px; border-radius: 2px; }
+.paragraph-controls { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-top: 10px; font-size: 10px; color: #5e705f; }
+.paragraph-controls button { padding: 4px 7px; border: 1px solid #c5d5bf; border-radius: 5px; color: #3f644c; background: #f6f9f3; cursor: pointer; }
+.paragraph-controls button:disabled, .example-options button:disabled { opacity: .45; cursor: default; }
+.highlight-browser { border-top: 2px solid #adc1b0; padding-top: 14px; }
+.highlight-browser h5, .standardization-panel h5, .export-panel h5 { font-size: 15px; margin: 0 0 8px; }
+.highlight-browser > p, .standardization-panel > p, .export-panel > p { font-size: 12px; line-height: 1.7; }
+.highlight-browser h6 { font-size: 12px; margin: 15px 0 7px; }
+.highlight-browser button { width: 100%; display: flex; flex-direction: column; align-items: start; gap: 6px; padding: 10px; margin-bottom: 7px; border: 1px solid #d5dfd0; background: #fafcf7; color: #334b3a; border-radius: 6px; font-size: 12px; line-height: 1.6; text-align: left; cursor: pointer; }
+.highlight-browser button[aria-pressed="true"] { border-color: #7e662c; box-shadow: inset 3px 0 #b39047; }
+.fixture-notice { font-size: 11px; line-height: 1.7; padding: 9px 12px; margin: 0 0 16px; background: #f6f1e6; border-left: 3px solid #b8a67b; color: #71603b; }
+.extraction-request { padding: 13px; border: 1px solid #d5dfd3; border-radius: 8px; background: #f6f9f3; }
+.extraction-request > p { font-size: 13px; line-height: 1.7; }
+.field-chip { display: inline-block; padding: 4px 8px; border: 1px solid #bfcebd; border-radius: 4px; font-size: 11px; margin-right: 6px; }
+.table-metrics { display: flex; flex-wrap: wrap; gap: 12px; margin: 18px 0 10px; font-size: 11px; color: #516d5d; }
+.extraction-table { width: 100%; border-collapse: collapse; font-size: 12px; table-layout: fixed; }
+.extraction-table caption { text-align: left; font-size: 11px; margin: 8px 0; color: #617366; }
+.extraction-table th, .extraction-table td { padding: 11px 9px; text-align: left; border: 1px solid #d5dfd2; overflow-wrap: anywhere; line-height: 1.6; }
+.extraction-table thead { background: #edf3e8; }
+.extraction-table th:first-child { width: 24%; }
+.extraction-table tbody th { font-weight: 500; }
+.grouped-record { background: #f0f4fc; }
+.cell-inspect { padding: 5px 8px; max-width: 100%; text-align: left; overflow-wrap: anywhere; border: 1px solid #92ab9c; border-radius: 4px; background: #eff7ef; color: #30543c; font: inherit; cursor: pointer; }
+.missing-value { border: 2px solid #ae7d25; color: #725015; background: #fff2c9; }
+.validation-note { font-size: 11px; line-height: 1.6; color: #796033; }
+.source-editor, .standardization-panel, .export-panel { padding: 16px; border: 1px solid #c4d1df; border-radius: 8px; margin-top: 18px; background: #f3f6fb; }
+.source-editor blockquote { font: 16px/1.8 Georgia, serif; margin: 14px 0; padding-left: 12px; border-left: 3px solid #aebfce; }
+.source-editor mark { background: #ffe3a0; color: #4a3712; }
+.source-editor > p { font-size: 11px; line-height: 1.7; }
+.source-editor form > label, .standardization-panel form > label { display: block; font-size: 12px; font-weight: 600; margin: 14px 0 7px; }
+.inline-edit { display: flex; gap: 8px; flex-wrap: wrap; }
+.inline-edit input { flex: 1 1 160px; min-width: 0; width: 100%; border: 1px solid #aebfae; border-radius: 5px; padding: 9px; color: #2b4534; font: inherit; font-size: 13px; }
+.inline-edit button { flex-shrink: 0; }
+.standardization-panel fieldset { min-width: 0; border: 1px solid #bfccdc; border-radius: 6px; padding: 10px; }
+.standardization-panel legend { font-size: 12px; }
+.standardization-panel fieldset label { display: flex; align-items: start; gap: 8px; margin: 8px 0; font-size: 12px; line-height: 1.6; }
+.standardization-panel input[type="checkbox"] { accent-color: #446b56; }
+.group-evidence p { font-size: 12px; line-height: 1.7; padding: 10px; background: #fff; border-left: 2px solid #a6b5cb; }
+.separate-group { color: #647068; }
+@media (max-width: 500px) { .extraction-table th, .extraction-table td { padding: 7px 5px; font-size: 11px; }.source-editor, .standardization-panel, .export-panel { padding: 12px; }.density-controls label { grid-template-columns: 62px minmax(40px, 1fr) 35px; gap: 6px; } }

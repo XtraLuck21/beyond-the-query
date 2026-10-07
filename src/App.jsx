@@ -109,7 +109,7 @@ function App() {
                 </div>
               </div>
             </div>
-            {selectedPaper.id === 'scholarphi' ? <PaperVisuals activeSection={activeSection} onSectionChange={setActiveSection} /> : sections.slice(1).map((section) => <div key={section.id} id={`paper-panel-${section.id}`} role="tabpanel" aria-labelledby={`paper-tab-${section.id}`} hidden={activeSection !== section.id} tabIndex={0}><div className="empty-visual-section" /></div>)}
+            <PaperVisuals key={selectedPaper.id} paperId={selectedPaper.id} activeSection={activeSection} onSectionChange={setActiveSection} />
           </section>
         </div>
         <div id="panel-across" role="tabpanel" aria-labelledby="tab-across" hidden={activeView !== 'across'} tabIndex={0}><ComparisonMatrix /></div>

@@ -1,20 +1,21 @@
 import { useEffect, useRef, useState } from 'react'
-import { observations, problems, designs, visualNodes, rationalePaths, visualSource, getRelatedPaths } from './data/paperVisuals'
+import { visualModels } from './data/visualModels'
+import ScimTutorial from './ScimTutorial'
+import SciDaSynthTutorial from './SciDaSynthTutorial'
 import PaperTutorial from './PaperTutorial'
 import './PaperVisuals.css'
 
-function Source({ section }) {
-  return <a className="pv-source" href={visualSource} target="_blank" rel="noopener noreferrer">Source: {section} ↗<span className="sr-only"> (opens the article in a new tab)</span></a>
+function Source({ section, href }) {
+  return <a className="pv-source" href={href} target="_blank" rel="noopener noreferrer">Source: {section} ↗<span className="sr-only"> (opens the article in a new tab)</span></a>
 }
 
-const mapColumns = [
-  { title: '01 / Observations & basis', subtitle: 'Reader feedback or prior research', nodes: observations },
-  { title: '02 / Design motivations', subtitle: 'Problems and needs · original M1–M7', nodes: problems },
-  { title: '03 / Design responses', subtitle: 'How the interface responds', nodes: designs },
-]
-const mapEdges = [...new Map(rationalePaths.flatMap((path) => [[path.observation, path.problem], [path.problem, path.design]]).map(([from, to]) => [`${from}-${to}`, { from, to }])).values()]
-
-function MotivationMap({ onShowExample }) {
+function MotivationMap({ model, onShowExample }) {
+  const { observations, problems, designs, visualNodes, rationalePaths, mapEdges } = model
+  const mapColumns = [
+    { title: '01 / Observations & basis', subtitle: 'Reader feedback or prior research', nodes: observations },
+    { title: '02 / Design motivations', subtitle: model.goalSubtitle, nodes: problems },
+    { title: '03 / Design responses', subtitle: 'How the interface responds', nodes: designs },
+  ]
   const canvasRef = useRef(null)
   const [lines, setLines] = useState([])
   const [selectedId, setSelectedId] = useState(null)
@@ -45,9 +46,9 @@ function MotivationMap({ onShowExample }) {
     visualNodes.forEach((node) => observer.observe(buttons.current[node.id]))
     measure()
     return () => { cancelAnimationFrame(frame); observer.disconnect() }
-  }, [])
+  }, [mapEdges, visualNodes])
   const selectedNode = visualNodes.find((node) => node.id === selectedId)
-  const relatedPaths = getRelatedPaths(selectedId)
+  const relatedPaths = !selectedId ? rationalePaths : rationalePaths.filter((path) => selectedId === 'tension' ? ['p2', 'p5'].includes(path.problem) : [path.observation, path.problem, path.design].includes(selectedId))
   const relatedIds = new Set(relatedPaths.flatMap((path) => [path.observation, path.problem, path.design]))
   const relatedObservations = observations.filter((node) => relatedIds.has(node.id))
   const relatedDesigns = designs.filter((node) => relatedIds.has(node.id))
@@ -58,9 +59,9 @@ function MotivationMap({ onShowExample }) {
   const selectedTitle = selectedId === 'tension' ? 'Enough context, without covering the paper' : selectedNode?.title
 
   return <section className="visual-section" aria-labelledby="motivation-heading">
-    <header className="visual-section-header"><span className="visual-number">02</span><div><h3 id="motivation-heading" tabIndex={-1}>Design rationale</h3><p>From observations to design: seven motivations connected to four interface feature families.</p></div></header>
+    <header className="visual-section-header"><span className="visual-number">02</span><div><h3 id="motivation-heading" tabIndex={-1}>Design rationale</h3><p>{model.introduction}</p></div></header>
     <p className="map-guide">Select any observation, motivation, or design to highlight its related information and read the source-backed explanation below the map. Select it again to return to the full map.</p>
-    <div className="map-coverage"><strong>All 7 motivations · all 4 feature families</strong><span>O1–O7 = our evidence summaries · M1–M7 = the paper’s design motivations · D1–D4 = its four feature families.</span><span>M7 draws on prior research about imperfect automation; it is not a pilot-study observation.</span></div>
+    <div className="map-coverage"><strong>{model.coverage}</strong><span>{model.legend}</span><span>{model.qualification}</span></div>
     <div className="visual-scroll" role="region" aria-label="Observation problem design map" tabIndex={0}>
       <div className="motivation-canvas" ref={canvasRef}>
         <svg className="map-lines" aria-hidden="true">
@@ -78,24 +79,26 @@ function MotivationMap({ onShowExample }) {
         </div>)}
       </div>
     </div>
-    <button type="button" className="tension-bridge" ref={(element) => { buttons.current.tension = element }} aria-pressed={selectedId === 'tension'} aria-controls="motivation-detail" onClick={() => selectNode('tension')}><span className="tension-label">Why not show all the context at once?</span><strong>M5 · Keep the paper visible <span aria-hidden="true">↔</span> M2 · Provide enough context</strong><span>Select to trace the shared design responses to these two needs.</span></button>
-    <p className="visual-caption">Source-based synthesis of all seven design motivations and four feature families in §§3.3–4.4. Lines express design rationale, not independently measured causal effects. The observations and connections are paraphrased for this map.</p>
+    {model.tension && <button type="button" className="tension-bridge" ref={(element) => { buttons.current.tension = element }} aria-pressed={selectedId === 'tension'} aria-controls="motivation-detail" onClick={() => selectNode('tension')}><span className="tension-label">Why not show all the context at once?</span><strong>M5 · Keep the paper visible <span aria-hidden="true">↔</span> M2 · Provide enough context</strong><span>Select to trace the shared design responses to these two needs.</span></button>}
+    <p className="visual-caption">{model.caption} <Source href={model.source} section="Read the source paper" /></p>
     <div id="motivation-detail">
       {selectedId && <section className="motivation-detail" aria-label="Selected design rationale">
         <header className="detail-heading"><div><p className="eyebrow">{selectedNode ? `${selectedNode.code} · ${selectedNode.type === 'problem' ? 'design motivation' : selectedNode.type}` : 'Design trade-off'}</p><h4>{selectedTitle}</h4></div><button type="button" className="matrix-action" onClick={closeDetails}>Back to overview</button></header>
-        <p className="detail-intro">{selectedId === 'tension' ? 'The paper describes a balance: a compact initial definition leaves the reading area visible, while links and optional lists provide more context when the reader requests it. We connect these needs as a design trade-off, not as a measured causal relationship between problems.' : selectedNode.detail || selectedNode.short}</p>{selectedNode && <Source section={selectedNode.section} />}
+        <p className="detail-intro">{selectedId === 'tension' ? 'The paper describes a balance: a compact initial definition leaves the reading area visible, while links and optional lists provide more context when the reader requests it. We connect these needs as a design trade-off, not as a measured causal relationship between problems.' : selectedNode.detail || selectedNode.short}</p>{selectedNode && <Source href={model.source} section={selectedNode.section} />}
         <div className="rationale-detail-columns">
-          <div><h5>Observations and research basis</h5>{relatedObservations.map((node) => <article className="observation-record" key={node.id}><span>{node.code} · {node.group}</span><h6>{node.title}</h6><p>{node.detail}</p><Source section={node.section} /></article>)}</div>
-          <div><h5>Why these designs are connected</h5><ul className="rationale-list">{relatedPaths.map((path) => <li key={`${path.problem}-${path.design}`}><strong>{problems.find((node) => node.id === path.problem).code} → {designs.find((node) => node.id === path.design).code}</strong><p>{path.reason}</p><Source section={path.section} /></li>)}</ul></div>
+          <div><h5>Observations and research basis</h5>{relatedObservations.map((node) => <article className="observation-record" key={node.id}><span>{node.code} · {node.group}</span><h6>{node.title}</h6><p>{node.detail}</p><Source href={model.source} section={node.section} /></article>)}</div>
+          <div><h5>Why these designs are connected</h5><ul className="rationale-list">{relatedPaths.map((path) => <li key={`${path.observation}-${path.problem}-${path.design}`}><strong>{problems.find((node) => node.id === path.problem).code} → {designs.find((node) => node.id === path.design).code}</strong><p>{path.reason}</p><Source href={model.source} section={path.section} /></li>)}</ul></div>
         </div>
-        <div className="design-examples"><h5>Concrete interface mechanisms</h5>{relatedDesigns.map((node) => <article className="design-example" key={node.id}><strong>{node.code} · {node.title}</strong><p>{node.detail}</p><ul>{node.mechanisms.map((mechanism) => <li key={mechanism}>{mechanism}</li>)}</ul><Source section={node.section} />{node.tutorialAction && <p><button type="button" className="matrix-action" onClick={() => onShowExample(node.tutorialAction)}>Open tooltip tutorial</button></p>}</article>)}</div>
+        <div className="design-examples"><h5>Concrete interface mechanisms</h5>{relatedDesigns.map((node) => <article className="design-example" key={node.id}><strong>{node.code} · {node.title}</strong><p>{node.detail}</p><ul>{node.mechanisms.map((mechanism) => <li key={mechanism}>{mechanism}</li>)}</ul><Source href={model.source} section={node.section} />{node.tutorialAction && <p><button type="button" className="matrix-action" onClick={() => onShowExample(node.tutorialAction)}>Open interactive example</button></p>}</article>)}</div>
       </section>}
     </div>
   </section>
 }
 
-export default function PaperVisuals({ activeSection, onSectionChange }) {
-  const [tutorialAction, setTutorialAction] = useState('select')
+export default function PaperVisuals({ paperId, activeSection, onSectionChange }) {
+  const model = visualModels[paperId]
+  const Tutorial = { scholarphi: PaperTutorial, scim: ScimTutorial, scidasynth: SciDaSynthTutorial }[paperId]
+  const [tutorialAction, setTutorialAction] = useState(model.initialAction)
   const tutorialHeading = useRef(null)
   const showExample = (action) => {
     setTutorialAction(action)
@@ -104,10 +107,10 @@ export default function PaperVisuals({ activeSection, onSectionChange }) {
   }
   return <div className="paper-visuals">
     <div id="paper-panel-workflow" role="tabpanel" aria-labelledby="paper-tab-workflow" hidden={activeSection !== 'workflow'} tabIndex={0}>
-      <PaperTutorial actionId={tutorialAction} onAction={setTutorialAction} headingRef={tutorialHeading} />
+      <Tutorial actionId={tutorialAction} onAction={setTutorialAction} headingRef={tutorialHeading} />
     </div>
     <div id="paper-panel-rationale" role="tabpanel" aria-labelledby="paper-tab-rationale" hidden={activeSection !== 'rationale'} tabIndex={0}>
-      <MotivationMap onShowExample={showExample} />
+      <MotivationMap model={model} onShowExample={showExample} />
     </div>
   </div>
 }
