@@ -12,24 +12,14 @@
 .brand { display: inline-flex; align-items: center; gap: 12px; text-decoration: none; font-weight: 650; font-size: 18px; }
 .brand-mark { display: grid; place-items: center; width: 40px; height: 40px; background: #244f43; color: #fff; border-radius: 11px; font-family: Georgia, serif; font-size: 23px; }
 .workspace-label { font-size: 13px; color: #62736b; }
-.workspace { max-width: 1240px; margin: 0 auto; padding: 56px 32px 80px; }
+.workspace { max-width: 1760px; margin: 0 auto; padding: 40px clamp(24px, 2.5vw, 48px) 64px; }
 .eyebrow { margin: 0 0 12px; font-size: 11px; font-weight: 700; letter-spacing: .13em; text-transform: uppercase; color: #597064; }
 h1 { margin: 0; font-size: clamp(28px, 3vw, 40px); font-weight: 550; letter-spacing: -.04em; line-height: 1.2; }
 .intro { margin: 16px 0 0; color: #62736b; font-size: 15px; }
-.workspace-layout { display: grid; grid-template-columns: 340px minmax(0, 1fr); gap: 32px; margin-top: 40px; align-items: start; }
-.collection-heading { display: flex; align-items: center; justify-content: space-between; padding: 0 4px; }
-.collection-heading h2 { margin: 0; font-size: 16px; font-weight: 650; }
 .paper-count { min-width: 25px; padding: 1px 7px; text-align: center; border-radius: 6px; background: #e8eee7; font-size: 12px; }
-.collection-hint { margin: 8px 4px 20px; font-size: 13px; color: #62736b; }
-.paper-list { display: grid; gap: 10px; list-style: none; margin: 0; padding: 0; }
-.paper-choice { width: 100%; display: flex; align-items: flex-start; gap: 12px; padding: 18px 14px; text-align: left; border: 1px solid #dfe5df; border-radius: 10px; background: #fff; color: #243b34; cursor: pointer; }
 .paper-choice:hover { border-color: #8ca897; background: #f0f4ef; }
 .paper-choice[aria-pressed="true"] { background: #eaf1e9; border-color: #507961; box-shadow: inset 3px 0 #507961; }
 .paper-number { font-size: 11px; color: #62736b; padding-top: 4px; }
-.paper-choice-text { flex: 1; min-width: 0; }
-.paper-name { display: block; font-size: 14px; line-height: 1.6; font-weight: 600; overflow-wrap: anywhere; }
-.paper-meta { display: block; margin-top: 4px; font-size: 12px; color: #5e7065; }
-.selection-indicator { font-size: 12px; padding-top: 3px; color: #426b52; }
 .paper-detail { min-width: 0; padding: clamp(24px, 3.5vw, 44px); border: 1px solid #dfe5df; border-radius: 14px; background: #fff; box-shadow: 0 8px 28px #243b3405; }
 .paper-detail h2 { margin: 0; font-family: Georgia, 'Times New Roman', serif; font-weight: 400; font-size: clamp(23px, 2.2vw, 29px); line-height: 1.4; letter-spacing: -.015em; overflow-wrap: anywhere; }
 .publication { margin: 18px 0 0; font-size: 13px; color: #62736b; }
@@ -47,7 +37,6 @@ h1 { margin: 0; font-size: clamp(28px, 3vw, 40px); font-weight: 550; letter-spac
   .app-header { padding: 18px 20px; }
   .workspace-label { display: none; }
   .workspace { padding: 34px 20px 48px; }
-  .workspace-layout { grid-template-columns: 1fr; gap: 26px; margin-top: 30px; }
 }
 
 .abstract-section { margin-top: 30px; padding-top: 26px; border-top: 1px solid #e7ebe5; }
@@ -60,6 +49,44 @@ h1 { margin: 0; font-size: clamp(28px, 3vw, 40px); font-weight: 550; letter-spac
 .abstract-attribution summary:focus-visible { outline: 3px solid #317968; outline-offset: 4px; }
 .abstract-attribution p { margin: 8px 0 0; }
 .abstract-attribution a { text-underline-offset: 3px; }
-@media (min-width: 761px) and (max-width: 1000px) {
-  .workspace-layout { grid-template-columns: 270px minmax(0, 1fr); gap: 22px; }
+
+
+/* A full-width paper collection above the selected paper. */
+.collection { margin: 24px 0; }
+.collection-heading { display: flex; justify-content: space-between; align-items: center; gap: 18px; margin-bottom: 12px; }
+.collection-label { display: flex; align-items: baseline; flex-wrap: wrap; gap: 8px 12px; min-width: 0; }
+.collection-heading h2 { margin: 0; font-size: 14px; font-weight: 650; }
+.collection-current-title { margin: 0; font-size: 13px; line-height: 1.6; flex: 1 1 480px; }
+.collection-toggle { flex-shrink: 0; border: 1px solid #cbd7cb; border-radius: 6px; color: #496451; background: #fff; padding: 8px 12px; cursor: pointer; font-size: 12px; }
+.collection-toggle:hover { background: #eaf1e9; }
+.paper-list { display: grid; gap: 7px; list-style: none; margin: 0; padding: 0; }
+.paper-list[hidden] { display: none; }
+.paper-choice { display: grid; grid-template-columns: 22px minmax(0, 1fr) minmax(100px, 235px) 14px; align-items: center; gap: 14px; width: 100%; padding: 14px 18px; text-align: left; border: 1px solid #dfe5df; border-radius: 8px; background: #fff; color: #243b34; cursor: pointer; }
+.paper-name { font-size: 14px; line-height: 1.65; font-weight: 600; overflow-wrap: anywhere; }
+.paper-meta { font-size: 12px; line-height: 1.6; color: #5e7065; text-align: right; }
+.selection-indicator { font-size: 12px; color: #426b52; }
+.paper-detail { padding: 28px; container-type: inline-size; }
+.publication { margin-top: 12px; }
+.paper-section-tabs { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 24px; padding-bottom: 12px; border-bottom: 1px solid #dfe5df; }
+.paper-section-tabs button { border: 1px solid transparent; border-radius: 7px; padding: 10px 16px; background: transparent; color: #597064; font-size: 13px; cursor: pointer; }
+.paper-section-tabs button:hover { background: #f0f4ed; }
+.paper-section-tabs button[aria-selected="true"] { background: #eaf1e9; border-color: #a9beaa; color: #284c37; font-weight: 650; }
+.abstract-section { border: 0; margin-top: 26px; padding-top: 0; }
+.abstract-text { max-width: 80ch; }
+.paper-visuals { margin-top: 0; }
+.paper-detail .visual-section { padding: 24px 0 0; margin-top: 0; border: 0; border-radius: 0; }
+.empty-visual-section { min-height: 250px; }
+@container (max-width: 800px) {
+  .tutorial-layout { grid-template-columns: 1fr; }
+  .rationale-detail-columns { grid-template-columns: 1fr; }
+}
+@media (max-width: 760px) {
+  .paper-choice { grid-template-columns: 20px minmax(0, 1fr) 14px; gap: 6px 10px; padding: 12px; }
+  .paper-number { grid-row: 1 / 3; align-self: start; }
+  .paper-meta { grid-column: 2; grid-row: 2; text-align: left; }
+  .selection-indicator { grid-column: 3; grid-row: 1 / 3; }
+  .paper-detail { padding: 18px; }
+  .paper-section-tabs { gap: 3px; }
+  .paper-section-tabs button { padding: 9px 7px; font-size: 12px; }
+  .collection-heading { align-items: start; }
 }

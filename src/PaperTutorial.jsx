@@ -26,7 +26,7 @@ export default function PaperTutorial({ actionId, onAction, headingRef }) {
   const change = (id) => onAction(id)
 
   return <section className="visual-section tutorial-section" aria-labelledby="workflow-heading">
-    <header className="visual-section-header"><span className="visual-number">01</span><div><h3 id="workflow-heading" tabIndex={-1} ref={headingRef}>One reading task, three steps</h3><p>Select an action on the left. The shared example on the right shows exactly what changes.</p></div></header>
+    <header className="visual-section-header"><span className="visual-number">01</span><div><h3 id="workflow-heading" tabIndex={-1} ref={headingRef}>How it works</h3><p>One reading task, three steps. Select an action to see its effect in the shared example.</p></div></header>
     <div className="tutorial-layout">
       <ol className="tutorial-steps">
         {steps.map((step, index) => <li key={step.id} className={`tutorial-step ${action.step === index ? 'is-current' : ''}`}>
