@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 import { visualModels } from './data/visualModels'
 import ScimTutorial from './ScimTutorial'
 import SciDaSynthTutorial from './SciDaSynthTutorial'
-import PaperTutorial from './PaperTutorial'
+import ScholarPhiTutorial from './ScholarPhiTutorial'
 import './PaperVisuals.css'
 
 function Source({ section, href }) {
@@ -97,7 +97,7 @@ function MotivationMap({ model, onShowExample }) {
 
 export default function PaperVisuals({ paperId, activeSection, onSectionChange }) {
   const model = visualModels[paperId]
-  const Tutorial = { scholarphi: PaperTutorial, scim: ScimTutorial, scidasynth: SciDaSynthTutorial }[paperId]
+  const Tutorial = { scholarphi: ScholarPhiTutorial, scim: ScimTutorial, scidasynth: SciDaSynthTutorial }[paperId]
   const [tutorialAction, setTutorialAction] = useState(model.initialAction)
   const tutorialHeading = useRef(null)
   const showExample = (action) => {

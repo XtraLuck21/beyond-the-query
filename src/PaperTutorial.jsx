@@ -17,7 +17,7 @@ function ThoughtBubble({ text, align = 'left' }) {
   return <aside className={`reader-thought thought-${align}`} aria-label="Reader’s thought" role="status"><span>Reader’s thought · illustrative</span><p>{text}</p></aside>
 }
 
-export default function PaperTutorial({ actionId, onAction, headingRef }) {
+export default function PaperTutorial({ actionId, onAction }) {
   const actionIndex = tutorialActions.findIndex((item) => item.id === actionId)
   const action = tutorialActions[actionIndex]
   const open = !['select', 'resume'].includes(actionId)
@@ -25,8 +25,8 @@ export default function PaperTutorial({ actionId, onAction, headingRef }) {
   const termRef = useRef(null)
   const change = (id) => onAction(id)
 
-  return <section className="visual-section tutorial-section" aria-labelledby="workflow-heading">
-    <header className="visual-section-header"><span className="visual-number">01</span><div><h3 id="workflow-heading" tabIndex={-1} ref={headingRef}>How it works</h3><p>One reading task, three steps. Select an action to see its effect in the shared example.</p></div></header>
+  return <section className="tooltip-walkthrough" aria-label="Definition tooltip walkthrough">
+    <p className="feature-walkthrough-intro">One lookup, three steps. Source context and usage lists extend this tooltip; the other three core features have their own demonstrations above.</p>
     <div className="tutorial-layout">
       <ol className="tutorial-steps">
         {steps.map((step, index) => <li key={step.id} className={`tutorial-step ${action.step === index ? 'is-current' : ''}`}>
