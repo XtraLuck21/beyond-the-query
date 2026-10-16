@@ -1,4 +1,5 @@
 import * as scholar from './paperVisuals'
+import { addScimRationaleEvidence } from './scimRationale'
 
 export const scimSource = 'https://arxiv.org/html/2205.04561v3'
 export const synthSource = 'https://journals.sagepub.com/doi/full/10.1002/cl2.70073'
@@ -15,31 +16,31 @@ const scim = model({
   source: scimSource, initialAction: 'highlight', name: 'Scim',
   goalSubtitle: 'All seven design goals · original D1–D7',
   introduction: 'How existing skimming habits shaped faceted highlights, reader controls, and navigation.',
-  coverage: 'All 7 design goals · 4 interface feature families',
-  legend: 'O1–O7 = our summaries of formative findings · D1–D7 = author goal identifiers · F1–F4 = our feature grouping.',
+  coverage: 'All 7 design goals · 4 feature families · 11 goal–feature connections',
+  legend: 'O1–O7 = our summaries of reported evidence and reasoning · D1–D7 = author goal identifiers · F1–F4 = our feature grouping.',
   qualification: 'Goal D6 concerns classification quality. Highlights are suggestions; their labels can be wrong.',
-  caption: 'Adapted from Fok et al., Scim (IUI 2023), §§3.1–4.5, CC BY 4.0. Text is paraphrased; feature groupings and links are our synthesis of the authors’ rationale, not measured causal effects. Adaptive personalization was discussed as a possibility, not delivered as a feature.',
+  caption: 'Adapted from Fok et al., Scim (IUI 2023), §§3.1–4.5 and §§5.2–5.3, CC BY 4.0. Text and feature groupings are our synthesis. Solid goal–feature links are explicitly supported by the authors’ rationale; dashed links are our interpretations. Neither denotes a measured causal effect. Adaptive personalization was discussed as a possibility, not delivered as a feature.',
   observations: [
     observation(1, 'Readers already have a skim routine', 'Headings, figures, and familiar sections guide attention.', 'Participants described inspecting abstracts, introductions, contributions, results, and conclusions. Layout and typography already provide useful cues; a new layer should work alongside them.', '§3.2 · D1'),
     observation(2, 'Different reading goals need different cues', 'Finding a technique differs from getting a broad overview.', 'Readers may seek a method, locate a contribution, relate a paper to prior work, or prepare a high-level account. A single notion of relevance cannot serve every goal.', '§3.2 · D2'),
     observation(3, 'Useful information hides in long passages', 'Paragraph edges are easier to skim than their middles.', 'Readers use the start and end of paragraphs as shortcuts, but can miss content in the middle or drift into detailed reading. This motivated cues throughout the document.', '§3.2 · D3'),
-    observation(4, 'An attention cue can become a distraction', 'Underlines and lowlighting had drawbacks in pilots.', 'Subtle underlines were easy to overlook, while fading other text could impede reading. Pilot feedback favored familiar background highlights with distinguishable but restrained colors.', '§3.2 · D4'),
-    observation(5, 'Sparse highlights can feel incomplete', 'Long unmarked regions leave readers uncertain.', 'Participants wanted sufficient and reasonably distributed coverage, with more help available in dense passages. Coverage is a design concern, not evidence that every important sentence is found.', '§3.2 · D5'),
+    observation(4, 'An attention cue can become a distraction', 'Underlines and lowlighting had drawbacks in pilots.', 'The authors report that underlines were too subtle and faded text took extra effort to read during prototype exploration. They chose familiar background highlighting with distinguishable but restrained colors.', '§3.2 · D4'),
+    observation(5, 'Sparse highlights can feel incomplete', 'Long unmarked regions leave readers uncertain.', 'Preliminary readers wanted sufficient, reasonably distributed coverage. The authors recommend roughly one highlight per paragraph and the option to request more locally; these are design recommendations, not measured optimal settings.', '§3.2 · D5'),
     observation(6, 'Wrong facet labels undermine confidence', 'An obvious category error interrupts skimming.', 'Pilot readers noticed errors such as results marked as methods. Such errors make the assistance distracting and weaken trust in its categorization.', '§3.2 · D6'),
     observation(7, 'Readers want control over the assistance', 'Preferred amount and type of highlighting vary.', 'Participants wanted to tune highlights to the task and their comfort with the system. The implemented controls are manual; possible adaptive behavior is a separate future direction.', '§3.2 · D7'),
   ],
   problems: [
     goal(1, 'D1', 'Fit existing habits', 'Augment the original reading surface.', 'Preserve familiar ways of navigating and skimming a paper.', '§3.2 · D1'),
     goal(2, 'D2', 'Support diverse goals', 'Offer several kinds of reading cues.', 'Help readers pursue different information needs instead of imposing one summary.', '§3.2 · D2'),
-    goal(3, 'D3', 'Reach the middle', 'Expose cues inside lengthy passages.', 'Provide useful signals beyond section and paragraph boundaries.', '§3.2 · D3'),
+    goal(3, 'D3', 'Reach paragraph and paper middles', 'Expose cues beyond beginnings and endings.', 'Support attention to the middle of both individual paragraphs and the paper as a whole.', '§3.2 · D3'),
     goal(4, 'D4', 'Limit distraction', 'Make the assistance legible and restrained.', 'Avoid visual treatments that interfere with reading the underlying document.', '§3.2 · D4'),
     goal(5, 'D5', 'Provide enough coverage', 'Balance sparse and dense regions.', 'Supply enough highlights to assist skimming while letting readers request more locally.', '§3.2 · D5'),
     goal(6, 'D6', 'Prioritize accurate labels', 'Avoid misleading content categories.', 'Choose useful facets that the system can detect and improve classification quality. The interface does not eliminate classification errors.', '§3.2 · D6; §4.2'),
     goal(7, 'D7', 'Give readers control', 'Adjust the amount and types of highlights.', 'Let readers tailor assistance to their immediate needs through manual controls.', '§3.2 · D7'),
   ],
   designs: [
-    feature(1, 'Faceted in-place highlighting', 'Four content types on the original paper.', 'Objective, Novelty, Method, and Result receive consistent background colors. Sentence classification and selection provide the cues; they do not replace the full text.', '§§4.1–4.2', ['Keep the original document layout and context.', 'Use four distinguishable, low-contrast facet colors.', 'Select useful facets with classification feasibility in mind.'], 'highlight'),
-    feature(2, 'Global and local density controls', 'Tune a facet or a specific paragraph.', 'Per-facet sliders control paper-level density; local plus/minus controls change how much of a paragraph is highlighted. Postprocessing also helps distribute highlights.', '§4.3; §5.3', ['Turn a facet off or increase its density.', 'Request more or fewer highlights in a paragraph.', 'See the highlight count change immediately.'], 'density'),
+    feature(1, 'Faceted, distributed in-place highlights', 'Four content types with cues across the paper.', 'Objective, Novelty, Method, and Result receive consistent background colors. Sentence classification and selection provide the cues. Distribution heuristics prioritize paragraphs without highlights; the full text remains available.', '§§4.1–4.2', ['Keep the original document layout and context.', 'Use four distinguishable, low-contrast facet colors.', 'Select useful facets with classification feasibility in mind.', 'Prioritize paragraphs without highlights when distributing selected sentences.'], 'highlight'),
+    feature(2, 'Global and local density controls', 'Tune a facet or a specific paragraph.', 'Per-facet sliders control paper-level density; local plus/minus controls change how much of a paragraph is highlighted. These controls let the reader change the system’s suggested coverage.', '§4.3', ['Turn a facet off or increase its density.', 'Request more or fewer highlights in a paragraph.', 'See the highlight count change immediately.'], 'density'),
     feature(3, 'Scrollbar overview', 'See where highlighted content occurs.', 'Colored scrollbar marks summarize the spatial distribution of highlighted passages and update when the reader changes density.', '§4.4', ['Scan the distribution of facets across the paper.', 'See immediate feedback from density changes.'], 'distribution'),
     feature(4, 'Linked highlight browser', 'Read highlighted passages in paper order.', 'A sidebar collects highlighted passages by section. Selecting a passage navigates to its original location for closer reading.', '§4.5', ['Browse highlighted passages grouped by section.', 'Jump back from a list entry to its source context.'], 'context'),
   ],
@@ -48,14 +49,17 @@ const scim = model({
     [1,1,4,'A highlighted passage links back to its original context instead of becoming a detached summary.','§4.5'],
     [2,2,1,'Four facets expose different kinds of content for different skimming goals.','§4.2'],
     [2,2,2,'Facet-specific density lets the reader emphasize the type of information currently needed.','§4.3'],
-    [3,3,1,'Sentence-level cues can point inside paragraphs rather than only to their boundaries.','§§3.2, 4.2'],
+    [3,3,1,'Distributed in-place cues draw attention to the middle of paragraphs and papers, beyond familiar beginnings and endings.','§3.2; §4.1'],
     [4,4,1,'Familiar, restrained background colors address the visual problems found in pilot designs.','§§3.2, 4.2'],
-    [5,5,2,'Distribution heuristics and local density controls address insufficient coverage in long or dense passages.','§4.3; §5.3'],
+    [5,5,1,'Automatic selection prioritizes paragraphs without highlights to reduce gaps in coverage. This is a distribution heuristic, not a guarantee that all important content is marked.','§4.2; §5.3'],
+    [5,5,2,'Paragraph-level controls let readers request additional highlights when the current coverage is insufficient.','§3.2 · D5; §4.3'],
     [6,6,1,'Facet selection considers detectability, but classification quality remains a technical limitation.','§4.2; §5.2'],
     [7,7,2,'Manual controls allow changes in both category and amount of assistance.','§4.3'],
     [7,7,3,'Scrollbar marks make the effect of density changes visible across the paper. This link is our synthesis of the control-feedback relationship.','§4.4'],
   ],
 })
+addScimRationaleEvidence(scim)
+
 const scidasynth = model({
   source: synthSource, initialAction: 'question', name: 'SciDaSynth',
   goalSubtitle: 'DG1, DG2, and the three parts of DG3',
@@ -101,5 +105,8 @@ export const visualModels = {
   scim, scidasynth,
 }
 for (const item of Object.values(visualModels)) {
-  item.mapEdges = [...new Map(item.rationalePaths.flatMap((path) => [[path.observation, path.problem], [path.problem, path.design]]).map(([from,to]) => [`${from}-${to}`, {from,to}])).values()]
+  item.mapEdges = [...new Map(item.rationalePaths.flatMap((path) => [
+    { from: path.observation, to: path.problem, provenance: item.hasRationaleEvidence ? 'reported' : undefined },
+    { from: path.problem, to: path.design, provenance: path.provenance },
+  ]).map((edge) => [`${edge.from}-${edge.to}`, edge])).values()]
 }
