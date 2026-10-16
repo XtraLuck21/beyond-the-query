@@ -3,6 +3,7 @@ import { visualModels } from './data/visualModels'
 import ScimTutorial from './ScimTutorial'
 import SciDaSynthTutorial from './SciDaSynthTutorial'
 import ScholarPhiTutorial from './ScholarPhiTutorial'
+import ScholarPhiEvaluation from './ScholarPhiEvaluation'
 import './PaperVisuals.css'
 
 function Source({ section, href }) {
@@ -112,5 +113,8 @@ export default function PaperVisuals({ paperId, activeSection, onSectionChange }
     <div id="paper-panel-rationale" role="tabpanel" aria-labelledby="paper-tab-rationale" hidden={activeSection !== 'rationale'} tabIndex={0}>
       <MotivationMap model={model} onShowExample={showExample} />
     </div>
+    {paperId === 'scholarphi' && <div id="paper-panel-evaluation" role="tabpanel" aria-labelledby="paper-tab-evaluation" hidden={activeSection !== 'evaluation'} tabIndex={0}>
+      <ScholarPhiEvaluation onShowExample={showExample} />
+    </div>}
   </div>
 }

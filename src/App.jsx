@@ -27,6 +27,9 @@ function App() {
   const tabRefs = useRef([])
   const sectionTabRefs = useRef([])
   const selectedPaper = papers.find((paper) => paper.id === selectedPaperId)
+  const paperSections = selectedPaperId === 'scholarphi'
+    ? [...sections, { id: 'evaluation', label: 'Evaluation & Findings' }]
+    : sections
 
   function selectPaper(id) {
     if (id === selectedPaperId) return
@@ -84,11 +87,11 @@ function App() {
               <p className="publication">{selectedPaper.venue} · {selectedPaper.year}</p>
             </div>
             <div className="paper-section-tabs" role="tablist" aria-label="Selected paper views">
-              {sections.map((section, index) => <button key={section.id} id={`paper-tab-${section.id}`} type="button" role="tab"
+              {paperSections.map((section, index) => <button key={section.id} id={`paper-tab-${section.id}`} type="button" role="tab"
                 ref={(element) => { sectionTabRefs.current[index] = element }}
                 aria-selected={activeSection === section.id} aria-controls={`paper-panel-${section.id}`}
                 tabIndex={activeSection === section.id ? 0 : -1}
-                onClick={() => setActiveSection(section.id)} onKeyDown={(event) => navigateTabs(event, index, sections, setActiveSection, sectionTabRefs)}>{section.label}</button>)}
+                onClick={() => setActiveSection(section.id)} onKeyDown={(event) => navigateTabs(event, index, paperSections, setActiveSection, sectionTabRefs)}>{section.label}</button>)}
             </div>
             <div id="paper-panel-overview" role="tabpanel" aria-labelledby="paper-tab-overview" hidden={activeSection !== 'overview'} tabIndex={0}>
               <section className="abstract-section" aria-labelledby="abstract-heading">
