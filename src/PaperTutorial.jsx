@@ -1,4 +1,5 @@
 import { useRef } from 'react'
+import tooltipReferenceImage from './assets/ScholarPhi_reference/tooltip.png'
 import { steps, visualSource } from './data/paperVisuals'
 
 const readingPaper = 'https://aclanthology.org/D18-1548/'
@@ -62,5 +63,14 @@ export default function PaperTutorial({ actionId, onAction }) {
         <p className="tutorial-source-note">LISA · Strubell et al., 2018. Source-based paraphrases; interface adapted for this tutorial.</p>
       </div>
     </div>
+    <details className="equation-reference-disclosure">
+      <summary>Reference</summary>
+      <div className="equation-reference">
+        <p>Related interaction: <a href="https://www.mediawiki.org/wiki/Page_Previews" target="_blank" rel="noopener noreferrer">Wikipedia’s Page Previews [68]<span className="sr-only"> (opens in a new tab)</span></a>, which display linked-page previews on hover.</p>
+        <figure>
+          <img src={tooltipReferenceImage} alt="Wikipedia’s Alps article with a linked-page preview showing a photograph and description of Mont Blanc." loading="lazy" />
+        </figure>
+      </div>
+    </details>
   </section>
 }

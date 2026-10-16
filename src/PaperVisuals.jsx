@@ -4,6 +4,7 @@ import ScimTutorial from './ScimTutorial'
 import SciDaSynthTutorial from './SciDaSynthTutorial'
 import ScholarPhiTutorial from './ScholarPhiTutorial'
 import ScholarPhiEvaluation from './ScholarPhiEvaluation'
+import ScholarPhiExtraWork from './ScholarPhiExtraWork'
 import './PaperVisuals.css'
 
 function Source({ section, href }) {
@@ -115,6 +116,9 @@ export default function PaperVisuals({ paperId, activeSection, onSectionChange }
     </div>
     {paperId === 'scholarphi' && <div id="paper-panel-evaluation" role="tabpanel" aria-labelledby="paper-tab-evaluation" hidden={activeSection !== 'evaluation'} tabIndex={0}>
       <ScholarPhiEvaluation onShowExample={showExample} />
+    </div>}
+    {paperId === 'scholarphi' && <div id="paper-panel-extra-work" role="tabpanel" aria-labelledby="paper-tab-extra-work" hidden={activeSection !== 'extra-work'} tabIndex={0}>
+      <ScholarPhiExtraWork />
     </div>}
   </div>
 }
