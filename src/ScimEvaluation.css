@@ -1,0 +1,35 @@
+.scim-eval-overview { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; margin-top: 20px; }
+.scim-eval-overview article, .scim-eval-secondary article, .scim-eval-themes article { padding: 18px; border: 1px solid #dce5dc; border-radius: 9px; background: #fafcf8; min-width: 0; }
+.scim-evaluation h5 { font-size: 16px; line-height: 1.45; margin: 6px 0 10px; font-weight: 600; }
+.scim-evaluation p { overflow-wrap: anywhere; }
+.scim-eval-number { display: block; font-size: 22px; color: #2d604c; font-weight: 600; line-height: 1.4; margin-top: 10px; }
+.scim-eval-filters { display: flex; flex-wrap: wrap; gap: 8px; margin: 20px 0 12px; }
+.scim-eval-filters button { border: 1px solid #bccdbd; background: #fff; border-radius: 7px; padding: 10px 14px; color: #355b47; cursor: pointer; font: inherit; font-size: 13px; }
+.scim-eval-filters button:hover { background: #edf4e9; }
+.scim-eval-filters button[aria-pressed="true"] { background: #315f4d; border-color: #315f4d; color: white; }
+.scim-time-chart { border: 1px solid #dce5dc; border-radius: 9px; padding: 20px; background: #fafcf8; }
+.scim-time-row { display: grid; grid-template-columns: 118px minmax(0, 1fr) 65px; align-items: center; gap: 14px; margin: 16px 0; font-size: 13px; }
+.scim-time-row > strong { text-align: right; font-variant-numeric: tabular-nums; }
+.scim-time-track { height: 24px; background: #edf1eb; border-radius: 4px; overflow: hidden; }
+.scim-time-bar { height: 100%; border-radius: 4px; }
+.scim-time-bar.scim { background: #39775d; }
+.scim-time-bar.baseline { background: #899a87; }
+.scim-time-verdict { font-weight: 600; }
+.scim-eval-secondary { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; margin: 18px 0; align-items: start; }
+.scim-diary-stat { display: flex; gap: 24px; align-items: center; background: #edf4e9; border: 1px solid #cadbc5; padding: 22px; border-radius: 9px; margin-top: 20px; }
+.scim-diary-stat > strong { font-size: 34px; white-space: nowrap; color: #315f4d; font-weight: 550; }
+.scim-diary-stat p { margin: 5px 0 0; font-size: 13px; }
+.scim-eval-themes { display: grid; gap: 12px; margin: 20px 0; }
+.scim-eval-themes .eval-disclosure { margin-top: 12px; }
+.scim-evaluation .scim-eval-inferred { border-left-color: #7589ac; background: #f6f8fc; }
+.scim-eval-inferred .eval-kind { color: #4d658c; }
+@container (max-width: 750px) {
+  .scim-eval-overview { grid-template-columns: 1fr; }
+  .scim-eval-secondary { grid-template-columns: 1fr; }
+}
+@container (max-width: 480px) {
+  .scim-time-chart { padding: 12px; }
+  .scim-time-row { grid-template-columns: 91px minmax(0, 1fr) 56px; gap: 8px; font-size: 12px; }
+  .scim-diary-stat { flex-direction: column; align-items: flex-start; gap: 6px; padding: 16px; }
+  .scim-eval-filters button { flex: 1 1 100%; }
+}
