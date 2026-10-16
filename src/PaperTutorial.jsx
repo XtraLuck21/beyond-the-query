@@ -1,3 +1,4 @@
+import PaperContext from './PaperContext'
 import { useRef } from 'react'
 import tooltipReferenceImage from './assets/ScholarPhi_reference/hovercards-alps-original.jpg'
 import { steps, visualSource } from './data/paperVisuals'
@@ -64,9 +65,9 @@ export default function PaperTutorial({ actionId, onAction }) {
       </div>
     </div>
     <details className="equation-reference-disclosure">
-      <summary>Reference</summary>
+      <summary>Reference · Wikipedia Page Previews</summary>
       <div className="equation-reference">
-        <p>Related interaction: <a href="https://www.mediawiki.org/wiki/Page_Previews" target="_blank" rel="noopener noreferrer">Wikipedia’s Page Previews [68]<span className="sr-only"> (opens in a new tab)</span></a>, which display linked-page previews on hover.</p>
+        <PaperContext contextId="wikipedia" />
         <figure className="reference-figure reference-figure--preview">
           <a href={tooltipReferenceImage} target="_blank" rel="noopener noreferrer" aria-label="Open the full-size Wikipedia Page Previews image in a new tab">
             <img src={tooltipReferenceImage} width="1169" height="608" alt="Wikipedia’s Alps article: the Mont Blanc link opens a nearby preview containing a photograph and a short description, while the original article remains visible." loading="lazy" />

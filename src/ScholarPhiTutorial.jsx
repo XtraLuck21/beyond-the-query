@@ -1,3 +1,4 @@
+import PaperContext from './PaperContext'
 import { useRef, useState } from 'react'
 import PaperTutorial from './PaperTutorial'
 import mathSelectionImage from './assets/ScholarPhi_reference/hands-on-math-figure13.png'
@@ -83,7 +84,7 @@ function EquationReference() {
   return <section className="equation-reference" aria-labelledby="equation-reference-heading">
     <p className="eyebrow">Related work · Hands-On Math (UIST 2010)</p>
     <h5 id="equation-reference-heading">Related technique: selecting parts of an equation</h5>
-    <p>In Hands-On Math, tapping an expression activates and enlarges it. The area touched by a fingertip determines which symbols or terms are selected, making it easier to choose a meaningful part of an equation.</p>
+    <PaperContext contextId="math" />
     <figure className="reference-figure reference-figure--math">
       <a href={mathSelectionImage} target="_blank" rel="noopener noreferrer" aria-label="Open the full-size Hands-On Math Figure 13 in a new tab">
         <img src={mathSelectionImage} width="1125" height="327" alt="Figure 13: five fingertip selection examples for 2x + 3yz − w. Red symbols show selections ranging from one symbol to a longer span." />
@@ -98,8 +99,6 @@ function EquationReference() {
       <li><strong>Neighboring terms:</strong> overlap part of a term and an operator.</li>
       <li><strong>A longer span:</strong> use two contacts to select a wider portion of the expression.</li>
     </ol>
-    <p>ScholarPhi cites this work in §2.2.2 as a basis for its symbol selection technique. This reference explains selecting a symbol or subexpression, rather than the layout of definition labels in an equation diagram. ScholarPhi’s equation diagrams are described separately in §4.3.</p>
-    <a className="pv-source" href="https://dl.acm.org/doi/epdf/10.1145/1866029.1866035#page=6" target="_blank" rel="noopener noreferrer">Read Hands-On Math ↗<span className="sr-only"> (opens in a new tab)</span></a>
   </section>
 }
 
@@ -137,7 +136,7 @@ function EquationDemo() {
     {open && <button type="button" className="matrix-action feature-reset" onClick={close}>Hide diagram / restart</button>}
     <p className="feature-takeaway">Read the meanings together, then check a particular symbol in its defining passage. The formula is from LISA; the interactive labels and their arrangement are our adaptation of ScholarPhi’s equation diagrams.</p>
     <details className="equation-reference-disclosure">
-      <summary>Reference</summary>
+      <summary>Reference · Hands-On Math</summary>
       <EquationReference />
     </details>
   </div>

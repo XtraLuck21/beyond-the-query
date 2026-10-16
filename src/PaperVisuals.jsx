@@ -1,3 +1,4 @@
+import PaperContext from './PaperContext'
 import { useEffect, useRef, useState } from 'react'
 import { visualModels } from './data/visualModels'
 import ScimTutorial from './ScimTutorial'
@@ -88,11 +89,8 @@ function MotivationMap({ model, onShowExample }) {
         <header className="detail-heading"><div><p className="eyebrow">{selectedNode ? `${selectedNode.code} · ${selectedNode.type === 'problem' ? 'design motivation' : selectedNode.type}` : 'Design trade-off'}</p><h4>{selectedTitle}</h4></div><button type="button" className="matrix-action" onClick={closeDetails}>Back to overview</button></header>
         <p className="detail-intro">{selectedId === 'tension' ? 'The paper describes a balance: a compact initial definition leaves the reading area visible, while links and optional lists provide more context when the reader requests it. We connect these needs as a design trade-off, not as a measured causal relationship between problems.' : selectedNode.detail || selectedNode.short}</p>{selectedNode && <Source href={model.source} section={selectedNode.section} />}
         {model.name === 'ScholarPhi' && ['o7', 'p7'].includes(selectedId) && <details className="equation-reference-disclosure">
-          <summary>Reference</summary>
-          <div className="equation-reference">
-            <p>Systems can produce unpredictable errors, so interfaces should help users recover or easily dismiss unwanted outputs.</p>
-            <a className="pv-source" href="https://arxiv.org/pdf/2010.11761#page=4" target="_blank" rel="noopener noreferrer">Read A Comparative Analysis of Industry Human-AI Interaction Guidelines ↗<span className="sr-only"> (opens in a new tab)</span></a>
-          </div>
+          <summary>Reference · Human–AI Interaction Guidelines</summary>
+          <div className="equation-reference"><PaperContext contextId="guidelines" /></div>
         </details>}
         <div className="rationale-detail-columns">
           <div><h5>Observations and research basis</h5>{relatedObservations.map((node) => <article className="observation-record" key={node.id}><span>{node.code} · {node.group}</span><h6>{node.title}</h6><p>{node.detail}</p><Source href={model.source} section={node.section} /></article>)}</div>

@@ -1,0 +1,13 @@
+.paper-context { margin: 16px 0; padding: 18px 20px; border: 1px solid #d5dfd0; border-left: 3px solid #7c9c83; border-radius: 7px; background: #f5f8f2; color: #304c40; line-height: 1.7; min-width: 0; }
+.paper-context .paper-context-label { margin: 0 0 6px; font-size: 11px; font-weight: 650; letter-spacing: .04em; color: #5a705d; }
+.paper-context .paper-context-question { margin: 0 0 14px; font-size: 17px; line-height: 1.5; font-weight: 600; color: #294438; }
+.paper-context .paper-context-relationship { display: flex; flex-wrap: wrap; gap: 4px 10px; margin: 0 0 12px; font-size: 13px; }
+.paper-context .paper-context-explanation { margin: 0; font-size: 14px; }
+.paper-context-evidence { margin-top: 15px; padding-top: 12px; border-top: 1px solid #d5dfd0; }
+.paper-context-evidence summary { cursor: pointer; font-size: 13px; font-weight: 600; color: #345640; }
+.paper-context-sources { padding-left: 20px; margin: 8px 0 0; font-size: 13px; }
+.paper-context-sources li + li { margin-top: 6px; }
+.paper-context a { color: #3b6755; text-underline-offset: 3px; overflow-wrap: anywhere; }
+.paper-context a:focus-visible, .paper-context summary:focus-visible { outline: 3px solid #317968; outline-offset: 3px; }
+.paper-context .paper-context-attribution { margin: 12px 0 0; font-size: 11px; color: #657564; }
+@media (max-width: 600px) { .paper-context { padding: 14px; } }

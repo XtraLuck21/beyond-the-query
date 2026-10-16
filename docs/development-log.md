@@ -2,6 +2,61 @@
 
 This log records project decisions and completed implementation. Features discussed but not built are identified separately; they are not commitments for the next development step.
 
+## 2026-10-16 — Make ScholarPhi context explain a concrete reading question
+
+This entry records the reference review and the subsequent integration of six approved context explanations. Reference-image and placement corrections were already committed in `0204ac6`; the six-context integration and this log update form the current follow-up. Earlier entries describe historical checkpoints, not the latest feature inventory.
+
+### Why we changed the context presentation
+
+The initial reference panels and related-paper entries provided useful sources, but did not consistently explain what a reader would learn from them. A reference link or a similar-paper recommendation alone did not establish why that material helped with the paper currently being read. We therefore organized each context around a specific reading question, its relationship to ScholarPhi, an explanation, and supporting evidence.
+
+The goal remains contextual understanding. We are not introducing a new comparison strategy or treating relatedness as evidence that one system is better than another.
+
+### Corrections already implemented in `0204ac6`
+
+- **Readable reference figures:** The Wikipedia screenshot was too small to read. We replaced it with the original 1169 × 608 image and re-extracted Hands-On Math Figure 13 from the author-hosted PDF. Both figures have captions, attribution/source links, and full-size viewing links. The purpose is to make the illustrated interaction inspectable.
+- **Match references to the claims they support:** Human–AI interaction guidelines concern error recovery, not Declutter's fading technique. We moved that reference to ScholarPhi's O7/M7 rationale and removed the unrelated personalization sentence. Hands-On Math is explicitly identified as a symbol-selection precedent, rather than the source of the equation-diagram label layout.
+- **Clarify the related-work section:** Renamed **Extra work** to **Related work** so the tab describes its content rather than sounding like an additional assignment.
+- **Clarify selection provenance:** The original teammate log described a graph-guided curated selection. The subsequent team clarification specified the rule: rank by Connected Papers similarity to ScholarPhi, exclude papers already in the workspace, and take the first three remaining papers. On October 16, the displayed scores were Threddy 30.4, CiteSee 26.9, Scim 25.9, and CiteRead 24.8. Scim is already in the workspace, so the retained set is Threddy, CiteSee, and CiteRead. These are observed external scores, not values computed by our prototype. The page records the exclusion rule and check date; it does not update rankings automatically.
+
+The earlier [teammate log](Bob_development-log.md) remains a historical record. This entry records the clarified rule and revised reference placement. Ranking source: [Connected Papers graph for ScholarPhi](https://www.connectedpapers.com/main/60bf101bd61fb5fa526c1ae25d808e86958724ad/Augmenting-Scientific-Papers-with-Just%20in%20Time%2C-Position%20Sensitive-Definitions-of-Terms-and-Symbols/graph).
+
+### Implemented now: six approved context explanations
+
+| Context | Location | Reading need and reason for the change |
+| --- | --- | --- |
+| Wikipedia Page Previews | How it works → Definition tooltips → Reference | Explain how an article preview differs from a definition selected for a term's location in a paper. A familiar interaction example needs an explicit connection to ScholarPhi. |
+| Human–AI Interaction Guidelines | Design rationale → O7 or M7 → Reference | Explain recovery when an extracted definition is missing or unhelpful. Preserve the distinction between prior research supporting M7 and feedback from ScholarPhi's own participants. |
+| Hands-On Math | How it works → Equation diagrams → Reference | Explain selection of meaningful mathematical parts. Limit the claimed connection to symbol selection rather than attributing the full diagram design to this work. |
+| Threddy | Related work → Threddy | Explain the transition from within-paper definitions to passages, citations, and persistent research threads. A citation and conceptual connection do not establish code reuse. |
+| CiteSee | Related work → CiteSee | Explain how a reader's history adds context to citations. Distinguish its explicit code reuse from its different information focus. |
+| CiteRead | Related work → CiteRead | Explain how later citing papers can add commentary to the current paper. Distinguish shared reader infrastructure from the source of the contextual information. |
+
+Each explanation now contains **Question this context helps answer**, **Relationship**, a context paragraph, and **Evidence & sources** links. The approved text is stored centrally in `src/data/scholarPhiContexts.js` and rendered by `PaperContext.jsx` with shared styling in `PaperContext.css`.
+
+### Presentation decisions
+
+- Replaced overlapping reference introductions and related-work connection/extension paragraphs with the approved explanations, rather than appending another duplicate summary.
+- Kept the three reference explanations inside their existing disclosures and added source names to the disclosure labels so readers can anticipate the contents.
+- Kept the three related-work explanations visible within their paper entries, with evidence links available on demand through **Evidence & sources** disclosures.
+- Retained the source figures, captions, full-size links, paper descriptions, and paper-reading links.
+- Marked the text as source-based summaries and cross-system comparisons as our interpretation. These are not author quotations, measured causal relationships, or comparative effectiveness findings.
+
+### Evidence basis
+
+- [ScholarPhi §§2.2.1–2.2.2, §3.3 M7, and §4.1](https://arxiv.org/html/2009.14237v3); [Wikipedia Page Previews introduction](https://www.mediawiki.org/wiki/Page_Previews#Introduction).
+- [Wright et al., A Comparative Analysis of Industry Human-AI Interaction Guidelines, p. 4](https://arxiv.org/pdf/2010.11761#page=4).
+- [Hands-On Math, Fingertip Area Selections and Figure 13, p. 22 / PDF p. 6](https://www.andrewbragdon.com/papers/hands-on-math.pdf#page=6).
+- [Threddy §2.2, p. 3](https://arxiv.org/pdf/2208.03455#page=3); [CiteSee §4.6](https://arxiv.org/html/2302.07302#S4.SS6).
+- [ScholarPhi project: publications using its reader](https://scholarphi.org/); [CiteRead](https://doi.org/10.1145/3490099.3511162).
+
+### Validation and scope
+
+The six-context implementation passed ESLint, the production build, and Git whitespace checks. Browser checks verified the six context explanations at their intended locations, the three related-work evidence disclosures, the feature-reference disclosures, and the O7/M7 reference entry through M7 selection. Visual inspection covered the related-work context layout. This documentation-only follow-up records those checks; it does not claim a new full regression run or a completed user study.
+
+The content remains curated and bundled with the frontend. This change does not add live recommendation, automatic extraction, new papers to the workspace, or changes to Across Papers. The current work has not been committed or pushed as part of this documentation task.
+
+
 ## 2026-10-07 — Interactive paper explanations and a unified workspace
 
 This update records the work after the initial comparison prototype, through commit `cb66f10`. The earlier entry below remains a historical checkpoint; the feature status in this entry and the README describes the current app.
