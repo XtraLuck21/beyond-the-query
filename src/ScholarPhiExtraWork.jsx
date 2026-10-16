@@ -50,13 +50,13 @@ export default function ScholarPhiExtraWork() {
   return <section className="eval-page" aria-labelledby="extra-work-heading">
     <header className="eval-heading">
       <p className="eyebrow">Building on ScholarPhi</p>
-      <h3 id="extra-work-heading">Extra work</h3>
+      <h3 id="extra-work-heading">Related work</h3>
       <p>Explore papers related to ScholarPhi and see how each connects to its ideas, reading interface, or implementation.</p>
     </header>
 
     <section className="eval-section" aria-labelledby="follow-up-heading">
-      <div className="eval-section-heading"><div><span className="eval-step">Three selected similar papers</span><h4 id="follow-up-heading">How do they connect to ScholarPhi?</h4></div></div>
-      <p>All three augment scientific reading. Their connections range from citing ScholarPhi’s ideas to directly reusing its reader or code.</p>
+      <div className="eval-section-heading"><div><span className="eval-step">Three most similar papers outside this collection</span><h4 id="follow-up-heading">How do they connect to ScholarPhi?</h4></div></div>
+      <p>Selected by Connected Papers similarity to ScholarPhi, excluding papers already in this collection (checked October 16, 2026). All three augment scientific reading. Their connections range from citing ScholarPhi’s ideas to directly reusing its reader or code.</p>
       <div className="eval-boundaries">
         {followUps.map((work, index) => <article key={work.id}>
           <span className="eval-kind">0{index + 1} · {work.publication}</span>

@@ -1,5 +1,5 @@
 import { useRef } from 'react'
-import tooltipReferenceImage from './assets/ScholarPhi_reference/tooltip.png'
+import tooltipReferenceImage from './assets/ScholarPhi_reference/hovercards-alps-original.jpg'
 import { steps, visualSource } from './data/paperVisuals'
 
 const readingPaper = 'https://aclanthology.org/D18-1548/'
@@ -67,8 +67,16 @@ export default function PaperTutorial({ actionId, onAction }) {
       <summary>Reference</summary>
       <div className="equation-reference">
         <p>Related interaction: <a href="https://www.mediawiki.org/wiki/Page_Previews" target="_blank" rel="noopener noreferrer">Wikipedia’s Page Previews [68]<span className="sr-only"> (opens in a new tab)</span></a>, which display linked-page previews on hover.</p>
-        <figure>
-          <img src={tooltipReferenceImage} alt="Wikipedia’s Alps article with a linked-page preview showing a photograph and description of Mont Blanc." loading="lazy" />
+        <figure className="reference-figure reference-figure--preview">
+          <a href={tooltipReferenceImage} target="_blank" rel="noopener noreferrer" aria-label="Open the full-size Wikipedia Page Previews image in a new tab">
+            <img src={tooltipReferenceImage} width="1169" height="608" alt="Wikipedia’s Alps article: the Mont Blanc link opens a nearby preview containing a photograph and a short description, while the original article remains visible." loading="lazy" />
+          </a>
+          <figcaption>
+            <strong>Mont Blanc preview within the Alps article.</strong> The linked term remains above the preview, keeping the explanation beside the reading passage. Original screenshot by Parkywiki (2016), reproduced without edits.{' '}
+            <a href="https://commons.wikimedia.org/wiki/File:Hovercards_-_Alps_Mont_Blanc.jpg" target="_blank" rel="noopener noreferrer">Image source &amp; attribution ↗</a>{' · '}
+            <a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank" rel="noopener noreferrer">CC BY-SA 4.0 ↗</a>
+          </figcaption>
+          <a className="pv-source" href={tooltipReferenceImage} target="_blank" rel="noopener noreferrer">Open full-size image ↗<span className="sr-only"> (opens in a new tab)</span></a>
         </figure>
       </div>
     </details>

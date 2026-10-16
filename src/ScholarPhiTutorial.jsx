@@ -1,6 +1,6 @@
 import { useRef, useState } from 'react'
 import PaperTutorial from './PaperTutorial'
-import mathSelectionImage from './assets/ScholarPhi_reference/107mathSelection.png'
+import mathSelectionImage from './assets/ScholarPhi_reference/hands-on-math-figure13.png'
 import { visualSource } from './data/paperVisuals'
 import { lisaPdf, lisaArticle, lisaExcerpts, lisaSymbols, lisaGlossary, parseContext } from './data/scholarPhiExamples'
 
@@ -76,24 +76,20 @@ function DeclutterDemo() {
       <LisaSource />
     </div>
     <p className="feature-takeaway">Follow the same symbol from its definition to parent selection and external parse injection. The excerpt layout stays fixed as sentences fade. ScholarPhi applies this interaction within the original PDF; this tutorial reflows selected passages.</p>
-    <details className="equation-reference-disclosure">
-      <summary>Reference</summary>
-      <div className="equation-reference">
-        <p>Systems can produce unpredictable errors, so interfaces should help users recover or easily dismiss unwanted outputs. Personalization should learn from feedback while preserving user control and opportunities to explore.</p>
-        <a className="pv-source" href="https://arxiv.org/pdf/2010.11761#page=4" target="_blank" rel="noopener noreferrer">Read A Comparative Analysis of Industry Human-AI Interaction Guidelines ↗<span className="sr-only"> (opens in a new tab)</span></a>
-      </div>
-    </details>
   </div>
 }
 
 function EquationReference() {
   return <section className="equation-reference" aria-labelledby="equation-reference-heading">
     <p className="eyebrow">Related work · Hands-On Math (UIST 2010)</p>
-    <h5 id="equation-reference-heading">Selecting parts of a mathematical expression</h5>
+    <h5 id="equation-reference-heading">Related technique: selecting parts of an equation</h5>
     <p>In Hands-On Math, tapping an expression activates and enlarges it. The area touched by a fingertip determines which symbols or terms are selected, making it easier to choose a meaningful part of an equation.</p>
-    <figure>
-      <img src={mathSelectionImage} alt="Figure 13: five fingertip selection examples for 2x + 3yz − w. Red symbols show selections ranging from one symbol to a longer span." />
-      <figcaption>Figure 13 · Fingertip area selection. Zeleznik, Bragdon, Adeputra, and Ko, Hands-On Math, 2010.</figcaption>
+    <figure className="reference-figure reference-figure--math">
+      <a href={mathSelectionImage} target="_blank" rel="noopener noreferrer" aria-label="Open the full-size Hands-On Math Figure 13 in a new tab">
+        <img src={mathSelectionImage} width="1125" height="327" alt="Figure 13: five fingertip selection examples for 2x + 3yz − w. Red symbols show selections ranging from one symbol to a longer span." />
+      </a>
+      <figcaption><strong>Figure 13 · Fingertip area selection.</strong> Red symbols indicate the selected part of the expression; hand positions show the corresponding contact areas. Zeleznik, Bragdon, Adeputra, and Ko, <em>Hands-On Math</em>, UIST 2010, p. 22 (PDF p. 6). Figure extracted from the author-hosted PDF; surrounding page text omitted.{' '}<a href="https://www.andrewbragdon.com/papers/hands-on-math.pdf#page=6" target="_blank" rel="noopener noreferrer">Source figure ↗</a></figcaption>
+      <a className="pv-source" href={mathSelectionImage} target="_blank" rel="noopener noreferrer">Open full-size figure ↗<span className="sr-only"> (opens in a new tab)</span></a>
     </figure>
     <ol className="equation-selection-cases" type="a" aria-label="Selection examples in Figure 13">
       <li><strong>One symbol:</strong> touch a single symbol.</li>
@@ -102,7 +98,7 @@ function EquationReference() {
       <li><strong>Neighboring terms:</strong> overlap part of a term and an operator.</li>
       <li><strong>A longer span:</strong> use two contacts to select a wider portion of the expression.</li>
     </ol>
-    <p>ScholarPhi cites this work in §2.2.2 as a basis for its symbol selection technique. Selecting mathematical parts provides context for equation diagrams, which show definitions for several symbols together.</p>
+    <p>ScholarPhi cites this work in §2.2.2 as a basis for its symbol selection technique. This reference explains selecting a symbol or subexpression, rather than the layout of definition labels in an equation diagram. ScholarPhi’s equation diagrams are described separately in §4.3.</p>
     <a className="pv-source" href="https://dl.acm.org/doi/epdf/10.1145/1866029.1866035#page=6" target="_blank" rel="noopener noreferrer">Read Hands-On Math ↗<span className="sr-only"> (opens in a new tab)</span></a>
   </section>
 }
