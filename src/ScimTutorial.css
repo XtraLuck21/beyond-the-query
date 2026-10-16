@@ -1,0 +1,43 @@
+.scim-feature-section { min-width: 0; }
+.scim-thought { margin: 24px 0; max-width: 760px; }
+.scim-source-banner { margin: 24px 0 18px; padding: 18px 22px; border-left: 4px solid #799883; background: #f0f5ee; font-size: 13px; line-height: 1.7; }
+.scim-source-banner p { margin: 7px 0; }
+.scim-source-banner a, .scim-paragraph-meta a, .scim-feature-section .selected-feature-heading > a { color: #426d59; text-underline-offset: 3px; }
+.scim-demo-toolbar { display: flex; align-items: center; justify-content: space-between; gap: 14px; flex-wrap: wrap; }
+.scim-demo-toolbar .facet-legend { margin: 0; }
+.scim-workspace { display: grid; grid-template-columns: minmax(0, 1fr) minmax(260px, .44fr); gap: 24px; align-items: start; }
+.scim-reading, .scim-tools { min-width: 0; }
+.scim-reading { border: 1px solid #d2ddd0; border-radius: 10px; padding: 24px; background: #fff; }
+.scim-reading h5, .scim-tool-panel h5 { font-size: 16px; margin: 0 0 10px; }
+.scim-reading > header > p, .scim-tool-panel > p { font-size: 12px; line-height: 1.7; color: #58705e; }
+.scim-excerpt-group { margin-top: 24px; }
+.scim-excerpt-gap { border-top: 1px dashed #ccd8c6; padding-top: 16px; color: #6b786a; font-size: 11px; }
+.scim-paragraph { padding: 16px 0; border-bottom: 1px solid #e2e8de; }
+.scim-paragraph.is-adjusted { border-left: 3px solid #728dba; padding-left: 12px; }
+.scim-paragraph-meta { display: flex; justify-content: space-between; gap: 8px; flex-wrap: wrap; font: 11px/1.6 system-ui, sans-serif; color: #657963; margin-bottom: 10px; }
+.scim-quoted { font: 17px/2 Georgia, serif; color: #2e4438; margin: 0; }
+.scim-sentence { display: inline; border: 0; border-radius: 2px; padding: 2px 0; font: inherit; color: inherit; text-align: left; cursor: pointer; box-decoration-break: clone; -webkit-box-decoration-break: clone; }
+.scim-sentence:hover { text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 3px; }
+.scim-feature-section .is-located { outline: 3px solid #ad7d24; outline-offset: 2px; box-shadow: 0 0 0 5px #fff0c5; }
+.scim-sentence:focus-visible, .scim-browser button:focus-visible, .scim-feature-section button:focus-visible { outline: 3px solid #216578; outline-offset: 4px; }
+.scim-excerpt-note { font: 11px/1.7 system-ui, sans-serif; color: #667661; margin: 12px 0 0; }
+.scim-omission { color: #65735d; }
+.scim-tools { display: grid; gap: 16px; }
+.scim-tool-panel { border: 1px solid #d2ddd0; border-radius: 8px; background: #f8faf6; padding: 18px; }
+.scim-tool-panel.is-emphasized { border: 2px solid #527d67; }
+.scim-tool-panel .density-controls { margin: 0; padding: 6px; border: 0; }
+.scim-tool-panel .density-controls label { grid-template-columns: 82px minmax(40px, 1fr) 36px; gap: 6px; margin: 16px 0; }
+.scim-tool-panel small { display: block; font-size: 10px; margin-top: 3px; color: #61725d; }
+.scim-map-group { border-top: 1px solid #dce5d6; padding-top: 12px; margin-top: 12px; font-size: 11px; line-height: 1.6; }
+.scim-map-group strong { display: block; }
+.scim-map-group ol { display: flex; gap: 4px; margin: 8px 0; padding: 0; list-style: none; }
+.scim-map-group li { flex: 1; height: 15px; min-width: 0; border: 1px solid #7d8c7a66; border-radius: 3px; }
+.scim-map-group li[class=""] { background: #e5e9e2; }
+.scim-browser h6 { font-size: 12px; margin: 20px 0 10px; }
+.scim-browser button { display: flex; flex-direction: column; align-items: start; gap: 8px; width: 100%; text-align: left; padding: 12px; margin-bottom: 10px; background: white; border: 1px solid #cbd8c8; border-radius: 6px; color: #344c3d; font: 12px/1.8 system-ui, sans-serif; cursor: pointer; }
+.scim-browser button[aria-pressed="true"] { border: 2px solid #ad7d24; background: #fffaf0; }
+.scim-selection-detail { margin-top: 18px; padding: 16px; background: #fff8e7; border-left: 3px solid #ad7d24; font: 12px/1.8 system-ui, sans-serif; }
+.scim-selection-detail p { margin: 8px 0; }
+.scim-feature-section button:disabled { opacity: .45; cursor: not-allowed; }
+@media (max-width: 900px) { .scim-workspace { grid-template-columns: minmax(0, 1fr); }.scim-tools { grid-row: 1; grid-template-columns: repeat(2, minmax(0, 1fr)); }.scim-browser { grid-column: 1 / -1; }.scim-reading { padding: 18px; } }
+@media (max-width: 550px) { .scim-tools { grid-template-columns: minmax(0, 1fr); }.scim-quoted { font-size: 16px; }.scim-source-banner { padding: 14px; }.scim-reading { padding: 14px; } }

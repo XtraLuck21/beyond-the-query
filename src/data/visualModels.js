@@ -12,7 +12,7 @@ function model(config) {
   return { ...config, visualNodes, rationalePaths }
 }
 const scim = model({
-  source: scimSource, initialAction: 'orient', name: 'Scim',
+  source: scimSource, initialAction: 'highlight', name: 'Scim',
   goalSubtitle: 'All seven design goals · original D1–D7',
   introduction: 'How existing skimming habits shaped faceted highlights, reader controls, and navigation.',
   coverage: 'All 7 design goals · 4 interface feature families',
@@ -40,7 +40,7 @@ const scim = model({
   designs: [
     feature(1, 'Faceted in-place highlighting', 'Four content types on the original paper.', 'Objective, Novelty, Method, and Result receive consistent background colors. Sentence classification and selection provide the cues; they do not replace the full text.', '§§4.1–4.2', ['Keep the original document layout and context.', 'Use four distinguishable, low-contrast facet colors.', 'Select useful facets with classification feasibility in mind.'], 'highlight'),
     feature(2, 'Global and local density controls', 'Tune a facet or a specific paragraph.', 'Per-facet sliders control paper-level density; local plus/minus controls change how much of a paragraph is highlighted. Postprocessing also helps distribute highlights.', '§4.3; §5.3', ['Turn a facet off or increase its density.', 'Request more or fewer highlights in a paragraph.', 'See the highlight count change immediately.'], 'density'),
-    feature(3, 'Scrollbar overview', 'See where highlighted content occurs.', 'Colored scrollbar marks summarize the spatial distribution of highlighted passages and update when the reader changes density.', '§4.4', ['Scan the distribution of facets across the paper.', 'See immediate feedback from density changes.'], 'density'),
+    feature(3, 'Scrollbar overview', 'See where highlighted content occurs.', 'Colored scrollbar marks summarize the spatial distribution of highlighted passages and update when the reader changes density.', '§4.4', ['Scan the distribution of facets across the paper.', 'See immediate feedback from density changes.'], 'distribution'),
     feature(4, 'Linked highlight browser', 'Read highlighted passages in paper order.', 'A sidebar collects highlighted passages by section. Selecting a passage navigates to its original location for closer reading.', '§4.5', ['Browse highlighted passages grouped by section.', 'Jump back from a list entry to its source context.'], 'context'),
   ],
   links: [
