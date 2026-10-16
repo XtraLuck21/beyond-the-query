@@ -6,6 +6,7 @@ import SciDaSynthTutorial from './SciDaSynthTutorial'
 import ScholarPhiTutorial from './ScholarPhiTutorial'
 import ScholarPhiEvaluation from './ScholarPhiEvaluation'
 import ScholarPhiPipeline from './ScholarPhiPipeline'
+import ScimPipeline from './ScimPipeline'
 import ScholarPhiExtraWork from './ScholarPhiExtraWork'
 import './PaperVisuals.css'
 import { ScimRationaleOverview, ScimReferencePanels } from './ScimRationale'
@@ -126,8 +127,8 @@ export default function PaperVisuals({ paperId, activeSection, onSectionChange }
     <div id="paper-panel-workflow" role="tabpanel" aria-labelledby="paper-tab-workflow" hidden={activeSection !== 'workflow'} tabIndex={0}>
       <Tutorial actionId={tutorialAction} onAction={setTutorialAction} headingRef={tutorialHeading} />
     </div>
-    {paperId === 'scholarphi' && <div id="paper-panel-pipeline" role="tabpanel" aria-labelledby="paper-tab-pipeline" hidden={activeSection !== 'pipeline'} tabIndex={0}>
-      <ScholarPhiPipeline active={activeSection === 'pipeline'} />
+    {['scholarphi', 'scim'].includes(paperId) && <div id="paper-panel-pipeline" role="tabpanel" aria-labelledby="paper-tab-pipeline" hidden={activeSection !== 'pipeline'} tabIndex={0}>
+      {paperId === 'scim' ? <ScimPipeline /> : <ScholarPhiPipeline active={activeSection === 'pipeline'} />}
     </div>}
     <div id="paper-panel-rationale" role="tabpanel" aria-labelledby="paper-tab-rationale" hidden={activeSection !== 'rationale'} tabIndex={0}>
       <MotivationMap model={model} onShowExample={showExample} />
