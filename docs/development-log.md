@@ -2,6 +2,31 @@
 
 This log records project decisions and completed implementation. Features discussed but not built are identified separately; they are not commitments for the next development step.
 
+## 2026-10-16 — Consolidate Scim documentation and audit the general standards
+
+### Reason and scope
+
+Scim now has six populated single-paper tabs, but its dedicated document covered only Related work and this log lacked the intervening October 16 milestones. We expanded [scim.md](scim.md) into the current content and development record, preserving its reference-selection section and adding sources, inventories, design decisions, teaching boundaries, state behavior, and a standards audit.
+
+This entry audits implementation commit `2d510c4`. The milestone entries below were reconstructed from current source and commits `db42945`, `e44367e`, `e1bbc06`, and `badbf37`; they do not invent new implementation dates, participant feedback, or earlier test runs. The October 7 entries remain historical.
+
+### Current coverage and decisions recorded
+
+- **Overview:** source-attributed metadata abstract, identity, and source links. The metadata abstract differs from the rendered paper's abstract; both are source presentations, and the existing text matches its linked metadata record.
+- **How it works:** four core families, one authentic excerpt collection, and explicit teaching adaptations. The current dataset has four groups, seven paragraphs, twenty sentences, eleven categorized candidates, four Figure 3 correspondences, and five initial highlights.
+- **System Pipeline:** eleven nodes across model development, per-paper processing, and reading interaction, with pinned code sources and two unresolved verification chains.
+- **Design rationale:** all seven author goals, four feature families, and eleven goal–feature links: eight author-explicit and three inferred. Reported basis and team-added identifiers remain distinguished.
+- **Evaluation & Findings:** all three evaluation types, selected results, methods on demand, and eight limitation/boundary entries. Evidence about the original tool is distinct from evaluation of our workspace.
+- **Related work:** the approved HiText/TLDR entries and question-driven screening gates remain; rationale also contains Cohan, Teufel, and ScholarPhi contexts. No comprehensive bibliography-screen claim was added.
+
+### Remaining gaps identified
+
+The [standards audit](scim.md#standards-audit-and-remaining-gaps) separates intentional demo limits, unresolved source questions, proposed presentation improvements, and research-validation needs. Key follow-ups are prominent intended-user scope, source-link version consistency, whole-paper versus excerpt-map clarity, discovery of node-specific references, and a combined six-tab keyboard/responsive review. Training/checkpoint provenance and the exported-data/reader-schema bridge remain explicitly unverified. No new mandatory tab was identified, and no proposed UI change was implemented.
+
+### Validation and changes made
+
+This documentation pass inspected the current source, styles, and commit history, calculated data inventory counts, and checked the arXiv metadata/full-text abstract distinction. Relative Markdown links/anchors, whitespace, and documentation-only diff scope were checked. The previous Related work test record is retained below; no fresh full-app browser regression, build, lint run, upstream system reproduction, or user evaluation is claimed for this prose-only update. Only `docs/scim.md` and this log were edited. No commit or push was performed.
+
 ## 2026-10-16 — Add question-driven contextual references for Scim
 
 ### Reason and scope
@@ -21,6 +46,76 @@ Content is in `src/data/scimRelatedWork.js`; the view is `src/ScimRelatedWork.js
 ### Validation
 
 ESLint, the production build, and whitespace checks passed. Browser checks confirmed Scim's new tab, both reference entries, independent evidence disclosures, selection-method expansion, and keyboard Enter dismissal of the HiText disclosure. At a 390-pixel viewport, the comparison panels stack and document width remains 390 pixels without horizontal overflow. The viewport was restored and the desktop layout inspected. No browser warnings or errors were recorded. These checks do not establish comprehension benefit. No commit or push was performed.
+
+## 2026-10-16 — Add Scim Evaluation & Findings
+
+Retrospective entry for implementation commit `badbf37`, consolidated on October 16 from the current source and commit record.
+
+### Reason and decisions
+
+A tutorial can explain capabilities without showing whether they worked, for whom, or under which tasks. We therefore added Evaluation & Findings to separate the lab information-seeking study, longitudinal diary study, and preliminary technical check, while retaining the earlier formative work in Design rationale.
+
+### Implemented
+
+- Added a three-study overview and selectable mean-time comparisons for all questions, answers within highlights, and answers outside highlights. Kept the scanning-versus-comprehension distinction visible.
+- Presented accuracy and perceived difficulty alongside timing, including nonsignificant results. Means, statistical detail, and methods are attributed to the paper; our chart is not the original distribution plot.
+- Organized diary findings into five themes with expandable observations, participation/material/analysis details, and correct response-versus-participant denominators.
+- Explained significant-sentence-selection F1 separately from facet-classification accuracy and reader understanding.
+- Added eight limitation/boundary entries distinguishing user difficulties, author discussion, potential risks, and our scope interpretation. Kept uncertainty about study-highlight manual correction explicit.
+
+Sources: [Scim §5.2.2](https://arxiv.org/html/2205.04561v3#S5.SS2.SSS2), [§§6–8](https://arxiv.org/html/2205.04561v3#S6). Files: `src/ScimEvaluation.jsx`, `src/ScimEvaluation.css`, plus tab integration. [Current inventory and coverage](scim.md#evaluation--findings) retains the results and qualifications. No new runtime verification is implied by this retrospective entry.
+
+## 2026-10-16 — Add Scim System Pipeline
+
+Retrospective entry for implementation commit `e1bbc06`, consolidated on October 16 from the current source and commit record.
+
+### Reason and decisions
+
+The feature demo explains what readers do, but not how sentence data becomes highlights or which operations run during reading. We added an explanatory pipeline with separate model-preparation, paper-processing, and browser-interaction phases rather than implying that every UI action invokes a language model.
+
+### Implemented
+
+- Added eleven selectable nodes with input, processing, output, timing, relevance, and paper/code sources. Model preparation is expandable; each phase has its own selected-node detail panel.
+- Named transferred data and actions, showed linked reading views as parallel outputs, and represented controls as a loop back to selection/rendering.
+- Pinned repository links to `3380689fc0df7912ce72e65add56beb692bb7050`. Distinguished four visible facets from the default predictor's five labels and reader-side rules.
+- Marked the exported-artifacts-to-reader-data conversion as an unverified handoff, and preserved the missing complete training-to-checkpoint verification. Static inspection does not establish an executable end-to-end reproduction.
+
+Sources: [Scim §5](https://arxiv.org/html/2205.04561v3#S5) and [pinned repository](https://github.com/rayfok/scim/tree/3380689fc0df7912ce72e65add56beb692bb7050). Files: `src/ScimPipeline.jsx`, `src/ScimPipeline.css`, `src/data/scimPipeline.js`. [Node inventory and boundaries](scim.md#system-pipeline) remain the current reference. No model execution or new source-code audit was performed while backfilling this entry.
+
+## 2026-10-16 — Expand Scim Design rationale and contextual evidence
+
+Retrospective entry for implementation commit `e44367e`, consolidated on October 16 from the current source and commit record.
+
+### Reason and decisions
+
+The initial map needed to explain how goals were formed, what was traded off, and which connections were authored versus inferred. Source citations on endpoint nodes alone were insufficient to support each relationship.
+
+### Implemented
+
+- Added the formative process and three source-based trade-off summaries before the graph. Separated formative observations from evaluation of the finished system.
+- Retained all seven author goals and four feature families, with eleven goal–feature relationships. Added relationship-specific evidence and explicit/inferred styling plus textual labels.
+- Split D5 into automatic distribution and local requests for more highlights. Kept scrollbar feedback as an inferred connection to D7. Clarified that category colors do not guarantee accurate classification.
+- Added on-demand category-provenance context from Cohan et al. and Teufel et al., and the ScholarPhi lowlighting precedent, attached to relevant selected nodes. Distinguished task-specific design exploration from a universal performance comparison.
+- Preserved node filtering, substantive detail, and shortcuts into the corresponding tutorial feature; narrow layouts have textual connection labels.
+
+Sources: [Scim §§3–5](https://arxiv.org/html/2205.04561v3#S3), plus the external sources and locators in [scim.md](scim.md#design-rationale). Files: `src/data/scimRationale.js`, `src/data/visualModels.js`, `src/ScimRationale.jsx`, `src/ScimRationale.css`, and shared `PaperVisuals`. This entry confirms implemented content from source, not new user feedback or fresh interaction tests.
+
+## 2026-10-16 — Replace Scim's step-only tutorial with four core feature families
+
+Retrospective entry for implementation commit `db42945`, consolidated on October 16 from the current source and commit record.
+
+### Reason and decisions
+
+The initial three-step example could make a small demonstration look like the complete tool. We first exposed the four core feature families, then used one authentic paper across their demonstrations. This makes capability scope visible while avoiding repeated unrelated examples.
+
+### Implemented
+
+- Added selectable faceted highlights, highlight controls, highlight distribution, and highlight browser/context linking. These are alternative capabilities, not required sequential stages.
+- Replaced the earlier six illustrative passages with selected published text from Wu et al. (2022), the paper used for Scim Figure 3. Four category correspondences follow that figure; additional labels and all priorities are teaching choices.
+- Added linked global/local controls, counts, an excerpt distribution overview, section-grouped browsing, return-to-context focus, sentence explanations, and reset.
+- Preserved settings when changing features. Kept category color distinct from reading-location highlighting and identified omissions, attribution, no live classification, and the difference between excerpt order and PDF coordinates.
+
+Sources: [Scim §§4.2–4.5](https://arxiv.org/html/2205.04561v3#S4.SS2) and [Wu et al., NAACL 2022](https://aclanthology.org/2022.naacl-main.40/). Files: `src/ScimTutorial.jsx`, `src/ScimTutorial.css`, `src/data/scimExample.js`, plus rationale/tutorial integration. [Current inventory](scim.md#how-it-works) supersedes the October 7 tutorial description. No additional historical test results are asserted in this backfilled entry.
 
 ## 2026-10-16 — Make the Priming glossary demonstration start with reading
 
@@ -162,6 +257,8 @@ We first considered section links on one long page, then changed to tabs that sh
 The graph uses connectors based on the rendered node positions. On narrow screens it stacks vertically and shows connection labels; tutorials also stack their steps and shared example. The comparison matrix retains its separate horizontal scrolling behavior when needed.
 
 ### Implemented: Scim tutorial and rationale
+
+Historical checkpoint: the three-step/six-passage tutorial below was superseded by `db42945` on October 16; rationale evidence was expanded in `e44367e`. See [scim.md](scim.md) for current behavior and coverage.
 
 The shared example illustrates skimming with four facets: **Objective**, **Novelty**, **Method**, and **Result**.
 
