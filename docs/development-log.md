@@ -2,6 +2,39 @@
 
 This log records project decisions and completed implementation. Features discussed but not built are identified separately; they are not commitments for the next development step.
 
+## 2026-10-16 — Explain ScholarPhi's implementation with System Pipeline
+
+### Reason and agreed scope
+
+The existing How it works tab shows what a reader can do, but does not explain where definitions, symbol locations, and relationships come from. We added a separate **System Pipeline** tab to connect those features to their implementation: what enters each stage, how it is processed, what comes out, and where the supporting code can be inspected.
+
+This addition is limited to ScholarPhi. It preserves the frontend-only prototype and adds an explanation of the original system, rather than integrating or running its backend. The detailed decisions and coverage record are maintained in [scholarPhi.md](scholarPhi.md#43-system-pipeline-explain-how-the-implementation-supports-the-features).
+
+### Evidence before presentation
+
+We inspected [allenai/scholarphi at commit 05712d5](https://github.com/allenai/scholarphi/tree/05712d5bcd59d37db32a390da2fa62c123d132e7). Node-level links use the full commit hash so the explanation refers to a stable code revision. The inspection followed the TeX processing commands, entity dependencies, localization/storage code, API retrieval, and browser feature implementations. The pipeline summaries are our code-based synthesis, not author quotations or a verified reconstruction of the study deployment.
+
+### Design decisions and implementation
+
+- Added System Pipeline after How it works in ScholarPhi's selected-paper tabs.
+- Separated **preparation** (green, seven nodes) from **reading-time behavior** (blue, six nodes), with explicit timing labels and a stored-data handoff between them.
+- Preparation covers paper sources, sentences, equations, symbols, definitions, entity localization, and storage. Reading covers opening the PDF, fetching prepared data, and the four core features.
+- Used dependency arrows for equations → symbols and sentences/symbols → definitions. Localization is a shared operation repeated inside pipelines; storage summarizes repeated uploads rather than a single final transaction.
+- Presented the four reading features as alternatives that share data, avoiding a misleading sequence. Ordinary reading clicks reuse prepared information rather than rerun extraction.
+- Made all 13 nodes selectable. Each phase has its own detail panel containing Input, Processing, Output, why the stage matters, relevant qualifications, and pinned code links.
+- Added selected-node and connected-arrow emphasis, keyboard focus styling, and responsive stacking with a textual dependency summary.
+- Added an expandable coverage note explaining repository/study-version differences, feature switches, omitted citation processing, and the distinction between the visible glossary and the external-glossary extractor.
+
+Implementation lives in `src/ScholarPhiPipeline.jsx`, `src/ScholarPhiPipeline.css`, and `src/data/scholarPhiPipeline.js`, with tab integration in `src/App.jsx` and `src/PaperVisuals.jsx`.
+
+### Coverage and validation
+
+The map explains selected paths, not every module or deployment concern. We did not run ScholarPhi, verify its external services, establish arbitrary PDF-only support, or test extraction quality. The automatic code path should not be confused with the original evaluation's curated contextual data.
+
+ESLint, the production build, and Git whitespace checks passed. Browser checks verified all 13 nodes' selected states, corresponding input/processing/output details, and source-link presence. Visual checks covered dependency arrows and wide/narrow layouts; the tested layouts had no page-level horizontal overflow, and no browser warnings or errors were recorded. This documentation follow-up records those completed checks and does not claim a new full regression run or a user-study result.
+
+The changes remain in the working tree for review. No commit or push was performed.
+
 ## 2026-10-16 — Make ScholarPhi context explain a concrete reading question
 
 This entry records the reference review and the subsequent integration of six approved context explanations. Reference-image and placement corrections were already committed in `0204ac6`; the six-context integration and this log update form the current follow-up. Earlier entries describe historical checkpoints, not the latest feature inventory.

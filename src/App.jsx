@@ -28,7 +28,7 @@ function App() {
   const sectionTabRefs = useRef([])
   const selectedPaper = papers.find((paper) => paper.id === selectedPaperId)
   const paperSections = selectedPaperId === 'scholarphi'
-    ? [...sections, { id: 'evaluation', label: 'Evaluation & Findings' }, { id: 'extra-work', label: 'Related work' }]
+    ? [sections[0], sections[1], { id: 'pipeline', label: 'System Pipeline' }, sections[2], { id: 'evaluation', label: 'Evaluation & Findings' }, { id: 'extra-work', label: 'Related work' }]
     : sections
 
   function selectPaper(id) {

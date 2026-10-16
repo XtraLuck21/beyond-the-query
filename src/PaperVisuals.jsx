@@ -5,6 +5,7 @@ import ScimTutorial from './ScimTutorial'
 import SciDaSynthTutorial from './SciDaSynthTutorial'
 import ScholarPhiTutorial from './ScholarPhiTutorial'
 import ScholarPhiEvaluation from './ScholarPhiEvaluation'
+import ScholarPhiPipeline from './ScholarPhiPipeline'
 import ScholarPhiExtraWork from './ScholarPhiExtraWork'
 import './PaperVisuals.css'
 
@@ -116,6 +117,9 @@ export default function PaperVisuals({ paperId, activeSection, onSectionChange }
     <div id="paper-panel-workflow" role="tabpanel" aria-labelledby="paper-tab-workflow" hidden={activeSection !== 'workflow'} tabIndex={0}>
       <Tutorial actionId={tutorialAction} onAction={setTutorialAction} headingRef={tutorialHeading} />
     </div>
+    {paperId === 'scholarphi' && <div id="paper-panel-pipeline" role="tabpanel" aria-labelledby="paper-tab-pipeline" hidden={activeSection !== 'pipeline'} tabIndex={0}>
+      <ScholarPhiPipeline active={activeSection === 'pipeline'} />
+    </div>}
     <div id="paper-panel-rationale" role="tabpanel" aria-labelledby="paper-tab-rationale" hidden={activeSection !== 'rationale'} tabIndex={0}>
       <MotivationMap model={model} onShowExample={showExample} />
     </div>

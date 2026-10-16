@@ -1,8 +1,9 @@
 # ScholarPhi: Paper-Tab Development and Context Selection Record
 
 Last updated: October 16, 2026  
-Implementation reviewed: `3eda4e8` (`main`)  
-Scope: the ScholarPhi page in Beyond the Query, including its embedded reference panels and Related work section.
+Implementation reviewed: current working tree, including the System Pipeline addition (not yet committed)
+
+Scope: the ScholarPhi page in Beyond the Query, including its reference panels, Related work section, and code-based System Pipeline explanation.
 
 This document records the implemented interface, the decisions that led to it, the sources used, and the limits of its coverage. It also records the newly agreed framework-first approach to selecting references. That approach formalizes how we will review and extend the content; it should not be presented as a protocol that was already applied systematically to every earlier choice.
 
@@ -32,7 +33,7 @@ The existing three backward-reference panels were introduced before this process
 | Material | Source | Role in this page |
 | --- | --- | --- |
 | ScholarPhi paper | [Augmenting Scientific Papers with Just-in-Time, Position-Sensitive Definitions of Terms and Symbols, arXiv v3](https://arxiv.org/html/2009.14237v3) | Primary basis for the system, design motivations, evaluation, findings, and limitations. |
-| ScholarPhi code | [allenai/scholarphi](https://github.com/allenai/scholarphi) | Repository link for readers; the prototype does not run or integrate this repository. |
+| ScholarPhi code | [allenai/scholarphi, pinned revision](https://github.com/allenai/scholarphi/tree/05712d5bcd59d37db32a390da2fa62c123d132e7) | Primary source for the System Pipeline map and node-level code links. The prototype explains this code; it does not run or integrate the original system. |
 | ScholarPhi project | [scholarphi.org](https://scholarphi.org/) | Project information and evidence about subsequent publications using the reader. |
 | Reading example | [Linguistically-Informed Self-Attention for Semantic Role Labeling (LISA), EMNLP 2018](https://aclanthology.org/D18-1548/) · [PDF](https://aclanthology.org/D18-1548.pdf) | Shared example for the four feature demonstrations. It is the material being explained, not a design-precedent reference selected by the new screening process. |
 | Historical team decisions | [Development log](development-log.md) | Records layout, interaction, content, corrections, and prior validation. |
@@ -42,6 +43,7 @@ Provenance must remain explicit:
 
 - **Author content:** original abstract, reported motivations, feature descriptions, study results, and stated limitations.
 - **Our source-based synthesis:** observation summaries, map organization, explanatory connections, contextual summaries, and comparisons.
+- **Our code-based synthesis:** the System Pipeline map, dependency grouping, and input/processing/output summaries, checked against a pinned repository revision rather than assumed to match the original study implementation exactly.
 - **Our teaching adaptation:** staged user actions, thought bubbles, selected excerpts, fixed equation labels, and glossary navigation controls.
 - **Team decisions:** content priorities, layout choices, selection rules, and implementation scope.
 - **External discovery metadata:** the dated Connected Papers ranking used for Related work; it is not calculated by this app.
@@ -61,7 +63,7 @@ The following six questions organize this record. They consolidate the reading n
 
 **No current tab reproduces the entire paper.** Complete coverage claims are limited to explicitly enumerable sets: the original abstract, the four core feature families, and M1–M7. Broad coverage of the research narrative is different from exhaustive coverage of all paper information.
 
-The automatic processing pipeline, the full related-work literature, every formative-study detail, and the complete statistical analysis are not explained comprehensively in the current page.
+The System Pipeline tab now explains selected automatic processing and reading paths from the repository. It is not exhaustive architecture coverage. The full related-work literature, every formative-study detail, and the complete statistical analysis also remain outside comprehensive coverage.
 
 ## 4. Page structure and presentation decisions
 
@@ -71,13 +73,14 @@ The initial page showed the paper title, publication, abstract, and paper/code l
 
 Visual explanations were initially developed in a separate Paper Visuals tab. We then merged them into Papers because the abstract and explanations refer to the same selected paper.
 
-The current ScholarPhi page has five sections:
+The current ScholarPhi page has six sections:
 
 1. **Overview**
 2. **How it works**
-3. **Design rationale**
-4. **Evaluation & Findings**
-5. **Related work**
+3. **System Pipeline**
+4. **Design rationale**
+5. **Evaluation & Findings**
+6. **Related work**
 
 Selecting a section displays its own content rather than scrolling to a section on one long page. A full-width paper selector sits above the content and can be collapsed. Full paper titles remain the primary identifiers. The workspace was widened to provide more room for diagrams instead of permanently reserving a left sidebar.
 
@@ -88,6 +91,26 @@ Across Papers remains a separate workspace view. Its four-dimension matrix and p
 The default view should expose the main content and available capabilities. Detailed evidence, statistical qualifications, and supplementary references can be opened when needed.
 
 We removed the repetitive “How to read this difference” section from pairwise comparisons, the misleading expand-style labels on rationale nodes, and observation-reordering controls that did not add clear value. The tooltip walkthrough no longer displays an additional “Optional” badge: “Explore if needed” already communicates that the action is not mandatory.
+
+### 4.3 System Pipeline: explain how the implementation supports the features
+
+**Reason for adding it.** How it works demonstrates the reader-facing interaction, but does not explain what data makes that interaction possible. The new tab answers a separate question: what enters ScholarPhi, what processing happens before reading, and what runs when a reader opens a paper or uses a feature?
+
+**Evidence and selection standard.** We inspected the original repository at commit `05712d5bcd59d37db32a390da2fa62c123d132e7`. The map follows the TeX-based processing route and the API/browser paths that support the four core reading features. It groups stages by their data dependencies and role in explaining those features, rather than reproducing the repository's folder structure. Every node provides input, processing, output, an explanation of its relevance, and links pinned to that revision, with line anchors where applicable.
+
+| Phase | Included nodes | Main code evidence |
+| --- | --- | --- |
+| Preparation: obtain sources | Prepare paper sources | [Pipeline entry](https://github.com/allenai/scholarphi/blob/05712d5bcd59d37db32a390da2fa62c123d132e7/data-processing/scripts/run_pipeline.py); [preparation commands and dependency ordering](https://github.com/allenai/scholarphi/blob/05712d5bcd59d37db32a390da2fa62c123d132e7/data-processing/scripts/commands.py#L25). |
+| Preparation: extract contextual information | Extract sentences; Extract equations; Parse symbols; Detect definitions | Entity pipelines for [sentences](https://github.com/allenai/scholarphi/blob/05712d5bcd59d37db32a390da2fa62c123d132e7/data-processing/entities/sentences/__init__.py), [equations](https://github.com/allenai/scholarphi/blob/05712d5bcd59d37db32a390da2fa62c123d132e7/data-processing/entities/equations/__init__.py), [symbols](https://github.com/allenai/scholarphi/blob/05712d5bcd59d37db32a390da2fa62c123d132e7/data-processing/entities/symbols/__init__.py), and [definitions](https://github.com/allenai/scholarphi/blob/05712d5bcd59d37db32a390da2fa62c123d132e7/data-processing/entities/definitions/__init__.py). |
+| Preparation: locate and store | Locate entities on the page; Store linked data | [Color/compile/rasterize/localize procedure](https://github.com/allenai/scholarphi/blob/05712d5bcd59d37db32a390da2fa62c123d132e7/data-processing/common/commands/locate_entities.py#L38); [entity storage](https://github.com/allenai/scholarphi/blob/05712d5bcd59d37db32a390da2fa62c123d132e7/data-processing/common/upload_entities.py#L43). |
+| Reading: load the reading surface and prepared data | Open the paper; Load prepared data | [Paper identity](https://github.com/allenai/scholarphi/blob/05712d5bcd59d37db32a390da2fa62c123d132e7/ui/src/index.tsx#L25); [reader data loading](https://github.com/allenai/scholarphi/blob/05712d5bcd59d37db32a390da2fa62c123d132e7/ui/src/ScholarReader.tsx#L711); [API route](https://github.com/allenai/scholarphi/blob/05712d5bcd59d37db32a390da2fa62c123d132e7/api/src/api.ts#L237). |
+| Reading: use available features | Definition tooltips; Declutter; Equation diagrams; Priming glossary | [Position-sensitive definition selection](https://github.com/allenai/scholarphi/blob/05712d5bcd59d37db32a390da2fa62c123d132e7/ui/src/components/entity/SimpleSymbolGloss.tsx#L72); [sentence-based mask](https://github.com/allenai/scholarphi/blob/05712d5bcd59d37db32a390da2fa62c123d132e7/ui/src/components/mask/SearchPageMask.tsx#L19); [equation layout](https://github.com/allenai/scholarphi/blob/05712d5bcd59d37db32a390da2fa62c123d132e7/ui/src/components/entity/equation/EquationDiagram.tsx#L363); [glossary filtering](https://github.com/allenai/scholarphi/blob/05712d5bcd59d37db32a390da2fa62c123d132e7/ui/src/components/primer/PrimerPage.tsx#L236). |
+
+**Presentation decisions.** Green and blue regions, each with a numbered heading and timing label, distinguish preparation from use time without relying on color alone. Thirteen selectable nodes reveal details below their respective phase. Preparation arrows expose required dependencies: equations feed symbols; sentences and symbols feed definition detection. The four reading features are parallel choices rather than mandatory sequential steps. Selected extraction nodes emphasize their connected arrows. On narrower screens, groups stack and retain a textual dependency summary.
+
+**Technical distinctions that the diagram preserves.** Localization and uploads repeat within entity pipelines; they are not single final operations after all extraction. Stored data is the handoff to the reader, and ordinary reading clicks do not rerun extraction. Position-sensitive definition selection, equation-label layout, and glossary filtering include browser-side processing. The visible priming glossary is distinct from the separate external-glossary extraction module. Feature availability also depends on [reader settings](https://github.com/allenai/scholarphi/blob/05712d5bcd59d37db32a390da2fa62c123d132e7/ui/src/settings.ts#L166).
+
+**Coverage boundary.** This is a curated explanatory map based on static code inspection, not execution or reproduction of ScholarPhi. The pinned repository includes later changes and is not confirmed to be the exact CHI 2021 study version. It does not establish arbitrary PDF-only processing support, complete or correct extraction, or current availability of external services. The original study's curated data remains distinct from the automatic extraction path. Citation processing is linked as a separate omitted branch; other processing routes, deployment, logging, and editing infrastructure are outside the main map. The tab currently exists only for ScholarPhi.
 
 ## 5. How it works: coverage and demonstrations
 
@@ -263,7 +286,7 @@ The section was renamed from Extra work to Related work. Its explanations remain
 | Limitations | Two stated limits and one reported issue, plus relevant study qualifications | Selected boundaries with our implications labeled. |
 | Backward-reference panels | Three sources | Selected explanatory contexts; no exhaustive bibliography screening has been completed. |
 | Related work | Three externally discovered papers | A dated selection with exclusions and individually explained relationships. |
-| Automatic extraction and technical pipeline | Not comprehensively presented or implemented | The current app uses curated frontend data and does not reproduce ScholarPhi's backend. |
+| System Pipeline | Thirteen source-linked nodes covering selected preparation and reading paths | Explains inputs, processing, outputs, dependencies, and timing from a pinned code revision; not a complete architecture map or an executable backend. |
 
 ## 12. Development sequence
 
@@ -278,6 +301,7 @@ The section was renamed from Extra work to Related work. Its explanations remain
 | October 16: source and placement review | Figures were unreadable and some reference roles/placements were misleading. | Improved figures, captions, and links; moved guidelines to M7; narrowed Hands-On Math attribution; renamed Related work (`0204ac6`). |
 | October 16: explain each context's value | A link or relationship label alone did not explain what the user would learn. | Integrated six question-driven context explanations with explicit relationships and evidence (`3eda4e8`). |
 | October 16: document the selection approach | Future additions need a clear rationale grounded in the core paper framework. | This record formalizes framework → understanding gap → cited supporting material and distinguishes implemented content from candidates. No UI change is made by this document. |
+| October 16: connect features to implementation | Interaction demos did not show where contextual data comes from or what happens before versus during reading. | Inspected a pinned ScholarPhi revision and added System Pipeline with two phases, 13 selectable nodes, input/processing/output details, and code links. This is an explanatory frontend addition. |
 
 ## 13. Discussed but not implemented as new context
 
@@ -301,6 +325,8 @@ We have not established that every candidate is necessary, or that the existing 
 | `src/data/scholarPhiExamples.js` | Curated LISA excerpts, symbol definitions, and glossary entries. |
 | `src/data/paperVisuals.js` | ScholarPhi observations, motivations, features, and graph paths. |
 | `src/PaperVisuals.jsx` | Rationale graph, section rendering, reference placement, and links to examples. |
+| `src/ScholarPhiPipeline.jsx` and `src/ScholarPhiPipeline.css` | Two-phase pipeline diagram, dependency connectors, selectable node details, and responsive layout. |
+| `src/data/scholarPhiPipeline.js` | Thirteen curated node records and source links pinned to the inspected repository revision. |
 | `src/ScholarPhiEvaluation.jsx` | Study setup, selected findings, feature use, and limitations. |
 | `src/ScholarPhiExtraWork.jsx` | Related work entries and Connected Papers link; filename retains its earlier name. |
 | `src/data/scholarPhiContexts.js` | Six approved context explanations and evidence links. |
@@ -308,4 +334,4 @@ We have not established that every candidate is necessary, or that the existing 
 
 The prototype is frontend-only, with curated content and local interaction state. It does not upload or parse arbitrary papers, compute similarity, generate definitions, or automatically select references. Following a code-repository link does not execute that paper's system.
 
-This documentation was prepared by reviewing the current source files, commit history, and development logs. It records previously reported implementation checks but does not claim a new browser test, a fresh verification of every external URL, or a completed user study. The document does not change the website, commit files, or push changes.
+The System Pipeline implementation passed ESLint, the production build, and Git whitespace checks. Browser checks covered all 13 node selections, matching input/processing/output details and source-link presence, wide and narrow layouts, and rendered dependency connectors; no browser warnings or errors were recorded in those checks. These checks validate our explanatory interface, not execution of ScholarPhi or a comprehension benefit. This documentation follow-up records the completed checks without claiming a fresh full regression run, verification of every external URL, or a completed user study. No files were committed or pushed.
