@@ -1,7 +1,7 @@
 # ScholarPhi: Paper-Tab Development and Context Selection Record
 
 Last updated: October 16, 2026  
-Implementation reviewed: current working tree, including the System Pipeline addition (not yet committed)
+Implementation reviewed: current working tree, including the reading-first Priming glossary update
 
 Scope: the ScholarPhi page in Beyond the Query, including its reference panels, Related work section, and code-based System Pipeline explanation.
 
@@ -125,7 +125,7 @@ The four features are **capabilities**, not four obligatory stages of a user wor
 | Definition tooltips, §4.1 | What does this term mean here? | Select LISA, reveal a definition, inspect defining context or two additional usages, and dismiss assistance. Left-side User/System actions drive one shared scene. | One prepared lookup path. Passage, definition, and usages are curated paraphrases. No automatic definition extraction or general position-sensitive retrieval runs. |
 | Declutter, §4.2 | Where else is this term used? | Highlight matching sentences containing `A_parse`, fade other displayed text, and navigate occurrences in selected LISA excerpts. | Three excerpts from §2.2, not a full-paper search. Counts refer to the demonstration content, not all occurrences in LISA. |
 | Equation diagrams, §4.3 | What do these symbols mean together? | Open LISA Equation (4); inspect four labels for `A_parse`, `Q_parse`, `U_heads`, and `K_parse`; highlight corresponding symbols and inspect defining context. | One equation with a fixed label arrangement. This is not an automatic equation-labeling/layout system or a demonstration of every symbol in the paper. |
-| Priming glossary, §4.4 | Which terms will I encounter? | Preview eight selected entries in reading order; switch to a reading view and locate relevant glossary entries. | A manually curated subset, not an exhaustive or automatically generated LISA glossary. View switching and linked highlights are our teaching controls. |
+| Priming glossary, §4.4 | Which terms will I encounter? | Default to Read with glossary: the LISA passage is on the left and eight selected glossary entries are on the right. Select a marked symbol to locate its entry, or choose Preview terminology to view the glossary alone. | A manually curated subset, not an exhaustive or automatically generated LISA glossary. View switching and linked highlights are our teaching controls. |
 
 Sources: [ScholarPhi §4](https://arxiv.org/html/2009.14237v3#S4); [LISA §2.2 and Equation (4), PDF p. 4](https://aclanthology.org/D18-1548.pdf#page=4).
 
@@ -141,6 +141,16 @@ Using one paper across demonstrations reduces unnecessary changes in reading con
 - The glossary contains eight selected entries: SRL, LISA, POS, `A_parse`, `V_parse`, `K_parse`, `Q_parse`, and `U_heads`. Definitions are paraphrased, with source links.
 
 The original ScholarPhi source navigation and usage sidebar are simplified into inline context in our demonstration. Reader thought bubbles and stronger highlights explain what changes at each action. These aids belong to Beyond the Query, not the original system.
+
+### 5.3 Reading-first glossary demonstration
+
+The demonstration now opens in **Read with glossary** mode. The passage appears before the glossary in document order: left/right on wide screens and above/below when the layout stacks. Clicking a marked symbol still locates and highlights its glossary entry. **Preview terminology** remains available as a glossary-only view; switching to preview clears the selected entry.
+
+We changed the default because showing the vocabulary list first could suggest a required preview step and obscure how the glossary helps with an actual passage. The new button labels also clarify that “glossary” means term and symbol definitions, not bibliographic references. The feature description, reader thought bubble, and selection feedback now use language consistent with that interaction.
+
+This is a teaching decision for Beyond the Query. [ScholarPhi §4.4](https://arxiv.org/html/2009.14237v3#S4.SS4) places the priming glossary before the paper and describes both advance familiarization and side-by-side reference use. Our default emphasizes the latter without removing the former. The mode buttons and linked highlights remain our adaptations, not controls reported in the original paper. The eight entries and their sources are unchanged; this update adds no new glossary content or automatic extraction.
+
+Validation for this iteration: lint, production build, and whitespace checks passed. Browser checks confirmed the default reading state, left/right placement at a wide viewport, selection of a passage symbol and the corresponding glossary highlight, preview mode with eight entries and no passage, and switching back to reading. No browser warnings or errors were recorded. These are interface checks, not evidence that the new default improves comprehension.
 
 ## 6. Design rationale: what the graph represents
 
@@ -302,6 +312,7 @@ The section was renamed from Extra work to Related work. Its explanations remain
 | October 16: explain each context's value | A link or relationship label alone did not explain what the user would learn. | Integrated six question-driven context explanations with explicit relationships and evidence (`3eda4e8`). |
 | October 16: document the selection approach | Future additions need a clear rationale grounded in the core paper framework. | This record formalizes framework → understanding gap → cited supporting material and distinguishes implemented content from candidates. No UI change is made by this document. |
 | October 16: connect features to implementation | Interaction demos did not show where contextual data comes from or what happens before versus during reading. | Inspected a pinned ScholarPhi revision and added System Pipeline with two phases, 13 selectable nodes, input/processing/output details, and code links. This is an explanatory frontend addition. |
+| October 16: glossary demonstration order | Preview-first presentation obscured the reading use case, and “reference” could be mistaken for citations. | Defaulted to Read with glossary, moved the passage before the glossary, retained Preview terminology, and clarified instructional text. The original priming purpose remains documented. |
 
 ## 13. Discussed but not implemented as new context
 

@@ -2,6 +2,27 @@
 
 This log records project decisions and completed implementation. Features discussed but not built are identified separately; they are not commitments for the next development step.
 
+## 2026-10-16 — Make the Priming glossary demonstration start with reading
+
+### Reason and decision
+
+The preview-first demonstration could imply that readers must inspect the whole glossary before reading. The label “Read with the reference” also left unclear whether “reference” meant a glossary or cited papers. We chose to demonstrate the reading use case first while preserving terminology preview as an alternative.
+
+### Implemented changes
+
+- Default to **Read with glossary**, with the LISA passage on the left and the glossary on the right on wide screens. Their document order also places the passage first in stacked layouts.
+- Rename the other mode to **Preview terminology**, which shows only the eight selected glossary entries and clears the current selection.
+- Preserve clicking marked passage symbols to locate and highlight their corresponding glossary entries.
+- Update the feature description, reader thought bubble, and selected-entry feedback to clarify glossary use.
+
+This is an adaptation of the tutorial, not a change to our account of ScholarPhi's original design. [ScholarPhi §4.4](https://arxiv.org/html/2009.14237v3#S4.SS4) describes a glossary before the paper for familiarization and as a side-by-side reference. Both uses remain represented. The curated entries and sources are unchanged.
+
+### Documentation and validation
+
+Updated the README with the current glossary controls and layout, and [scholarPhi.md](scholarPhi.md#53-reading-first-glossary-demonstration) with the rationale, source distinction, behavior, and development checkpoint. The general standards remain unchanged because the default is a paper-specific teaching choice, not a new requirement for all HCI tools.
+
+The implementation passed lint, production build, and whitespace checks. Browser checks confirmed the default reading state, wide-screen left/right layout, symbol-to-entry highlighting, glossary-only preview with eight entries, and return to reading mode. No browser warnings or errors were recorded. This documentation follow-up records those checks without rerunning the application or claiming a usability result. No commit or push was performed.
+
 ## 2026-10-16 — Explain ScholarPhi's implementation with System Pipeline
 
 ### Reason and agreed scope

@@ -9,7 +9,7 @@ const features = [
   { id: 'tooltips', action: 'select', title: 'Definition tooltips', question: 'What does this term mean here?', description: 'Open a definition beside a term, then inspect its source or other usages.', section: '4.1', outcome: 'Understand one term without losing your reading position.' },
   { id: 'declutter', action: 'declutter', title: 'Declutter', question: 'Where else is this term used?', description: 'Keep matching sentences visible and fade the rest of the paper in place.', section: '4.2', outcome: 'Find related passages while keeping the document’s layout.' },
   { id: 'equations', action: 'equations', title: 'Equation diagrams', question: 'What do these symbols mean together?', description: 'Reveal several definitions around an equation and connect each label to its symbol.', section: '4.3', outcome: 'Read several symbol definitions together, instead of looking them up one by one.' },
-  { id: 'glossary', action: 'glossary', title: 'Priming glossary', question: 'Which terms will I encounter?', description: 'Preview terms and symbols in paper order, then keep the glossary as a reference.', section: '4.4', outcome: 'Get oriented before reading and revisit unfamiliar vocabulary as needed.' },
+  { id: 'glossary', action: 'glossary', title: 'Priming glossary', question: 'Which terms will I encounter?', description: 'Consult terms and symbols while reading, or preview them before starting.', section: '4.4', outcome: 'Get oriented before reading and revisit unfamiliar vocabulary as needed.' },
 ]
 
 function LisaSymbol({ id, transpose = false }) {
@@ -143,7 +143,7 @@ function EquationDemo() {
 }
 
 function GlossaryDemo() {
-  const [reading, setReading] = useState(false)
+  const [reading, setReading] = useState(true)
   const [selected, setSelected] = useState(null)
   const entryRefs = useRef({})
   const selectEntry = (id) => {
@@ -151,19 +151,19 @@ function GlossaryDemo() {
     entryRefs.current[id]?.scrollIntoView({ behavior: 'smooth', block: 'nearest' })
   }
   return <div className="feature-demo-body">
-    <ReaderNeed>{reading ? 'These symbols look familiar. I’ll check their meanings as I read the method.' : 'Before I read LISA, which abbreviations and symbols will I encounter?'}</ReaderNeed>
+    <ReaderNeed>{reading ? 'What do these symbols mean? I’ll check the glossary as I read the method.' : 'Before I read LISA, which abbreviations and symbols will I encounter?'}</ReaderNeed>
     <SourceNote>A selected glossary manually curated from LISA, not a glossary supplied by its authors or an automatic extraction. Definitions are source-based paraphrases. Entries follow reading order across the abstract, prose, and figure captions; diagram-only labels are not used for ordering.</SourceNote>
     <div className="feature-demo-controls" aria-label="Glossary tutorial views">
-      <button type="button" className="matrix-action" aria-pressed={!reading} onClick={() => { setReading(false); setSelected(null) }}>Preview before reading</button>
-      <button type="button" className="matrix-action" aria-pressed={reading} onClick={() => setReading(true)}>Read with the reference</button>
+      <button type="button" className="matrix-action" aria-pressed={!reading} onClick={() => { setReading(false); setSelected(null) }}>Preview terminology</button>
+      <button type="button" className="matrix-action" aria-pressed={reading} onClick={() => setReading(true)}>Read with glossary</button>
     </div>
     <p className="demo-status" role="status">{reading ? 'Select a marked symbol in the real §2.2 passage to locate its glossary entry.' : 'Eight selected entries, not an exhaustive glossary of LISA. Open a source link to inspect the definition in context.'}</p>
     <div className={`glossary-scene ${reading ? 'alongside' : ''}`}>
+      {reading && <section className="glossary-reading" aria-label="Reading with a glossary"><span className="example-section">LISA §2.2 · quoted passages</span><blockquote className="lisa-quotation"><p className="tutorial-passage"><LisaText text="Let A_parse be the parse attention weights, at layer i. Its input is the matrix of token representations S_previous." selectable={['A_parse']} selected={selected} onSelect={selectEntry} /></p><p className="tutorial-passage"><LisaText text={parseContext} selectable={['K_parse', 'Q_parse', 'V_parse']} selected={selected} onSelect={selectEntry} /></p></blockquote><LisaSource /><p className="demo-status" role="status">{selected ? `Glossary entry selected: ${selected.replace('_', ' ')}` : 'Try A parse, K parse, Q parse, or V parse to locate its definition.'}</p></section>}
       <section className="glossary-sheet" aria-label="Selected LISA glossary">
         <h5>Terms &amp; symbols in LISA</h5><p>Selected entries · reading order</p>
         <dl>{lisaGlossary.map((entry, index) => <div key={entry.id} ref={(element) => { entryRefs.current[entry.id] = element }} className={selected === entry.id ? 'glossary-entry is-located' : 'glossary-entry'}><dt><span>{index + 1}</span><LisaSymbol id={entry.id} /></dt><dd>{entry.meaning}<small>Definition source: <LisaSource page={entry.page} label={entry.section} /></small></dd></div>)}</dl>
       </section>
-      {reading && <section className="glossary-reading" aria-label="Reading with a glossary"><span className="example-section">LISA §2.2 · quoted passages</span><blockquote className="lisa-quotation"><p className="tutorial-passage"><LisaText text="Let A_parse be the parse attention weights, at layer i. Its input is the matrix of token representations S_previous." selectable={['A_parse']} selected={selected} onSelect={selectEntry} /></p><p className="tutorial-passage"><LisaText text={parseContext} selectable={['K_parse', 'Q_parse', 'V_parse']} selected={selected} onSelect={selectEntry} /></p></blockquote><LisaSource /><p className="demo-status" role="status">{selected ? `Reference entry selected: ${selected.replace('_', ' ')}` : 'Try A parse, K parse, Q parse, or V parse to locate its definition.'}</p></section>}
     </div>
     <p className="feature-takeaway">ScholarPhi places a glossary before the paper and describes printing it as a side-by-side reference. The view switch and linked highlights here are teaching aids in our tutorial, not reported ScholarPhi glossary controls.</p>
   </div>
