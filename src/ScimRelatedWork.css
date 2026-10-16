@@ -1,0 +1,9 @@
+.scim-related h4 { margin: 6px 0 18px; font-size: 21px; line-height: 1.4; font-weight: 600; }
+.scim-related-comparison { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; margin: 20px 0; }
+.scim-related-comparison > div { padding: 16px 18px; border-radius: 7px; background: #f2f6ee; min-width: 0; }
+.scim-related-comparison > div:last-child { background: #edf3f7; }
+.scim-related-comparison dt { font-size: 12px; font-weight: 650; margin-bottom: 8px; }
+.scim-related-comparison dd { margin: 0; }
+.scim-related .scim-related-boundary { font-size: 12px; color: #596b5e; }
+.scim-related .eval-disclosure-body li + li { margin-top: 12px; }
+@media (max-width: 700px) { .scim-related-comparison { grid-template-columns: 1fr; } }

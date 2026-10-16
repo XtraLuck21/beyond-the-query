@@ -2,6 +2,26 @@
 
 This log records project decisions and completed implementation. Features discussed but not built are identified separately; they are not commitments for the next development step.
 
+## 2026-10-16 — Add question-driven contextual references for Scim
+
+### Reason and scope
+
+The user preferred HiText and TLDR as explanations of Scim's approach over a similarity-ranked list, while asking for a more concrete and reproducible selection standard. We added a Scim-specific Related work tab and recorded the bounded selection in the [Scim content and development record](scim.md#related-work-contextual-reference-selection).
+
+### Decisions and implementation
+
+- Begin with two explicit understanding questions and include one source-checked reference per question in this pass.
+- Record five screening gates: question fit, traceable relationship, primary evidence, incremental explanatory value, and bounded interpretation. Record already-covered and deferred alternatives. These gates make decisions auditable; the two candidates were nominated before formalizing the procedure, and no exhaustive bibliography screening or unique optimal selection is claimed.
+- Lead each reference with a question, full title, publication, relationship, external mechanism, and its contrast with Scim. Keep the inclusion reason and material qualifications visible.
+- Make evidence with section/page/figure links and the selection method expandable. Distinguish original-paper descriptions from our explanatory comparison; do not imply code inheritance or comparative effectiveness.
+- Preserve ScholarPhi's existing Related work implementation and discovery route. No external tool, ranking service, or model runs in this new tab.
+
+Content is in `src/data/scimRelatedWork.js`; the view is `src/ScimRelatedWork.jsx` with its stylesheet. `App.jsx` and `PaperVisuals.jsx` expose and render the new tab.
+
+### Validation
+
+ESLint, the production build, and whitespace checks passed. Browser checks confirmed Scim's new tab, both reference entries, independent evidence disclosures, selection-method expansion, and keyboard Enter dismissal of the HiText disclosure. At a 390-pixel viewport, the comparison panels stack and document width remains 390 pixels without horizontal overflow. The viewport was restored and the desktop layout inspected. No browser warnings or errors were recorded. These checks do not establish comprehension benefit. No commit or push was performed.
+
 ## 2026-10-16 — Make the Priming glossary demonstration start with reading
 
 ### Reason and decision

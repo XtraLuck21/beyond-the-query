@@ -9,6 +9,7 @@ import ScholarPhiPipeline from './ScholarPhiPipeline'
 import ScimPipeline from './ScimPipeline'
 import ScimEvaluation from './ScimEvaluation'
 import ScholarPhiExtraWork from './ScholarPhiExtraWork'
+import ScimRelatedWork from './ScimRelatedWork'
 import './PaperVisuals.css'
 import { ScimRationaleOverview, ScimReferencePanels } from './ScimRationale'
 
@@ -137,8 +138,8 @@ export default function PaperVisuals({ paperId, activeSection, onSectionChange }
     {['scholarphi', 'scim'].includes(paperId) && <div id="paper-panel-evaluation" role="tabpanel" aria-labelledby="paper-tab-evaluation" hidden={activeSection !== 'evaluation'} tabIndex={0}>
       {paperId === 'scim' ? <ScimEvaluation /> : <ScholarPhiEvaluation onShowExample={showExample} />}
     </div>}
-    {paperId === 'scholarphi' && <div id="paper-panel-extra-work" role="tabpanel" aria-labelledby="paper-tab-extra-work" hidden={activeSection !== 'extra-work'} tabIndex={0}>
-      <ScholarPhiExtraWork />
+    {['scholarphi', 'scim'].includes(paperId) && <div id="paper-panel-extra-work" role="tabpanel" aria-labelledby="paper-tab-extra-work" hidden={activeSection !== 'extra-work'} tabIndex={0}>
+      {paperId === 'scim' ? <ScimRelatedWork /> : <ScholarPhiExtraWork />}
     </div>}
   </div>
 }
