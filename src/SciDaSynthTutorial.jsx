@@ -1,196 +1,191 @@
-import { useEffect, useRef, useState } from 'react'
-import TutorialFrame from './TutorialFrame'
+import { useRef, useState } from 'react'
 import './SciDaSynthTutorial.css'
 
-const synthSource = 'https://arxiv.org/pdf/2404.13765'
-const capabilities = [
-  {
-    id: 'extraction', title: 'Extraction and structuring', section: '4.3.1', page: 4,
-    question: 'How do my information needs become table columns?',
-    description: 'Ask natural-language questions or specify attributes in a form. SciDaSynth uses text, tables, and figures to return a summary and structured records.',
-    coverage: 'Here: a prepared request and table. Upload, retrieval, and LLM extraction are not demonstrated.',
-  },
-  {
-    id: 'validation', title: 'Validation and refinement', section: '4.3.2', page: 4,
-    question: 'Can I trust this extracted value?',
-    description: 'Review missing values and quality signals, inspect retrieved contexts and original sources, then edit records. The paper describes answer relevancy, context relevancy, and faithfulness.',
-    coverage: 'Here: inspect and edit one missing value. Quality metrics and original-PDF inspection are not demonstrated.',
-  },
-  {
-    id: 'standardization', title: 'Summarization and standardization', section: '4.3.3', page: 6,
-    question: 'Which variations should share a label?',
-    description: 'Explore selected attributes through semantic grouping, scatter plots, and group statistics; revise groups and apply shared labels to the table.',
-    coverage: 'Here: choose records and apply a shared crop label. Visual summaries, automatic grouping, and group creation are not demonstrated.',
-  },
-  {
-    id: 'database', title: 'Database construction and export', section: '4.3.4', page: 6,
-    question: 'How do reviewed tables become reusable data?',
-    description: 'Add reviewed tables to a database, merge by document name using outer joins, repeat with new queries, and export the accumulated data as CSV.',
-    coverage: 'Here: keep and download one snapshot. Repeated queries and database merges are not demonstrated.',
-  },
+const paper = 'https://arxiv.org/pdf/2404.13765v3'
+const question = 'Which crops were studied, and how were they processed?'
+// Retained from the existing crop walkthrough; all passages and values are invented.
+const initialRows = [
+  { id: 'A', crop: 'OFSP', processing: 'Steamed', source: 'Orange-fleshed sweet potato (OFSP) roots were steamed before analysis.' },
+  { id: 'B', crop: 'Orange-fleshed sweet potato', processing: '', source: 'Orange-fleshed sweet potato roots were boiled before analysis.' },
+  { id: 'C', crop: 'Maize', processing: 'Milled', source: 'Maize grain was milled before analysis.' },
 ]
-
-function PaperLink({ page = 4, children }) {
-  return <a className="pv-source" href={`${synthSource}#page=${page}`} target="_blank" rel="noopener noreferrer">{children} ↗<span className="sr-only"> (opens the source PDF in a new tab)</span></a>
-}
+// A disjoint attribute avoids assuming a conflict-resolution rule for repeated columns.
+const additionalRows = [{ id: 'B', nutrient: 'Beta-carotene' }, { id: 'C', nutrient: 'Iron' }, { id: 'D', nutrient: 'Zinc' }]
+const steps = [
+  { title: 'Ask', action: 'question', section: '4.3.1', page: 4, instruction: 'Ask a question about the included papers. Start extraction to open a prepared result.' },
+  { title: 'Extract', action: 'table', section: '4.3.1', page: 5, instruction: 'Inspect Current Result. Each row stays associated with its document; Empty calls attention to a missing value.' },
+  { title: 'Validate', action: 'evidence', section: '4.3.2', page: 6, instruction: 'Select a cell, inspect the teaching source alongside it, and apply a correction. Try Document B\'s missing Processing value.' },
+  { title: 'Standardize', action: 'standardize', section: '4.3.3', page: 6, instruction: 'Inspect the crop-name variations, review the proposed group, and apply a shared label to selected records.' },
+  { title: 'Accumulate & Export', action: 'export', section: '4.3.4', page: 6, instruction: 'Accept the reviewed table into DB. Add another prepared result to see a document-name merge, then download CSV.' },
+]
+const actionSteps = { question: 0, table: 1, check: 2, evidence: 2, compare: 3, standardize: 3, review: 4, export: 4 }
+const features = [
+  { id: 'extraction', title: 'Extraction and Structuring', step: 0, section: '4.3.1', page: 4,
+    description: 'Turn a research question into a structured table with document associations.',
+    actions: ['Enter a question or use the prepared request.', 'Start the prepared extraction and inspect Current Result.'],
+    result: 'A summary and a table of crop and processing values, with missing entries marked Empty.' },
+  { id: 'validation', title: 'Validation and Refinement', step: 2, section: '4.3.2', page: 6,
+    description: 'Check an extracted value against its source and correct the record.',
+    actions: ['Select a cell to inspect its associated teaching source.', 'Edit the value and apply the correction.'],
+    result: 'The corrected value appears immediately in the same table and stays across feature switches.' },
+  { id: 'standardization', title: 'Summarization and Standardization', step: 3, section: '4.3.3', page: 6,
+    description: 'Inspect value variations and apply a reviewed label to a group of records.',
+    actions: ['Review the crop overview and proposed group members.', 'Choose the records, edit the group label, and apply it.'],
+    result: 'The selected records share a label; overview counts and group frequencies update with the table.' },
+  { id: 'database', title: 'Database Construction and Export', step: 4, section: '4.3.4', page: 6,
+    description: 'Accept reviewed results into an accumulated dataset and export CSV.',
+    actions: ['Accept Current Result into DB.', 'Optionally add another prepared result and inspect the document-name merge.', 'Download the accepted dataset as CSV.'],
+    result: 'An accumulated database retains unmatched documents and adds the new attribute to matching ones.' },
+]
 
 function FeaturePreview({ id }) {
-  return <span className={`feature-preview synth-preview synth-preview-${id}`} aria-hidden="true">
-    {id === 'extraction' && <><span><mark>Crop</mark> + <mark>Processing</mark></span><span>↓ requested columns</span><span className="synth-preview-row"><span>Document</span><span>Crop</span><span>Processing</span></span><span className="synth-preview-row"><span>A</span><span>OFSP</span><span>Steamed</span></span></>}
-    {id === 'validation' && <><span><mark>Empty</mark> → inspect source</span><span>“boiled” → check → edit</span><span>Missing value → reviewed value</span></>}
-    {id === 'standardization' && <><span>OFSP · Orange-fleshed sweet potato</span><span>↓ review proposed group</span><mark>Apply one shared label</mark></>}
-    {id === 'database' && <><span>Reviewed table + another table</span><span>↓ join by document</span><mark>Accumulated records → CSV</mark></>}
+  return <span className={`feature-preview sds-preview sds-preview-${id}`} aria-hidden="true">
+    {id === 'extraction' && <><span>Which crops? How processed?</span><span className="sds-preview-row"><b>Document</b><b>Crop</b><b>Processing</b></span><span className="sds-preview-row"><span>A</span><span>OFSP</span><span>Steamed</span></span></>}
+    {id === 'validation' && <><span>Document B: <mark>Empty</mark></span><span>Source: roots were boiled</span><span className="sds-preview-result">Apply correction: Boiled</span></>}
+    {id === 'standardization' && <><span>OFSP + Orange-fleshed sweet potato</span><span className="sds-preview-result">One reviewed crop label</span><span>Unique labels: 3 → 2</span></>}
+    {id === 'database' && <><span>Current Result + another table</span><span className="sds-preview-result">DB: A · B · C · D</span><span>Accepted records → CSV</span></>}
   </span>
 }
-
-function CapabilityOverview({ selected, onSelect }) {
-  return <section className="synth-capabilities" aria-label="SciDaSynth feature selection">
-    <div className="feature-overview">{capabilities.map(capability => <article key={capability.id} className="synth-feature-card" data-selected={selected === capability.id}>
-      <div className="feature-choice-meta"><PaperLink page={capability.page}>§{capability.section} · p. {capability.page}</PaperLink><span>{capability.id === 'extraction' ? 'Interactive demo' : 'Dedicated demo pending'}</span></div>
-      <button type="button" className="feature-choice" aria-pressed={selected === capability.id} aria-controls="synth-feature-demo" onClick={() => onSelect(capability.id)}>
-        <strong>{capability.title}</strong><span className="feature-question">{capability.question}</span><FeaturePreview id={capability.id} />
-        <span className="feature-description">{selected === capability.id ? 'Selected' : 'Explore feature'}</span>
-      </button>
-    </article>)}</div>
-  </section>
+function PaperLink({ page, children }) {
+  return <a href={`${paper}#page=${page}`} target="_blank" rel="noopener noreferrer">{children} &#8599;<span className="sr-only"> (opens the paper PDF in a new tab)</span></a>
 }
 
-const extractionFields = [{ id: 'crop', label: 'Crop' }, { id: 'processing', label: 'Processing' }]
+export default function SciDaSynthTutorial({ actionId = 'question', onAction, headingRef }) {
+  const step = actionSteps[actionId] ?? 0
+  const feature = features[step < 2 ? 0 : step - 1]
+  const [request, setRequest] = useState(question)
+  const [submittedRequest, setSubmittedRequest] = useState('')
+  const [rows, setRows] = useState(() => initialRows.map(row => ({ ...row })))
+  const [selected, setSelected] = useState({ id: 'B', field: 'processing' })
+  const [draft, setDraft] = useState('')
+  const [label, setLabel] = useState('Orange-fleshed sweet potato')
+  const [members, setMembers] = useState(['A', 'B'])
+  const [snapshot, setSnapshot] = useState(null)
+  const [includeAdditional, setIncludeAdditional] = useState(false)
+  const [resultView, setResultView] = useState('current')
+  const [message, setMessage] = useState('')
+  const cueRef = useRef(null)
+  const editRef = useRef(null)
+  const shown = Boolean(submittedRequest) || step > 0
+  const missing = rows.filter(row => !row.processing.trim()).length
+  const unique = new Set(rows.map(row => row.crop)).size
+  const selectedRow = rows.find(row => row.id === selected.id)
+  const stale = snapshot && JSON.stringify(snapshot) !== JSON.stringify(rows)
+  const database = new Map((snapshot || []).map(row => [row.id, { id: row.id, crop: row.crop, processing: row.processing }]))
+  if (snapshot && includeAdditional) for (const row of additionalRows) database.set(row.id, { ...database.get(row.id), ...row })
+  const accumulated = [...database.values()]
+  const variations = [...new Map(rows.slice(0, 2).map(row => [row.crop, rows.slice(0, 2).filter(item => item.crop === row.crop).length])).entries()]
 
-function ExtractionDemo({ rows, onOpenWalkthrough }) {
-  const [fields, setFields] = useState(['crop', 'processing'])
-  const [revealed, setRevealed] = useState(false)
-  const selected = extractionFields.filter(field => fields.includes(field.id))
-  function toggle(id) {
-    setFields(previous => previous.includes(id) ? previous.filter(field => field !== id) : [...previous, id])
-    setRevealed(false)
+  function go(next) {
+    onAction(steps[next].action)
+    setResultView('current')
+    setMessage('')
+    requestAnimationFrame(() => cueRef.current?.focus())
   }
-  return <div className="synth-extraction-demo">
-    <p className="fixture-notice">Educational simulation · Documents A–C and their values are invented. No PDF upload, retrieval, or LLM runs here.</p>
-    <div className="synth-transform-stages" aria-label="Demonstration stages"><span>01 · Choose information</span><span aria-hidden="true">→</span><span>02 · Build columns</span><span aria-hidden="true">→</span><span>03 · Reveal prepared records</span></div>
-    <div className="synth-extraction-workspace">
-      <div className="synth-information-needs">
-        <h5>Included collection</h5><div className="synth-document-chips">{rows.map(row => <span key={row.id}>Document {row.id}</span>)}</div>
-        <fieldset><legend>Information to extract</legend>{extractionFields.map(field => <label key={field.id} className={`synth-field-option field-${field.id}`}><input type="checkbox" checked={fields.includes(field.id)} onChange={() => toggle(field.id)} />{field.label}</label>)}</fieldset>
-        <div className="extraction-request"><span className="example-section">Your prepared request</span><p>{selected.length ? <>For each document, extract <strong>{selected.map(field => field.label.toLowerCase()).join(' and ')}</strong>.</> : 'Choose at least one field.'}</p></div>
-        <button type="button" className="matrix-action synth-reveal" disabled={!selected.length} onClick={() => setRevealed(true)}>Show prepared records</button>
-        <button type="button" className="matrix-action" onClick={() => { setFields(['crop', 'processing']); setRevealed(false) }}>Reset extraction view</button>
-      </div>
-      <section className="synth-structured-output" aria-label="Structured extraction result">
-        <div className="synth-output-heading"><h5>{revealed ? 'Prepared records' : 'Table structure'}</h5><span>{selected.length} requested column{selected.length === 1 ? '' : 's'}</span></div>
-        <table className="extraction-table synth-projection"><caption>{revealed ? 'Simulated result · values from the shared crop records' : 'Selected information becomes columns; values are not yet shown'}</caption>
-          <thead><tr><th scope="col">Document</th>{selected.map(field => <th key={field.id} scope="col" className={`field-${field.id}`}>{field.label}</th>)}</tr></thead>
-          <tbody>{rows.map(row => <tr key={row.id}><th scope="row">Example {row.id}</th>{selected.map(field => <td key={field.id} className={`field-${field.id} ${revealed ? 'is-revealed' : 'is-awaiting'}`}>{revealed ? row[field.id] || <span className="synth-empty">Empty</span> : <span className="synth-value-placeholder"><span className="sr-only">Prepared value hidden</span></span>}</td>)}</tr>)}</tbody>
-        </table>
-        <p className="demo-status" role="status">{!selected.length ? 'No fields selected. Choose Crop or Processing to build a result.' : revealed ? `${rows.length} prepared records shown with ${selected.length} requested column${selected.length === 1 ? '' : 's'}. This is predefined data, not extraction output from a model.` : 'Columns match your selection. Show prepared records to fill the cells.'}</p>
-        {revealed && <button type="button" className="matrix-action" onClick={onOpenWalkthrough}>Inspect or edit in the existing crop walkthrough →</button>}
-      </section>
-    </div>
-    <details className="synth-extraction-evidence"><summary>Paper evidence, original example, and simulation limits</summary>
-      <p><PaperLink>§4.3.1 · Flexibly specify information needs; §4.2 · Data Extraction and Structuring · p. 4</PaperLink></p>
-      <p>The paper accepts questions or attribute forms, infers column names and descriptions, then generates a table and summary from retrieved contexts. Our checkboxes make the need → column relationship explicit; they are teaching controls, not the original form.</p>
-      <p><strong>Paper example:</strong> “What are the tasks and accuracy of different LMs?” Its inferred structure uses these keys:</p>
-      <div className="synth-paper-schema">{['language_model_name', 'tasks_supported', 'accuracy_metric', 'accuracy_value', 'accuracy_source'].map(key => <code key={key}>{key}</code>)}</div>
-      <p>This is the question and schema from §4.2, not extracted language-model records. The interactive crop values are separate invented fixtures. Revealing records only projects the current shared dataset; edits in the existing walkthrough remain visible here. Changing requested fields hides values until revealed again and does not delete data or invalidate an export snapshot.</p>
-      <p>Source: arXiv:2404.13765v3, September 4, 2025. PDF links target pages, not exact paragraphs. Multimodal retrieval, model inference, and generated summaries are not simulated.</p>
-    </details>
-  </div>
-}
-
-function VerificationExample() {
-  return <section className="synth-verification-example" aria-labelledby="synth-verification-heading">
-    <p className="eyebrow">Paper-grounded example · automated GPT baseline (Baseline B)</p>
-    <h3 id="synth-verification-heading">Why a filled field still needs checking</h3>
-    <p>The authors report <em>missing associations between different parts of papers</em>: an extraction can return content from a table while missing the information needed to interpret it elsewhere.</p>
-    <dl className="synth-case-facts">
-      <div><dt>Requested information</dt><dd>Which crops are in a paper.</dd></div>
-      <div><dt>Reported automated output</dt><dd>Crop variety numbers from a table, rather than crop names.</dd></div>
-      <div><dt>Evidence elsewhere</dt><dd>The method sections contained mappings between crop names and variety numbers.</dd></div>
-    </dl>
-    <p><strong>Our reading lesson:</strong> a non-empty answer may still be the wrong kind of information. Compare the returned identifiers with the method-section mappings before treating them as crop names; checking only for <em>Empty</em> would miss this mismatch.</p>
-    <p className="synth-case-boundary">This is an author-reported failure of the automated baseline, not a documented correction by a SciDaSynth user. The case passage does not identify the underlying paper, actual variety numbers, or a corrected row. We do not reconstruct them or add them to the simulated table.</p>
-    <details className="synth-case-evidence"><summary>Evidence and connection to SciDaSynth’s validation tools</summary>
-      <p><PaperLink page={8}>Case Analyses of Automated LLM Baseline · third reason, crop example · p. 8</PaperLink></p>
-      <p><PaperLink page={6}>§4.3.2 · Guided data validation and refinement, continued · p. 6; Figure 2 on p. 5</PaperLink> describes inspecting retrieved contexts, opening original PDF content or parsed figures and tables, and editing cells. Applying that checking process to this baseline case is our educational connection, not a reported outcome.</p>
-      <p>Source-based paraphrases of Wang et al., SciDaSynth, arXiv v3 (2025). The reading lesson and this layout are ours. PDF links target pages rather than individual paragraphs.</p>
-    </details>
-  </section>
-}
-
-const steps = [{title:'Specify the information'}, {title:'Validate a record'}, {title:'Standardize variations'}, {title:'Keep and export'}]
-const actions = [
-  {id:'question',step:0,role:'user',label:'Specify the fields to extract',description:'Start with an included PDF collection.',thought:'For each included study, which crop was tested and how was it processed?',instruction:'The three example documents are already included. Use the prepared request to reveal the illustrative extraction table.'},
-  {id:'table',step:0,role:'system',label:'Return structured records',description:'Organize the requested fields into a table.',instruction:'Read the same three records throughout this tutorial. Notice the missing processing value and the two names for a crop.'},
-  {id:'check',step:1,role:'user',label:'Question a missing value',description:'Inspect the record before trusting the table.',thought:'Why is processing empty for Document B? I should check its source.',instruction:'Select the processing cell for Document B to inspect its example source and edit the value.'},
-  {id:'evidence',step:1,role:'system',label:'Expose the supporting context',description:'Bring the value and its source together.',instruction:'The example source describes boiling. Enter a supported value and save it; the table and missing-value count will update.'},
-  {id:'compare',step:2,role:'user',label:'Investigate two crop labels',description:'Decide whether these values belong together.',thought:'Does OFSP mean the same crop as orange-fleshed sweet potato in these records?',instruction:'Compare the two source notes below. Grouping is a proposal; the reader decides whether to apply it.'},
-  {id:'standardize',step:2,role:'system',label:'Apply a consistent label',description:'Update a chosen group of records together.',instruction:'Choose the records to standardize, edit their shared label, and apply it. The table and unique-value count change together.'},
-  {id:'review',step:3,role:'user',label:'Review the current result',description:'Decide which table is ready to keep.',thought:'Have I resolved the missing value and the naming difference before using these records?',instruction:'Review the current table. You can revisit any earlier step without losing your edits.'},
-  {id:'export',step:3,role:'system',label:'Keep a table and export CSV',description:'Make the reviewed records reusable.',instruction:'Keep a snapshot, then download it as CSV. Revising the table invalidates the snapshot so an outdated version is not exported.'},
-]
-const initialRows = [
-  {id:'A',crop:'OFSP',processing:'Steamed',source:'Orange-fleshed sweet potato (OFSP) roots were steamed before analysis.'},
-  {id:'B',crop:'Orange-fleshed sweet potato',processing:'',source:'Orange-fleshed sweet potato roots were boiled before analysis.'},
-  {id:'C',crop:'Maize',processing:'Milled',source:'Maize grain was milled before analysis.'},
-]
-export default function SciDaSynthTutorial({actionId,onAction,headingRef}) {
-  const [selectedFeature, setSelectedFeature] = useState('extraction')
-  const legacyRef = useRef(null)
-  useEffect(() => { if (actionId !== 'question') legacyRef.current.open = true }, [actionId])
-  const feature = capabilities.find(item => item.id === selectedFeature)
-  function openWalkthrough() {
-    legacyRef.current.open = true
-    legacyRef.current.querySelector('summary').focus()
-    legacyRef.current.scrollIntoView({ block: 'start' })
+  function extract(event) {
+    event?.preventDefault()
+    if (!request.trim()) return
+    setSubmittedRequest(request.trim())
+    go(1)
+    setMessage('Prepared summary and three records opened. This is teaching data, not model-generated output. Existing edits are preserved.')
   }
-  const [rows,setRows] = useState(initialRows)
-  const [draft,setDraft] = useState('')
-  const [label,setLabel] = useState('Orange-fleshed sweet potato')
-  const [members,setMembers] = useState(['A','B'])
-  const [snapshot,setSnapshot] = useState(null)
-  const [message,setMessage] = useState('')
-  const missing = rows.filter(r=>!r.processing.trim()).length
-  const unique = new Set(rows.map(r=>r.crop)).size
-  const show = actionId !== 'question'
-  const evidence = actionId === 'evidence'
-  const groups = ['compare','standardize'].includes(actionId)
-  const output = ['review','export'].includes(actionId)
-  function updateRows(next,notice) {setRows(next);setSnapshot(null);setMessage(notice)}
-  function openEvidence() {setDraft(rows.find(r=>r.id==='B').processing);onAction('evidence');setMessage('')}
+  function inspect(row, field, focusEditor = false) {
+    setSelected({ id: row.id, field })
+    setDraft(row[field])
+    if (focusEditor) requestAnimationFrame(() => editRef.current?.focus())
+    setMessage(`Selected Document ${row.id} - ${field === 'crop' ? 'Crop' : 'Processing'}. Its teaching source is shown alongside the table.`)
+  }
+  function correct(event) {
+    event.preventDefault()
+    setRows(previous => previous.map(row => row.id === selected.id ? { ...row, [selected.field]: draft.trim() } : row))
+    setMessage(`Document ${selected.id} updated in Current Result. ${draft.trim() ? 'The correction stays when you switch features.' : 'The cell is Empty again.'} ${snapshot ? 'Accept the revised table again before exporting.' : ''}`)
+  }
+  function standardize(event) {
+    event.preventDefault()
+    if (!members.length || !label.trim()) return
+    setRows(previous => previous.map(row => members.includes(row.id) ? { ...row, crop: label.trim() } : row))
+    if (selected.field === 'crop' && members.includes(selected.id)) setDraft(label.trim())
+    setMessage(`Applied "${label.trim()}" to ${members.length} selected records. Current Result and overview counts updated. ${snapshot ? 'Accept the revised table again before exporting.' : ''}`)
+  }
+  function accept() {
+    setSnapshot(rows.map(row => ({ ...row })))
+    setResultView('database')
+    setMessage('Accepted the current three records into DB. Later edits stay in Current Result until you accept them again.')
+  }
   function download() {
-    const safe = (value) => `"${String(value).replaceAll('"','""')}"`
-    const csv = [['Document','Crop','Processing'],...snapshot.map(r=>[`Example ${r.id}`,r.crop,r.processing])].map(row=>row.map(safe).join(',')).join('\r\n')
-    const url = URL.createObjectURL(new Blob([csv],{type:'text/csv;charset=utf-8;'}))
-    const a = document.createElement('a');a.href=url;a.download='scidasynth-illustrative-records.csv';a.click()
-    setTimeout(()=>URL.revokeObjectURL(url),1000);setMessage('CSV download requested for the kept snapshot. These are illustrative records, not research data.')
+    if (!snapshot || stale) return
+    const columns = ['Document', 'Crop', 'Processing', ...(includeAdditional ? ['Nutrient'] : [])]
+    const quote = value => `"${String(value ?? '').replaceAll('"', '""')}"`
+    const csv = [columns, ...accumulated.map(row => [`Document ${row.id}`, row.crop, row.processing, ...(includeAdditional ? [row.nutrient] : [])])].map(row => row.map(quote).join(',')).join('\r\n')
+    const url = URL.createObjectURL(new Blob([csv], { type: 'text/csv;charset=utf-8;' }))
+    const anchor = document.createElement('a')
+    anchor.href = url
+    anchor.download = 'scidasynth-illustrative-records.csv'
+    anchor.click()
+    setTimeout(() => URL.revokeObjectURL(url), 1000)
+    setMessage(`CSV download requested for ${accumulated.length} accepted teaching records.`)
   }
-  return <div className="scidasynth-how-it-works">
-    <header className="visual-section-header synth-workflow-heading"><span className="visual-number">01</span><div><h3 id="synth-workflow-heading" tabIndex={-1} ref={headingRef}>How it works</h3><p>Choose a capability. Extraction is interactive; the other dedicated demonstrations are pending.</p></div></header>
-    <CapabilityOverview selected={selectedFeature} onSelect={setSelectedFeature} />
-    <section id="synth-feature-demo" className="selected-feature" aria-labelledby="synth-selected-feature-heading">
-      <header className="selected-feature-heading"><div><p className="eyebrow">{selectedFeature === 'extraction' ? 'Selected feature · educational simulation' : 'Selected feature · dedicated demonstration pending'}</p><h4 id="synth-selected-feature-heading">{feature.title}</h4><p>{feature.question}</p></div><PaperLink page={feature.page}>§{feature.section} · p. {feature.page}</PaperLink></header>
-      <div hidden={selectedFeature !== 'extraction'}><ExtractionDemo rows={rows} onOpenWalkthrough={openWalkthrough} /></div>
-      {selectedFeature !== 'extraction' && <div className="synth-pending-feature"><p>{feature.description}</p><p>This dedicated demonstration is not implemented yet. The existing crop walkthrough remains available below.</p><button type="button" className="matrix-action" onClick={openWalkthrough}>Open existing crop walkthrough</button><details><summary>Current coverage and source location</summary><p>{feature.coverage}</p><p>§{feature.section} · PDF p. {feature.page}{selectedFeature === 'validation' && <>; context inspection and editing continue on <PaperLink page={6}>p. 6</PaperLink></>}. The cards’ previews are illustrative schematics, not additional working demonstrations.</p></details></div>}
+  function reset() {
+    setRows(initialRows.map(row => ({ ...row })))
+    setRequest(question)
+    setSubmittedRequest('')
+    setSelected({ id: 'B', field: 'processing' })
+    setDraft('')
+    setLabel('Orange-fleshed sweet potato')
+    setMembers(['A', 'B'])
+    setSnapshot(null)
+    setIncludeAdditional(false)
+    go(0)
+    setMessage('Walkthrough reset. Corrections, groups, and accepted results have been cleared.')
+  }
+
+  return <section className="scidasynth-how-it-works" aria-labelledby="synth-workflow-heading">
+    <header className="visual-section-header sds-heading"><span className="visual-number">01</span><div><h3 id="synth-workflow-heading" tabIndex={-1} ref={headingRef}>How it works</h3><p>Choose a feature to explore. Every demonstration uses the same shared teaching records; no sequence is required.</p></div></header>
+    <div className="feature-overview sds-features" role="group" aria-label="SciDaSynth features">{features.map(item => <button type="button" key={item.id} className="feature-choice sds-feature-choice" aria-pressed={feature.id === item.id} aria-controls="sds-feature-demo" onClick={() => go(item.id === 'extraction' && submittedRequest ? 1 : item.step)}>
+      <span className="feature-choice-meta">§{item.section}<span>{feature.id === item.id ? 'Selected' : 'Explore feature'}</span></span><strong>{item.title}</strong><span className="feature-description">{item.description}</span><FeaturePreview id={item.id} />
+    </button>)}</div>
+    <section id="sds-feature-demo" className="selected-feature" aria-labelledby="sds-feature-title">
+    <header className="selected-feature-heading sds-feature-heading"><div><p className="eyebrow">Selected feature · educational simulation</p><h4 id="sds-feature-title" ref={cueRef} tabIndex={-1}>{feature.title}</h4><p>{feature.description}</p></div><PaperLink page={feature.page}>§{feature.section} · p. {feature.page}</PaperLink></header>
+    <div className="sds-feature-guide"><div><h5>How to use it</h5><ol>{feature.actions.map(action => <li key={action}>{action}</li>)}</ol></div><div><h5>What you obtain</h5><p>{feature.result}</p></div></div>
+    <p className="sds-notice"><strong>Prepared teaching data.</strong> Documents A-D, passages, values, and suggested groups are invented. No live PDF parsing or LLM processing runs here. Edits stay across features and page tabs until reset, a paper change, or reload.</p>
+    <div className="sds-product" aria-label="Simulated SciDaSynth workspace">
+      <header className="sds-product-header"><strong>SciDaSynth <span>Teaching workspace</span></strong><button type="button" onClick={reset}>Reset walkthrough</button></header>
+      <div className={`sds-workspace sds-workspace-${feature.id}`}>
+        {step < 2 && <aside className="sds-query" aria-label="Query panel">
+          <h5>Paper list</h5><ul className="sds-documents">{initialRows.map(row => <li key={row.id}>Document {row.id}<small>Invented crop study</small></li>)}</ul>
+          <h5>Query</h5>
+          <form onSubmit={extract}>
+            <label htmlFor="sds-question">Your research question</label><textarea id="sds-question" value={request} onChange={event => setRequest(event.target.value)} maxLength={500} rows={4} />
+            <button type="button" className="sds-text-action" onClick={() => setRequest(question)}>Use the crop-processing question</button>
+            <p className="sds-small">Any question opens this same prepared crop table. Your text is not sent to a model.</p>
+            <button type="submit" className="sds-primary" disabled={!request.trim()}>Start extraction - prepared example</button>
+          </form>
+          {submittedRequest && <p className="sds-query-bubble"><strong>Last prepared request:</strong> {submittedRequest}</p>}
+          {shown && <div className="sds-summary"><h5>Data Summary</h5><p>The current teaching table contains {rows.length} crop records, {unique} distinct crop label{unique === 1 ? '' : 's'}, and {missing} missing processing value{missing === 1 ? '' : 's'}.</p><small>Local summary of the current table.</small></div>}
+        </aside>}
+        <section className="sds-result" aria-label="Result workspace">
+          {step === 4 ? <div className="sds-result-tabs" role="group" aria-label="Result view"><button type="button" aria-pressed={resultView === 'current'} onClick={() => setResultView('current')}>Current Result</button><button type="button" aria-pressed={resultView === 'database'} onClick={() => setResultView('database')}>DB - {accumulated.length}</button></div> : <h5>Current Result</h5>}
+          {resultView === 'current' ? <>
+            <div className="sds-result-toolbar"><span>{shown ? `${rows.length} records - ${missing} missing processing values` : 'Waiting for your question'}</span>{step === 4 && <button type="button" className="sds-primary" onClick={accept}>Add to DB - accept table</button>}</div>
+            {shown ? <><div className="sds-table-scroll" role="region" aria-label="Current result table" tabIndex={0}><table className="sds-table"><caption>Current Result - prepared crop records{step === 2 ? ' - select a cell to inspect it' : ''}</caption><thead><tr><th scope="col">Document</th><th scope="col">Crop</th><th scope="col">Processing</th></tr></thead><tbody>{rows.map(row => <tr key={row.id} className={step === 3 && members.includes(row.id) ? 'sds-grouped' : ''}><th scope="row">Document {row.id}</th>{['crop', 'processing'].map(field => <td key={field} className={step === 2 && selected.id === row.id && selected.field === field ? 'sds-selected-cell' : ''}>{step === 2 ? <button type="button" className="sds-cell" aria-pressed={selected.id === row.id && selected.field === field} aria-label={`Inspect Document ${row.id} ${field}: ${row[field] || 'Empty'}`} aria-controls="sds-source-context" onClick={() => inspect(row, field)} onDoubleClick={() => inspect(row, field, true)} onContextMenu={event => { event.preventDefault(); inspect(row, field, true) }}>{row[field] || <span className="sds-empty">Empty</span>}</button> : row[field] || <span className="sds-empty">Empty</span>}</td>)}</tr>)}</tbody></table></div><p className="sds-small">Document names keep records associated with their sources. Empty marks a missing extraction; it does not prove the source lacks the information.</p></> : <div className="sds-empty-result"><h5>Your table will appear here</h5><p>Enter a question in Query, then start the prepared extraction.</p><span>Document - Crop - Processing</span></div>}
+          </> : <><h5 className="sds-db-heading">Accumulated database</h5>{snapshot ? <><div className="sds-table-scroll" role="region" aria-label="Accumulated database table" tabIndex={0}><table className="sds-table"><caption>DB - accepted teaching records</caption><thead><tr><th scope="col">Document</th><th scope="col">Crop</th><th scope="col">Processing</th>{includeAdditional && <th scope="col">Nutrient</th>}</tr></thead><tbody>{accumulated.map(row => <tr key={row.id}><th scope="row">Document {row.id}</th><td>{row.crop || <span aria-label="No value">&mdash;</span>}</td><td>{row.processing || <span aria-label="No value">&mdash;</span>}</td>{includeAdditional && <td>{row.nutrient || <span aria-label="No value">&mdash;</span>}</td>}</tr>)}</tbody></table></div><p className="sds-small">A dash indicates a field absent from an accepted result. {stale && 'Current Result has newer edits; accept it again to update DB and re-enable export.'}</p></> : <p className="sds-empty-result">No accepted results yet. Accept your reviewed Current Result to add it to DB.</p>}</>}
+        </section>
+        {step >= 2 && <aside className="sds-inspector" aria-label={step === 2 ? 'Source context and correction' : step === 3 ? 'Data standardization' : 'Database tools'}>
+          {step === 2 && <section id="sds-source-context"><h5>Relevant Contexts</h5><p className="sds-source-label">Document {selected.id} - invented source excerpt</p><blockquote>{selectedRow.source}</blockquote><form onSubmit={correct}><label htmlFor="sds-correction">{selected.field === 'crop' ? 'Crop' : 'Processing'} value - Document {selected.id}</label><input id="sds-correction" ref={editRef} value={draft} onChange={event => setDraft(event.target.value)} placeholder={selected.field === 'processing' && selected.id === 'B' ? 'Try Boiled' : 'Enter a supported value'} maxLength={100} /><button type="submit" className="sds-primary">Apply correction</button></form><p className="sds-small">In the product, a context menu opens evidence and double-click edits cells. Here, selecting a cell opens this keyboard-accessible editor. This passage stands in for source inspection; it is not an actual PDF excerpt.</p><PaperLink page={6}>&sect;4.3.2 - p. 6</PaperLink></section>}
+          {step === 3 && <><h5>Data Standardization</h5><p className="sds-small">Selected attribute: Crop - prepared groups, not computed semantic clusters.</p><div className="sds-overview" aria-label="Crop overview"><span>Total values <strong>{rows.length}</strong></span><span>Unique values <strong>{unique}</strong></span></div>
+            <div className="sds-group-card"><h6>Sweet potato variations</h6><p>{variations.length} unique label{variations.length === 1 ? '' : 's'} - 2 records</p>{variations.map(([value, count]) => <div key={value} className="sds-frequency"><span>{value || 'Empty'} <strong>&times; {count}</strong></span><progress value={count} max={rows.length} aria-label={`${value || 'Empty'}: ${count} records`} /></div>)}
+              <fieldset><legend>Review group members</legend>{rows.slice(0, 2).map(row => <label key={row.id}><input type="checkbox" checked={members.includes(row.id)} onChange={event => setMembers(previous => event.target.checked ? [...previous, row.id] : previous.filter(id => id !== row.id))} />Document {row.id}: {row.crop || 'Empty'}</label>)}</fieldset>
+              <p className="sds-small">Teaching sources: A explicitly expands OFSP to orange-fleshed sweet potato; B uses the expanded name. Keep Maize separate.</p>
+              <form onSubmit={standardize}><label htmlFor="sds-group-label">Group label</label><input id="sds-group-label" value={label} onChange={event => setLabel(event.target.value)} maxLength={100} /><button type="submit" className="sds-primary" disabled={!members.length || !label.trim()}>Apply group label - {members.length} records</button></form>
+            </div><div className="sds-separate-group">Separate group - Document C: {rows[2].crop || 'Empty'}</div><p className="sds-small">Figure 3 shows editable groups and applying group labels. Checkboxes replace moving or removing group entries in this teaching view; the counts update with the same table.</p><PaperLink page={6}>&sect;4.3.3 - Fig. 3 - p. 6</PaperLink></>}
+          {step === 4 && <><h5>Build your dataset</h5><p>{missing ? `${missing} processing value is still missing. You may accept the gap or return to validation.` : 'No processing values are missing. Completeness alone does not certify correctness.'}</p><button type="button" className="sds-primary" onClick={accept}>{stale ? 'Accept revised table into DB' : 'Accept reviewed table into DB'}</button>
+            <div className="sds-additional"><h6>Another prepared result</h6><p>Question: Which nutrient is reported?</p><ul>{additionalRows.map(row => <li key={row.id}>Document {row.id} - {row.nutrient}</li>)}</ul><button type="button" disabled={!snapshot || stale || includeAdditional} onClick={() => { setIncludeAdditional(true); setResultView('database'); setMessage('Merged by document name: B and C gain a Nutrient field, A remains, and unmatched Document D is added.') }}>{includeAdditional ? 'Additional result accepted' : 'Accept additional prepared result'}</button><p className="sds-small">Document D is an additional invented document. This fixed second result demonstrates the paper's document-name outer join without running another query.</p></div>
+            <button type="button" className="sds-primary" disabled={!snapshot || stale} onClick={download}>Download CSV</button><p className="sds-small">{snapshot ? stale ? 'Edits made since acceptance. Accept the revised table before download.' : `${accumulated.length} accepted records ready for export.` : 'Accept Current Result to enable export.'} Reaccepting replaces this teaching table's earlier snapshot; the paper does not specify conflict handling for repeated edits.</p><PaperLink page={6}>&sect;4.3.4 - p. 6</PaperLink></>}
+        </aside>}
+      </div>
+      <p className="sds-status" role="status" aria-live="polite">{message || 'Explore any feature; changes stay in the shared teaching dataset.'}</p>
+    </div>
+    <p className="sds-attribution">Adapted from <PaperLink page={5}>SciDaSynth &sect;4.3 - Figures 2-3 - pp. 4-6</PaperLink>. Layout, controls, and teaching data are simplified; this is not a product screenshot. No quality scores are simulated. Prepared groups require a human decision.</p>
     </section>
-    <details className="synth-existing-case"><summary>Paper example · why a filled field still needs checking</summary><VerificationExample /></details>
-    <details className="synth-legacy-walkthrough" ref={legacyRef}><summary>Existing crop walkthrough · editing, standardization, and CSV export</summary>
-    <TutorialFrame name="SciDaSynth" title="Shared example · crop data extraction" steps={steps} actions={actions} actionId={actionId} onAction={(id)=>{if(id==='evidence'){openEvidence()}else{onAction(id);setMessage('')}}}
-    onReset={()=>{setRows(initialRows);setDraft('');setLabel('Orange-fleshed sweet potato');setMembers(['A','B']);setSnapshot(null);setMessage('');onAction('question')}}
-    attribution={<><p>Workflow and interactions are adapted from <a href={`${synthSource}#page=4`} target="_blank" rel="noopener noreferrer">Wang et al., SciDaSynth, arXiv v3 (2025) ↗</a>, §§4.1–4.3.4, PDF pp. 4–6.</p><p>The article’s nutrition setting and crop-name variation motivate this scenario. Documents A–C, passages, field values, and grouping below are invented teaching fixtures. They are not actual extracted results, author quotations, or evidence about a crop.</p><p>The original system supports uploaded PDFs, LLM extraction, quality metrics, source inspection, semantic plots, and repeated database merges. This tutorial demonstrates a fixed table with local editing and export; no model is run. The source panel uses a button instead of a context menu; a single snapshot stands in for the database.</p></>}
-    note="Illustrative records and source passages · invented for this tutorial · edits stay in this browser view until you change paper or reload.">
-    <p className="fixture-notice">Teaching example · Documents A–C and their source passages are invented.</p>
-    <div className="extraction-request"><span className="example-section">Included collection · 3 example documents</span><p>Extract the <strong>crop</strong> and <strong>processing method</strong> for each document.</p><span className="field-chip">Crop</span><span className="field-chip">Processing</span>{!show&&<p><button type="button" className="matrix-action" onClick={()=>onAction('table')}>Show example extraction →</button></p>}</div>
-    {show && <>
-      <div className="table-metrics" aria-live="polite"><span><strong>{rows.length}</strong> records</span><span><strong>{missing}</strong> missing values</span><span><strong>{unique}</strong> unique crop labels</span></div>
-      <table className="extraction-table"><caption>Current result · editable demonstration</caption><thead><tr><th scope="col">Document</th><th scope="col">Crop</th><th scope="col">Processing</th></tr></thead><tbody>{rows.map(r=><tr key={r.id} className={groups&&members.includes(r.id)?'grouped-record':''}><th scope="row">Example {r.id}</th><td>{r.crop}</td><td>{r.id==='B'?<button type="button" className={`cell-inspect ${!r.processing?'missing-value':''}`} aria-label={`Inspect Document B processing: ${r.processing||'Empty'}`} onClick={openEvidence}>{r.processing||'Empty'} <span aria-hidden="true">↗</span></button>:r.processing}</td></tr>)}</tbody></table>
-      {missing>0 && <p className="validation-note">Empty marks a missing extraction, not proof that the original document omits the information.</p>}
-      {actionId==='check'&&<button type="button" className="matrix-action" onClick={openEvidence}>Inspect Document B’s source →</button>}
-      {evidence&&<section className="source-editor" aria-label="Document B source and correction"><span className="example-section">Example B · invented source passage</span><blockquote>Orange-fleshed sweet potato roots were <mark>boiled</mark> before analysis.</blockquote><form onSubmit={e=>{e.preventDefault();updateRows(rows.map(r=>r.id==='B'?{...r,processing:draft.trim()}:r),draft.trim()?'Document B updated. Review the new value in the table.':'Value cleared; Document B is marked Empty again.')}}><label htmlFor="processing-value">Processing value for Document B</label><div className="inline-edit"><input id="processing-value" value={draft} maxLength={100} placeholder="e.g., Boiled" onChange={e=>setDraft(e.target.value)}/><button type="submit" className="matrix-action">Save value</button></div></form><p>The source is the basis for the correction. A quality alert alone would not tell us the right value.</p></section>}
-      {groups&&<section className="standardization-panel" aria-label="Crop standardization"><h5>Proposed group · crop names</h5><p>Read the example evidence, then choose which records share a label.</p><div className="group-evidence">{initialRows.slice(0,2).map(r=><p key={r.id}><strong>Example {r.id}</strong> · {r.source}</p>)}</div><fieldset><legend>Records to standardize</legend>{rows.slice(0,2).map(r=><label key={r.id}><input type="checkbox" checked={members.includes(r.id)} onChange={e=>setMembers(e.target.checked?[...members,r.id]:members.filter(id=>id!==r.id))}/>Example {r.id}: {r.crop}</label>)}</fieldset><p className="separate-group">Separate group: Example C · Maize</p><form onSubmit={e=>{e.preventDefault();updateRows(rows.map(r=>members.includes(r.id)?{...r,crop:label.trim()}:r),`Applied the shared label to ${members.length} selected record${members.length===1?'':'s'}.`)}}><label htmlFor="crop-label">Shared label</label><div className="inline-edit"><input id="crop-label" value={label} maxLength={100} onChange={e=>setLabel(e.target.value)}/><button type="submit" className="matrix-action" disabled={!members.length||!label.trim()}>Apply to {members.length} records</button></div></form></section>}
-      {output&&<section className="export-panel" aria-label="Keep and export table"><h5>Review → keep → export</h5><p>{missing?`${missing} value is still missing. You can return to validation or keep a table with that gap.`:'No empty processing cells remain. This only checks completeness, not correctness.'}</p><p>Current crop labels: {unique}. Check whether the distinctions are intentional before exporting.</p><div className="example-options"><button type="button" onClick={openEvidence}>Revisit validation</button><button type="button" onClick={()=>onAction('standardize')}>Revisit crop labels</button></div><div className="example-options"><button type="button" onClick={()=>{setSnapshot(rows.map(r=>({...r})));setMessage('Kept a snapshot of all three current records in this tutorial.')}}>Keep current table</button><button type="button" disabled={!snapshot} onClick={download}>Download CSV</button></div><p className="demo-status">{snapshot?'Snapshot ready · 3 records.':'Keep the current table to enable download.'}</p></section>}
-    </>}
-    <p className="demo-status" role="status">{message}</p>
-  </TutorialFrame>
-    </details>
-  </div>
+  </section>
 }
