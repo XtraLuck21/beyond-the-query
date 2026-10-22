@@ -1,0 +1,92 @@
+.synth-evaluation { container-type: inline-size; }
+.synth-evaluation *, .synth-evaluation *::before, .synth-evaluation *::after { box-sizing: border-box; }
+.synth-evaluation [hidden] { display: none !important; }
+.synth-evaluation a { color: #3b6755; overflow-wrap: anywhere; }
+.synth-eval-sources { display: flex; flex-wrap: wrap; gap: 4px 14px; margin: 9px 0; font-size: 11px; line-height: 1.7; }
+.synth-eval-reporting-note { color: #64715f; font-size: 12px; margin: 12px 0 18px; }
+.synth-eval-methods { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; margin: 18px 0; }
+.synth-eval-method-card { display: flex; flex-direction: column; min-width: 0; padding: 16px; border: 1px solid #dce5dc; border-radius: 7px; background: #fafcf8; }
+.synth-eval-method-card h5 { margin: 0 0 10px; font-size: 14px; line-height: 1.5; }
+.synth-eval-method-card p { margin: 0 0 10px; font-size: 12px; line-height: 1.7; }
+.synth-eval-method-card .synth-eval-method-note { font-weight: 600; }
+.synth-eval-method-card .synth-eval-sources { margin-top: auto; margin-bottom: 0; }
+.synth-evaluation .eval-setup-details { margin-top: 14px; }
+.synth-evaluation .eval-disclosure-body article + article { border-top: 1px solid #dce5dc; margin-top: 18px; padding-top: 10px; }
+.synth-evaluation .eval-disclosure-body h5 { margin: 12px 0 6px; font-size: 14px; }
+.synth-eval-key-findings { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; margin: 18px 0; }
+.synth-eval-key-findings button { display: flex; flex-direction: column; gap: 9px; padding: 18px; border: 1px solid #bdceb6; border-radius: 8px; background: #f0f5e9; color: #304c40; font: inherit; text-align: left; cursor: pointer; }
+.synth-eval-key-findings button:hover { border-color: #54826a; background: #e8f0df; }
+.synth-eval-key-findings strong { font-size: 19px; line-height: 1.4; font-weight: 600; }
+.synth-eval-key-findings span { font-size: 12px; }
+.synth-eval-key-findings span:last-child { margin-top: auto; }
+.synth-eval-tabs { display: flex; flex-wrap: wrap; gap: 6px; border-bottom: 1px solid #ccd9c5; padding: 16px 0 10px; margin-bottom: 20px; }
+.synth-eval-tabs button { padding: 9px 16px; border: 1px solid #ccd9c5; border-radius: 6px; background: #fafcf7; color: #365a45; cursor: pointer; font: inherit; font-size: 13px; }
+.synth-eval-tabs button[aria-selected="true"] { background: #e7efdf; border-color: #527656; box-shadow: inset 0 -2px #527656; font-weight: 650; }
+.synth-evaluation [role="tabpanel"] > h5 { margin: 0 0 7px; font-size: 18px; }
+.synth-evaluation [role="tabpanel"] > p { font-size: 13px; }
+.synth-eval-comparisons { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; margin: 18px 0; }
+.synth-eval-comparisons > article { min-width: 0; padding: 16px; border: 1px solid #d6e1d0; border-radius: 8px; background: #fafcf8; }
+.synth-eval-comparisons h6 { font-size: 15px; margin: 0 0 10px; }
+.synth-eval-table { width: 100%; border-collapse: collapse; table-layout: fixed; font-size: 12px; margin: 12px 0; }
+.synth-eval-table caption { text-align: left; color: #60715c; font-size: 11px; margin-bottom: 8px; }
+.synth-eval-table th, .synth-eval-table td { border: 1px solid #dce5dc; padding: 11px; vertical-align: top; text-align: left; overflow-wrap: anywhere; }
+.synth-eval-table thead th { background: #edf3e8; font-weight: 650; }
+.synth-eval-table tbody th { font-weight: 550; background: #f7faf2; }
+.synth-eval-table p { margin: 0; }
+.synth-eval-table p + p { margin-top: 8px; }
+.synth-eval-table th:first-child { width: 38%; }
+.synth-eval-study-overview { margin: 22px 0; padding: 20px; background: #f7f9f3; border: 1px solid #d6e1d0; border-radius: 8px; }
+.synth-eval-study-overview h5 { margin: 0 0 16px; font-size: 16px; }
+.synth-eval-study-overview dl { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px 28px; margin: 0; }
+.synth-eval-study-overview dt { font-size: 13px; font-weight: 650; color: #365a45; margin-bottom: 6px; }
+.synth-eval-study-overview dd { margin: 0; font-size: 13px; line-height: 1.7; }
+.synth-eval-study-overview > p { border-top: 1px solid #d6e1d0; padding-top: 16px; margin-top: 18px; font-size: 13px; line-height: 1.7; }
+.synth-eval-explainer { padding: 16px 20px; margin: 18px 0 22px; border-left: 3px solid #73977b; background: #f2f6ee; border-radius: 0 6px 6px 0; font-size: 13px; line-height: 1.7; }
+.synth-eval-explainer > strong { display: block; font-size: 14px; color: #304c40; }
+.synth-eval-explainer p { margin: 8px 0 0; }
+.synth-eval-explainer b { font-weight: 600; }
+.synth-eval-quality-charts { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; margin: 18px 0; }
+.synth-eval-quality-chart { margin: 0; min-width: 0; padding: 20px; border: 1px solid #d6e1d0; border-radius: 8px; background: #fafcf8; }
+.synth-eval-quality-chart figcaption { font-size: 15px; font-weight: 600; line-height: 1.5; }
+.synth-eval-quality-chart figcaption span { display: block; margin-top: 5px; font-size: 11px; font-weight: 400; color: #60715c; }
+.synth-eval-quality-chart ul { list-style: none; margin: 22px 0 8px; padding: 0; }
+.synth-eval-quality-chart li + li { margin-top: 18px; }
+.synth-eval-bar-label { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: 4px 12px; margin-bottom: 7px; font-size: 12px; line-height: 1.5; }
+.synth-eval-bar-label strong { font-size: 14px; font-variant-numeric: tabular-nums; }
+.synth-eval-bar-label small { font-size: 11px; font-weight: 400; color: #60715c; }
+.synth-eval-bar-track { width: 100%; height: 12px; overflow: hidden; background: #e5ebdf; border-radius: 3px; }
+.synth-eval-bar-track > span { display: block; height: 100%; background: #8c9e83; border-radius: 3px; }
+.synth-eval-bar-track > .is-scidasynth { background: #3b7156; }
+.synth-eval-bar-scale { display: flex; justify-content: space-between; font-size: 11px; color: #60715c; }
+.synth-eval-stat-tests { display: grid; gap: 14px; margin-top: 18px; }
+.synth-eval-stat-tests h6 { font-size: 12px; margin: 0 0 5px; }
+.synth-eval-stat-tests p { margin: 5px 0; }
+.synth-eval-reduction { font-size: 12px; }
+.synth-eval-reduction strong { font-size: 25px; display: block; font-weight: 600; }
+.synth-eval-ratings th:first-child { width: 28%; }
+.synth-eval-ratings th:nth-child(2) { width: 33%; }
+.synth-eval-ratings .eval-disclosure { margin-top: 10px; }
+.synth-eval-ratings .eval-disclosure summary { font-size: 11px; padding: 8px; }
+.synth-eval-ratings .eval-disclosure-body { padding: 0 9px 10px; font-size: 12px; }
+.synth-eval-direction { display: block; font-size: 11px; color: #65745f; font-weight: 400; margin-top: 6px; }
+.synth-eval-uncertainty-links { margin: 10px 0; padding-left: 18px; font-size: 11px; }
+.synth-eval-failures { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; margin: 18px 0; align-items: start; }
+.synth-evaluation [id$="-note"], .synth-evaluation [tabindex="-1"] { scroll-margin-top: 24px; }
+.synth-evaluation [id$="-note"]:target { outline: 2px solid #9bac8e; outline-offset: 3px; border-radius: 7px; }
+.synth-evaluation [role="tabpanel"]:focus-visible, .synth-evaluation h4:focus-visible { outline: 3px solid #317968; outline-offset: 4px; }
+@container (max-width: 800px) {
+  .synth-eval-comparisons, .synth-eval-key-findings, .synth-eval-failures, .synth-eval-quality-charts { grid-template-columns: 1fr; }
+  .synth-eval-methods { grid-template-columns: 1fr; }
+}
+@container (max-width: 500px) {
+  .synth-evaluation .eval-facts { grid-template-columns: 1fr 1fr; }
+  .synth-evaluation .eval-conditions { grid-template-columns: 1fr; }
+  .synth-eval-tabs button { padding: 9px 10px; }
+  .synth-eval-table th, .synth-eval-table td { padding: 7px; font-size: 11px; }
+  .synth-eval-ratings th:first-child { width: 26%; }
+  .synth-eval-ratings th:nth-child(2) { width: 30%; }
+  .synth-eval-comparisons > article { padding: 12px; }
+  .synth-eval-study-overview dl { grid-template-columns: 1fr; gap: 16px; }
+  .synth-eval-study-overview, .synth-eval-quality-chart { padding: 16px; }
+  .synth-eval-explainer { padding: 14px 16px; }
+}

@@ -5,6 +5,7 @@ import ScimTutorial from './ScimTutorial'
 import SciDaSynthTutorial from './SciDaSynthTutorial'
 import SciDaSynthSources from './SciDaSynthSources'
 import SciDaSynthPipeline from './SciDaSynthPipeline'
+import SciDaSynthEvaluation from './SciDaSynthEvaluation'
 import ScholarPhiTutorial from './ScholarPhiTutorial'
 import ScholarPhiEvaluation from './ScholarPhiEvaluation'
 import ScholarPhiPipeline from './ScholarPhiPipeline'
@@ -140,8 +141,8 @@ export default function PaperVisuals({ paperId, activeSection, onSectionChange }
     <div id="paper-panel-rationale" role="tabpanel" aria-labelledby="paper-tab-rationale" hidden={activeSection !== 'rationale'} tabIndex={0}>
       <MotivationMap model={model} onShowExample={showExample} />
     </div>
-    {['scholarphi', 'scim'].includes(paperId) && <div id="paper-panel-evaluation" role="tabpanel" aria-labelledby="paper-tab-evaluation" hidden={activeSection !== 'evaluation'} tabIndex={0}>
-      {paperId === 'scim' ? <ScimEvaluation /> : <ScholarPhiEvaluation onShowExample={showExample} />}
+    {['scholarphi', 'scim', 'scidasynth'].includes(paperId) && <div id="paper-panel-evaluation" role="tabpanel" aria-labelledby="paper-tab-evaluation" hidden={activeSection !== 'evaluation'} tabIndex={0}>
+      {paperId === 'scidasynth' ? <SciDaSynthEvaluation /> : paperId === 'scim' ? <ScimEvaluation /> : <ScholarPhiEvaluation onShowExample={showExample} />}
     </div>}
     {['scholarphi', 'scim'].includes(paperId) && <div id="paper-panel-extra-work" role="tabpanel" aria-labelledby="paper-tab-extra-work" hidden={activeSection !== 'extra-work'} tabIndex={0}>
       {paperId === 'scim' ? <ScimRelatedWork /> : <ScholarPhiExtraWork />}

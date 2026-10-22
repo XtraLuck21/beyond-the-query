@@ -1,14 +1,16 @@
-.synth-source-navigation { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; margin: 20px 0; }
-.synth-source-navigation a { padding: 13px; border: 1px solid #d5dfd0; border-radius: 7px; color: #345640; background: #f5f8f2; text-decoration: none; font-size: 13px; }
-.synth-source-navigation a:hover { background: #e8f0e3; }
-.synth-source-navigation span { display: block; font-size: 11px; color: #657861; margin-bottom: 6px; }
-.synth-source-entry { scroll-margin-top: 24px; }
-.synth-source-title { margin: 10px 0 5px; font-size: 16px; }
+.synth-source-entry { scroll-margin-top: 24px; min-width: 0; }
 .synth-sources a { color: #3b6755; text-underline-offset: 3px; overflow-wrap: anywhere; }
-.synth-source-authors { margin: 0; font-size: 12px; color: #607264; }
-.synth-source-judgment { display: grid; grid-template-columns: 1fr 1fr; gap: 22px; margin-bottom: 14px; }
-.synth-source-judgment h5 { font-size: 13px; margin: 0; }
-.synth-source-judgment p { margin: 5px 0 0; font-size: 13px; }
+.synth-sources .eval-heading .synth-source-edition { margin-top: 12px; font-size: 12px; }
+.synth-source-publication { margin: 0 0 6px; font-size: 12px; color: #607264; }
+.synth-sources .synth-source-title { margin: 0 0 20px; font-size: 18px; line-height: 1.5; }
+.synth-source-summary { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+.synth-source-summary h5 { margin: 0 0 6px; font-size: 13px; }
+.synth-source-summary p { margin: 0; font-size: 13px; line-height: 1.75; }
+.synth-source-references { display: flex; flex-wrap: wrap; gap: 6px 20px; margin: 16px 0; font-size: 12px; }
+.synth-source-authors { font-size: 12px; color: #607264; }
+.synth-source-evidence .eval-disclosure-body { overflow-wrap: anywhere; }
 .synth-sources a:focus-visible, .synth-sources summary:focus-visible { outline: 3px solid #317968; outline-offset: 3px; }
-@media (max-width: 800px) { .synth-source-navigation { grid-template-columns: 1fr 1fr; } }
-@media (max-width: 600px) { .synth-source-judgment { grid-template-columns: 1fr; gap: 14px; } }
+@media (max-width: 600px) {
+  .synth-source-summary { grid-template-columns: 1fr; gap: 16px; }
+  .synth-sources .synth-source-title { font-size: 16px; }
+}
