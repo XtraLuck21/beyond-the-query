@@ -2,6 +2,7 @@ import { useRef, useState } from 'react'
 import { papers } from './data/papers'
 import { comparisonRows, getPairNote, toggleCell } from './data/comparison'
 import './ComparisonMatrix.css'
+import PaperRelationshipMap from './PaperRelationshipMap'
 
 export default function ComparisonMatrix() {
   const [selection, setSelection] = useState({ rowId: null, paperIds: [] })
@@ -26,6 +27,7 @@ export default function ComparisonMatrix() {
 
   return (
     <section className="comparison-view" aria-labelledby="comparison-heading">
+      <PaperRelationshipMap />
       <div className="comparison-intro">
         <div>
           <p className="eyebrow">Broad comparison</p>
