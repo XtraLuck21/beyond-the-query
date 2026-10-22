@@ -31,7 +31,9 @@ function App() {
     ? [sections[0], sections[1], { id: 'pipeline', label: 'System Pipeline' }, sections[2], { id: 'evaluation', label: 'Evaluation & Findings' }, { id: 'extra-work', label: 'Related work' }]
     : selectedPaperId === 'scim'
       ? [sections[0], sections[1], { id: 'pipeline', label: 'System Pipeline' }, sections[2], { id: 'evaluation', label: 'Evaluation & Findings' }, { id: 'extra-work', label: 'Related work' }]
-      : sections
+      : selectedPaperId === 'scidasynth'
+        ? [sections[0], sections[1], { id: 'pipeline', label: 'System Pipeline' }, sections[2], { id: 'sources', label: 'Source Analysis' }]
+        : sections
 
   function selectPaper(id) {
     if (id === selectedPaperId) return

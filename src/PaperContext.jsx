@@ -1,9 +1,9 @@
 import { scholarPhiContexts } from './data/scholarPhiContexts'
 import './PaperContext.css'
 
-export default function PaperContext({ contextId, collapseEvidence = false }) {
-  const context = scholarPhiContexts[contextId]
-  const evidence = <ul className="paper-context-sources">{context.sources.map((source) => <li key={source.url}><a href={source.url} target="_blank" rel="noopener noreferrer">{source.label} ↗<span className="sr-only"> (opens in a new tab)</span></a></li>)}</ul>
+export default function PaperContext({ contextId, context: suppliedContext, collapseEvidence = false, children }) {
+  const context = suppliedContext || scholarPhiContexts[contextId]
+  const evidence = <>{children}<ul className="paper-context-sources">{context.sources.map((source) => <li key={source.url}><a href={source.url} target="_blank" rel="noopener noreferrer">{source.label} ↗<span className="sr-only"> (opens in a new tab)</span></a></li>)}</ul></>
   return <section className="paper-context" aria-label={context.question}>
     <p className="paper-context-label">Question this context helps answer</p>
     <h6 className="paper-context-question">{context.question}</h6>

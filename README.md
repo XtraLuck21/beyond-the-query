@@ -8,6 +8,8 @@ The project investigates how an interface can help readers understand relationsh
 
 The current prototype is a frontend-only workspace with three built-in papers, interactive explanations of their systems, source-linked design rationale maps, and curated comparison content. Our semester scope focuses on developing and refining the interface without implementing a backend.
 
+SciDaSynth also has a **Source Analysis** tab with four citation-grounded connections, original-paper evidence, and explicit limitations. Open **Papers → SciDaSynth → Source Analysis**. See the [source audit and evidence ledger](docs/scidasynth-source-analysis.md) for methodology, sources, and validation. Run its focused checks with `node scripts/check-source-analysis.mjs`.
+
 The focus is on making contextual information useful and accessible. The comparison matrix is one way to present that information; the prototype does not prescribe a literature review strategy or rank the papers.
 
 ## Built-in papers

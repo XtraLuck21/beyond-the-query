@@ -3,6 +3,8 @@ import { useEffect, useRef, useState } from 'react'
 import { visualModels } from './data/visualModels'
 import ScimTutorial from './ScimTutorial'
 import SciDaSynthTutorial from './SciDaSynthTutorial'
+import SciDaSynthSources from './SciDaSynthSources'
+import SciDaSynthPipeline from './SciDaSynthPipeline'
 import ScholarPhiTutorial from './ScholarPhiTutorial'
 import ScholarPhiEvaluation from './ScholarPhiEvaluation'
 import ScholarPhiPipeline from './ScholarPhiPipeline'
@@ -126,11 +128,14 @@ export default function PaperVisuals({ paperId, activeSection, onSectionChange }
     requestAnimationFrame(() => tutorialHeading.current?.focus())
   }
   return <div className="paper-visuals">
+    {paperId === 'scidasynth' && <div id="paper-panel-sources" role="tabpanel" aria-labelledby="paper-tab-sources" hidden={activeSection !== 'sources'} tabIndex={0}>
+      <SciDaSynthSources />
+    </div>}
     <div id="paper-panel-workflow" role="tabpanel" aria-labelledby="paper-tab-workflow" hidden={activeSection !== 'workflow'} tabIndex={0}>
       <Tutorial actionId={tutorialAction} onAction={setTutorialAction} headingRef={tutorialHeading} />
     </div>
-    {['scholarphi', 'scim'].includes(paperId) && <div id="paper-panel-pipeline" role="tabpanel" aria-labelledby="paper-tab-pipeline" hidden={activeSection !== 'pipeline'} tabIndex={0}>
-      {paperId === 'scim' ? <ScimPipeline /> : <ScholarPhiPipeline active={activeSection === 'pipeline'} />}
+    {['scholarphi', 'scim', 'scidasynth'].includes(paperId) && <div id="paper-panel-pipeline" role="tabpanel" aria-labelledby="paper-tab-pipeline" hidden={activeSection !== 'pipeline'} tabIndex={0}>
+      {paperId === 'scidasynth' ? <SciDaSynthPipeline /> : paperId === 'scim' ? <ScimPipeline /> : <ScholarPhiPipeline active={activeSection === 'pipeline'} />}
     </div>}
     <div id="paper-panel-rationale" role="tabpanel" aria-labelledby="paper-tab-rationale" hidden={activeSection !== 'rationale'} tabIndex={0}>
       <MotivationMap model={model} onShowExample={showExample} />

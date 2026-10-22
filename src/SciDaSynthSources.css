@@ -1,0 +1,14 @@
+.synth-source-navigation { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; margin: 20px 0; }
+.synth-source-navigation a { padding: 13px; border: 1px solid #d5dfd0; border-radius: 7px; color: #345640; background: #f5f8f2; text-decoration: none; font-size: 13px; }
+.synth-source-navigation a:hover { background: #e8f0e3; }
+.synth-source-navigation span { display: block; font-size: 11px; color: #657861; margin-bottom: 6px; }
+.synth-source-entry { scroll-margin-top: 24px; }
+.synth-source-title { margin: 10px 0 5px; font-size: 16px; }
+.synth-sources a { color: #3b6755; text-underline-offset: 3px; overflow-wrap: anywhere; }
+.synth-source-authors { margin: 0; font-size: 12px; color: #607264; }
+.synth-source-judgment { display: grid; grid-template-columns: 1fr 1fr; gap: 22px; margin-bottom: 14px; }
+.synth-source-judgment h5 { font-size: 13px; margin: 0; }
+.synth-source-judgment p { margin: 5px 0 0; font-size: 13px; }
+.synth-sources a:focus-visible, .synth-sources summary:focus-visible { outline: 3px solid #317968; outline-offset: 3px; }
+@media (max-width: 800px) { .synth-source-navigation { grid-template-columns: 1fr 1fr; } }
+@media (max-width: 600px) { .synth-source-judgment { grid-template-columns: 1fr; gap: 14px; } }
