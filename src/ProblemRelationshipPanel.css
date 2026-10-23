@@ -2,6 +2,7 @@
 .problem-chains { display: grid; gap: 20px; }
 .problem-chain { --chain-ink: #315d49; --chain-tint: #e8f1e5; --chain-border: #92b293; display: grid; grid-template-columns: 110px minmax(0, 1fr); gap: 20px; align-items: center; padding: 20px; border: 1px solid #dce3dc; border-radius: 10px; background: #fafcf9; }
 .problem-chain-scim { --chain-ink: #385875; --chain-tint: #e7eff9; --chain-border: #93afcc; background: #f9fbfd; }
+.problem-chain-scidasynth { --chain-ink: #6f5521; --chain-tint: #f8efd9; --chain-border: #c8ae6f; background: #fdfbf6; }
 .problem-chain h3 { margin: 0; color: var(--chain-ink); font-size: 16px; }
 .problem-chain ol { list-style: none; padding: 0; margin: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 26px; }
 .problem-stage { position: relative; padding: 18px; background: white; border: 1px solid #dce3dc; border-radius: 8px; }

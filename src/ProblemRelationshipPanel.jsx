@@ -2,9 +2,7 @@ import { papers } from './data/papers'
 import { comparisonRows, getPairNote } from './data/comparison'
 import './ProblemRelationshipPanel.css'
 
-const pair = papers.filter((paper) => ['scholarphi', 'scim'].includes(paper.id))
 const motivation = comparisonRows.find((row) => row.id === 'motivation')
-const note = getPairNote(motivation, pair.map((paper) => paper.id))
 
 // Editorial summaries of the source-linked motivations, not participant quotes
 // or experimentally established causal chains.
@@ -19,13 +17,20 @@ const chains = {
     { label: 'Obstacle', title: 'Key passages need finding', detail: 'Salient content must be identified among many passages.' },
     { label: 'Burden', title: 'Judge where to focus', detail: 'Scan and assess passages to choose which deserve closer reading.' },
   ],
+  scidasynth: [
+    { label: 'Situation', title: 'Extracting across papers', detail: 'Trying to collect comparable information from a selected paper collection.' },
+    { label: 'Obstacle', title: 'Scattered, inconsistent data', detail: 'Information appears across text, tables, and figures, with expressions that may differ between papers.' },
+    { label: 'Burden', title: 'Extract, check, and standardize', detail: 'Locate target data, verify it against the sources, and reconcile inconsistent expressions.' },
+  ],
 }
 
-export default function ProblemRelationshipPanel() {
+export default function ProblemRelationshipPanel({ paperIds }) {
+  const pair = papers.filter((paper) => paperIds.includes(paper.id))
+  const note = getPairNote(motivation, pair.map((paper) => paper.id))
   return (
     <>
       <div className="support-shared"><span className="eyebrow">Shared</span><p>{note.shared}</p></div>
-      <p className="problem-chain-note">Two reading difficulties, aligned by situation, obstacle, and burden. Arrows explain the motivation; they do not show measured causal effects or a required reading sequence.</p>
+      <p className="problem-chain-note">Two difficulties in working with scientific literature, aligned by situation, obstacle, and burden. Arrows explain the motivation; they do not show measured causal effects or a required workflow.</p>
       <div className="problem-chains">
         {pair.map((paper) => <article className={`problem-chain problem-chain-${paper.id}`} key={paper.id} aria-labelledby={`problem-chain-${paper.id}-heading`}>
           <h3 id={`problem-chain-${paper.id}-heading`}>{paper.name}</h3>

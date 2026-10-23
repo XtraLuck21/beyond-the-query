@@ -69,3 +69,9 @@ export const supportComparisons = {
     },
   },
 }
+
+export const problemHeadings = {
+  'scholarphi|scim': 'Understand the meaning or find where to focus?',
+  'scholarphi|scidasynth': 'Understand notation or reconcile research data?',
+  'scim|scidasynth': 'Find reading priorities or prepare comparable data?',
+}
