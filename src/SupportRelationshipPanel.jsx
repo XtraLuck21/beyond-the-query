@@ -1,30 +1,31 @@
 import { papers } from './data/papers'
 import { comparisonRows, getPairNote } from './data/comparison'
-import { supportComparison, supportFlows } from './data/comparisonSummaries'
+import { supportComparisons } from './data/comparisonSummaries'
 
-const pair = papers.filter((paper) => ['scholarphi', 'scim'].includes(paper.id))
 const support = comparisonRows.find((row) => row.id === 'support')
-const note = getPairNote(support, pair.map((paper) => paper.id))
 
-export default function SupportRelationshipPanel() {
+export default function SupportRelationshipPanel({ paperIds }) {
+  const pair = papers.filter((paper) => paperIds.includes(paper.id))
+  const note = getPairNote(support, pair.map((paper) => paper.id))
+  const comparison = supportComparisons[pair.map((paper) => paper.id).join('|')]
   return (
     <>
       <div className="support-shared"><span className="eyebrow">Shared</span><p>{note.shared}</p></div>
       <div className="support-alignment-wrap">
         <table className="support-alignment">
           <caption className="sr-only">Differences in reading support, aligned by question</caption>
-          <thead><tr><th scope="col">Compare by</th>{pair.map((paper) => <th scope="col" key={paper.id}>{paper.name}</th>)}</tr></thead>
-          <tbody>{supportComparison.map((item) => <tr key={item.question}>
+          <thead><tr><th scope="col">Compare by</th>{pair.map((paper) => <th scope="col" className={`support-column-${paper.id}`} key={paper.id}>{paper.name}</th>)}</tr></thead>
+          <tbody>{comparison.rows.map((item) => <tr key={item.question}>
             <th scope="row">{item.question}</th>
             {pair.map((paper) => <td key={paper.id}>{item[paper.id]}</td>)}
           </tr>)}</tbody>
         </table>
       </div>
       <h3 className="support-flow-heading">Follow the information</h3>
-      <p className="support-flow-note">A simplified reading path within each tool.</p>
+      <p className="support-flow-note">Illustrative paths within each tool. Readers can revisit steps; these are not a required sequence between tools.</p>
       <div className="support-flows">{pair.map((paper) => <div className={`support-flow support-flow-${paper.id}`} key={paper.id}>
         <h4>{paper.name}</h4>
-        <ol>{supportFlows[paper.id].map((step, index) => <li key={step}>
+        <ol style={{ '--support-step-count': comparison.flows[paper.id].length }}>{comparison.flows[paper.id].map((step, index) => <li key={step}>
           {index > 0 && <span className="support-flow-arrow" aria-hidden="true">→</span>}
           <span className="support-flow-step">{step}</span>
         </li>)}</ol>

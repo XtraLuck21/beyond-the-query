@@ -50,8 +50,9 @@
 .support-alignment { width: 100%; border-collapse: collapse; table-layout: fixed; font-size: 14px; }
 .support-alignment th, .support-alignment td { padding: 16px; text-align: left; vertical-align: top; border-bottom: 1px solid #e2e8e0; line-height: 1.6; overflow-wrap: anywhere; }
 .support-alignment thead th:first-child { width: 25%; color: #62736b; font-size: 12px; }
-.support-alignment thead th:nth-child(2) { background: #edf4ee; color: #315d49; }
-.support-alignment thead th:nth-child(3) { background: #edf3f9; color: #385875; }
+.support-alignment .support-column-scholarphi { background: #edf4ee; color: #315d49; }
+.support-alignment .support-column-scim { background: #edf3f9; color: #385875; }
+.support-alignment .support-column-scidasynth { background: #faf3e4; color: #6f5521; }
 .support-alignment tbody th { font-weight: 500; color: #62736b; }
 .support-alignment td { font-weight: 600; }
 .support-flow-heading { margin: 28px 0 6px; font-size: 16px; }
@@ -59,8 +60,9 @@
 .support-flows { display: grid; gap: 12px; }
 .support-flow { display: grid; grid-template-columns: 120px minmax(0, 1fr); align-items: center; gap: 16px; padding: 16px; background: #f4f8f3; border-radius: 9px; }
 .support-flow-scim { background: #f1f5fa; }
+.support-flow-scidasynth { background: #fcf8ef; }
 .support-flow h4 { margin: 0; font-size: 14px; }
-.support-flow ol { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); padding: 0; margin: 0; list-style: none; gap: 8px; }
+.support-flow ol { display: grid; grid-template-columns: repeat(var(--support-step-count, 3), minmax(0, 1fr)); padding: 0; margin: 0; list-style: none; gap: 8px; }
 .support-flow li { display: flex; align-items: center; gap: 8px; font-size: 13px; line-height: 1.5; }
 .support-flow-step { background: white; border: 1px solid #d9e2da; border-radius: 6px; padding: 10px; flex: 1; }
 .support-flow-arrow { color: #5e766b; }
