@@ -2,9 +2,29 @@ import { papers } from './data/papers'
 import { comparisonRows, getPairNote } from './data/comparison'
 import './ReaderOutputComparison.css'
 
-const pair = papers.filter((paper) => ['scim', 'scidasynth'].includes(paper.id))
 const result = comparisonRows.find((row) => row.id === 'result')
-const note = getPairNote(result, pair.map((paper) => paper.id))
+
+function ContextualDefinition() {
+  return (
+    <figure className="output-figure">
+      <div className="output-definition-preview" role="img" aria-label="Schematic: a selected term or symbol in a paper is connected to its position-sensitive definition, with access to its source and other usages.">
+        <div className="output-definition-page" aria-hidden="true">
+          <span className="output-mini-label">Paper text</span>
+          <div className="output-text-lines"><i /><i /></div>
+          <span className="output-selected-term">Term / symbol</span>
+          <div className="output-definition-connector" />
+          <div className="output-definition-callout">
+            <span className="output-mini-label">Contextual definition</span>
+            <strong>Meaning at this location</strong>
+            <span className="output-definition-references">Definition source · Other usages</span>
+          </div>
+          <div className="output-text-lines"><i /><i /></div>
+        </div>
+      </div>
+      <figcaption>Definitions and usages stay connected to the reading context.</figcaption>
+    </figure>
+  )
+}
 
 function HighlightedPaper() {
   return (
@@ -47,28 +67,43 @@ function StructuredTable() {
   )
 }
 
-export default function ReaderOutputComparison() {
+const outputs = {
+  scholarphi: {
+    title: 'Clarification within the paper',
+    illustration: <ContextualDefinition />,
+    received: 'Position-sensitive definitions and usages connected to terms and symbols in the paper.',
+    next: 'Inspect a definition or usage in context, then continue reading with clarification of the notation.',
+  },
+  scim: {
+    title: 'A focused view of the paper',
+    illustration: <HighlightedPaper />,
+    received: 'The paper with adjustable highlights and a compact list of passages.',
+    next: 'Locate relevant passages and read the surrounding text.',
+  },
+  scidasynth: {
+    title: 'Reusable structured data',
+    illustration: <StructuredTable />,
+    received: 'A refined table of information extracted from a paper collection.',
+    next: 'Merge tables and export CSV for subsequent analysis or reporting.',
+  },
+}
+
+export default function ReaderOutputComparison({ paperIds }) {
+  const pair = papers.filter((paper) => paperIds.includes(paper.id))
+  const note = getPairNote(result, pair.map((paper) => paper.id))
   return (
     <>
       <div className="support-shared"><span className="eyebrow">Shared</span><p>{note.shared}</p></div>
-      <p className="output-illustration-note"><strong>Output illustrations</strong> · Simplified diagrams, not screenshots or live tool results. Passage labels and table entries are placeholders.</p>
+      <p className="output-illustration-note"><strong>Output illustrations</strong> · Simplified diagrams, not screenshots or live tool results. Labels and entries are placeholders, not quotations or extracted data.</p>
       <div className="output-comparison-grid">
-        <article className="output-card output-card-scim" aria-labelledby="output-scim-heading">
-          <header><span className="eyebrow">Scim</span><h3 id="output-scim-heading">A focused view of the paper</h3></header>
-          <HighlightedPaper />
+        {pair.map((paper) => <article key={paper.id} className={`output-card output-card-${paper.id}`} aria-labelledby={`output-${paper.id}-heading`}>
+          <header><span className="eyebrow">{paper.name}</span><h3 id={`output-${paper.id}-heading`}>{outputs[paper.id].title}</h3></header>
+          {outputs[paper.id].illustration}
           <dl className="output-takeaways">
-            <div><dt>What do you get?</dt><dd>The paper with adjustable highlights and a compact list of passages.</dd></div>
-            <div><dt>What can you do next?</dt><dd>Locate relevant passages and read the surrounding text.</dd></div>
+            <div><dt>What do you get?</dt><dd>{outputs[paper.id].received}</dd></div>
+            <div><dt>What can you do next?</dt><dd>{outputs[paper.id].next}</dd></div>
           </dl>
-        </article>
-        <article className="output-card output-card-scidasynth" aria-labelledby="output-scidasynth-heading">
-          <header><span className="eyebrow">SciDaSynth</span><h3 id="output-scidasynth-heading">Reusable structured data</h3></header>
-          <StructuredTable />
-          <dl className="output-takeaways">
-            <div><dt>What do you get?</dt><dd>A refined table of information extracted from a paper collection.</dd></div>
-            <div><dt>What can you do next?</dt><dd>Merge tables and export CSV for subsequent analysis or reporting.</dd></div>
-          </dl>
-        </article>
+        </article>)}
       </div>
       <details className="support-evidence">
         <summary>Evidence &amp; sources</summary>

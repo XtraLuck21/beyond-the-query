@@ -21,8 +21,7 @@ export default function ComparisonMatrix() {
   const pairNote = selection.paperIds.length === 2 ? getPairNote(selectedRow, selection.paperIds) : null
   const isSupportExample = selection.rowId === 'support' && selection.paperIds.length === 2
     && selection.paperIds.includes('scholarphi') && selection.paperIds.includes('scim')
-  const isOutputExample = selection.rowId === 'result' && selection.paperIds.length === 2
-    && selection.paperIds.includes('scim') && selection.paperIds.includes('scidasynth')
+  const isOutputComparison = selection.rowId === 'result' && selection.paperIds.length === 2
 
   function compareSelected() {
     setShowRelationship(true)
@@ -130,11 +129,11 @@ export default function ComparisonMatrix() {
         <header className="relationship-heading">
           <div>
             <p className="eyebrow">{selectedPapers.map((paper) => paper.name).join(' × ')} · {comparisonSummaries[selectedRow.id].label}</p>
-            <h2 id="relationship-heading" ref={panelHeadingRef} tabIndex={-1}>{isSupportExample ? 'Two ways to support reading' : isOutputExample ? 'What do readers take away?' : selectedRow.label}</h2>
+            <h2 id="relationship-heading" ref={panelHeadingRef} tabIndex={-1}>{isSupportExample ? 'Two ways to support reading' : isOutputComparison ? 'What do readers take away?' : selectedRow.label}</h2>
           </div>
           <button type="button" className="matrix-action" onClick={backToSelection}>Back to selection</button>
         </header>
-        {isSupportExample ? <SupportRelationshipPanel /> : isOutputExample ? <ReaderOutputComparison /> : <>
+        {isSupportExample ? <SupportRelationshipPanel /> : isOutputComparison ? <ReaderOutputComparison key={selectedPapers.map((paper) => paper.id).join('-')} paperIds={selection.paperIds} /> : <>
           <dl className="relationship-notes">
             <div><dt>Similarities</dt><dd>{pairNote.shared}</dd></div>
             <div><dt>Differences</dt><dd>{pairNote.difference}</dd></div>
