@@ -6,6 +6,7 @@ import PaperRelationshipMap from './PaperRelationshipMap'
 import { comparisonSummaries, supportComparisons } from './data/comparisonSummaries'
 import SupportRelationshipPanel from './SupportRelationshipPanel'
 import ReaderOutputComparison from './ReaderOutputComparison'
+import ProblemRelationshipPanel from './ProblemRelationshipPanel'
 
 export default function ComparisonMatrix() {
   const [selection, setSelection] = useState({ rowId: null, paperIds: [] })
@@ -21,6 +22,7 @@ export default function ComparisonMatrix() {
   const pairNote = selection.paperIds.length === 2 ? getPairNote(selectedRow, selection.paperIds) : null
   const isSupportComparison = selection.rowId === 'support' && selection.paperIds.length === 2
   const pairKey = selectedPapers.map((paper) => paper.id).join('|')
+  const isProblemExample = selection.rowId === 'motivation' && pairKey === 'scholarphi|scim'
   const isOutputComparison = selection.rowId === 'result' && selection.paperIds.length === 2
 
   function compareSelected() {
@@ -129,11 +131,11 @@ export default function ComparisonMatrix() {
         <header className="relationship-heading">
           <div>
             <p className="eyebrow">{selectedPapers.map((paper) => paper.name).join(' × ')} · {comparisonSummaries[selectedRow.id].label}</p>
-            <h2 id="relationship-heading" ref={panelHeadingRef} tabIndex={-1}>{isSupportComparison ? supportComparisons[pairKey].heading : isOutputComparison ? 'What do readers take away?' : selectedRow.label}</h2>
+            <h2 id="relationship-heading" ref={panelHeadingRef} tabIndex={-1}>{isProblemExample ? 'Understand the meaning or find where to focus?' : isSupportComparison ? supportComparisons[pairKey].heading : isOutputComparison ? 'What do readers take away?' : selectedRow.label}</h2>
           </div>
           <button type="button" className="matrix-action" onClick={backToSelection}>Back to selection</button>
         </header>
-        {isSupportComparison ? <SupportRelationshipPanel key={pairKey} paperIds={selection.paperIds} /> : isOutputComparison ? <ReaderOutputComparison key={pairKey} paperIds={selection.paperIds} /> : <>
+        {isProblemExample ? <ProblemRelationshipPanel /> : isSupportComparison ? <SupportRelationshipPanel key={pairKey} paperIds={selection.paperIds} /> : isOutputComparison ? <ReaderOutputComparison key={pairKey} paperIds={selection.paperIds} /> : <>
           <dl className="relationship-notes">
             <div><dt>Similarities</dt><dd>{pairNote.shared}</dd></div>
             <div><dt>Differences</dt><dd>{pairNote.difference}</dd></div>
