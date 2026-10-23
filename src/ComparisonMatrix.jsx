@@ -1,3 +1,4 @@
+import ComparisonSources from './ComparisonSources'
 import { useRef, useState } from 'react'
 import { papers } from './data/papers'
 import { comparisonRows, getPairNote, toggleCell } from './data/comparison'
@@ -103,7 +104,7 @@ export default function ComparisonMatrix() {
           <tbody>
             {comparisonRows.map((row) => (
               <tr key={row.id}>
-                <th scope="row"><span>{comparisonSummaries[row.id].label}</span><small>{row.question}</small></th>
+                <th scope="row"><span>{row.label}</span><small>{row.question}</small></th>
                 {papers.map((paper) => {
                   const cell = row.cells[paper.id]
                   const [headline, description] = comparisonSummaries[row.id][paper.id]
@@ -119,7 +120,7 @@ export default function ComparisonMatrix() {
                         <span className="cell-state" aria-hidden="true">{isSelected ? '✓ Selected' : '○'}</span>
                         <span className="cell-copy" id={`cell-${row.id}-${paper.id}`}><strong>{headline}</strong><span>{description}</span></span>
                       </button>
-                      <a className="cell-source" href={cell.sourceUrl} title={cell.section} target="_blank" rel="noopener noreferrer">Source ↗<span className="sr-only">: {paper.name}, {cell.section} (opens in a new tab)</span></a>
+                      <a className="cell-source" href={cell.sourceUrl} title={cell.sources[0].label} target="_blank" rel="noopener noreferrer">Source ↗<span className="sr-only">: {paper.name}, {cell.sources[0].label} (opens in a new tab)</span></a>
                     </td>
                   )
                 })}
@@ -128,11 +129,11 @@ export default function ComparisonMatrix() {
           </tbody>
         </table>
       </div>
-      <p className="matrix-footnote">Source-based summaries of selected focuses, not exhaustive capability lists. Reader output describes supported activities, not measured benefit.</p>
+      <p className="matrix-footnote">Source-based summaries of selected focuses, not exhaustive capability lists. Reader output describes supported activities, not measured benefit. Source links use arXiv v3; SciDaSynth section numbers follow its PDF. Additional locators are available under Evidence &amp; sources.</p>
       {showRelationship && pairNote && <section ref={panelRef} className="support-relationship" aria-labelledby="relationship-heading">
         <header className="relationship-heading">
           <div>
-            <p className="eyebrow">{selectedPapers.map((paper) => paper.name).join(' × ')} · {comparisonSummaries[selectedRow.id].label}</p>
+            <p className="eyebrow">{selectedPapers.map((paper) => paper.name).join(' × ')} · {selectedRow.label}</p>
             <h2 id="relationship-heading" ref={panelHeadingRef} tabIndex={-1}>{isProblemComparison ? problemHeadings[pairKey] : isSupportComparison ? supportComparisons[pairKey].heading : isOutputComparison ? 'What do readers take away?' : isContextComparison ? 'When would readers use each tool?' : selectedRow.label}</h2>
           </div>
           <button type="button" className="matrix-action" onClick={backToSelection}>Back to selection</button>
@@ -148,7 +149,7 @@ export default function ComparisonMatrix() {
             <div className="support-evidence-grid">{selectedPapers.map((paper) => <article key={paper.id}>
               <h4>{paper.title}</h4>
               <p>{selectedRow.cells[paper.id].text}</p>
-              <a href={selectedRow.cells[paper.id].sourceUrl} target="_blank" rel="noopener noreferrer">{selectedRow.cells[paper.id].section}<span className="sr-only"> (opens in a new tab)</span> ↗</a>
+              <ComparisonSources cell={selectedRow.cells[paper.id]} />
             </article>)}</div>
           </details>
         </>}

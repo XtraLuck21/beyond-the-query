@@ -1,14 +1,108 @@
 # SciDaSynth: Content and Development Record
 
-Updated: October 20, 2026. Current scope: **Feature 1 — Extraction and structuring**, following approval of the four-feature interaction plan.
+Updated: October 22, 2026. This current-state inventory supersedes the October 20 implementation descriptions preserved below.
 
-**Current implementation:** four selectable capability cards and the new extraction simulation; dedicated demonstrations for Features 2–4 remain pending. The existing crop editing/export walkthrough remains available. See [the current Feature 1 record](#october-20-2026-feature-1-interactive-extraction-current) for the approved arXiv reading source, source-page mappings, interaction changes, and fresh checks.
+## Current six-tab implementation
 
-The sections below, through the first review-status paragraph, preserve the **initial increment's historical record**. Their static-overview descriptions, publisher/text-fragment links, and verification results describe that earlier implementation. The current Feature 1 record supersedes those descriptions where explicitly noted; it does not retroactively replace the original evidence or claim that historical tests cover later changes.
+SciDaSynth now has **Overview**, **How it works**, **System Pipeline**, **Design rationale**, **Evaluation & Findings**, and **Related Work**. Earlier statements that only Feature 1 exists, that the other feature demos are pending, or that Pipeline/Evaluation/Related Work are absent describe earlier increments.
 
-This record uses the source, coverage, adaptation, decision-history, and verification conventions in [scholarPhi.md](scholarPhi.md), [scim.md](scim.md), and [general_standards.md](general_standards.md). Those records were inspected before writing. The user-created `docs/SciDaSynth.md` was present and empty at the start; this update populates that existing file rather than creating a second record.
+This record follows [general_standards.md](general_standards.md). It explains an HCI-related tool paper through curated frontend content; it does not claim complete paper coverage, a backend, execution of SciDaSynth, or a demonstrated comprehension benefit.
 
-This is a record of the implemented explanation and its limits, not a claim that the original SciDaSynth system or the whole paper has been reproduced. Existing Overview and Design rationale content was not changed. System Pipeline, Evaluation & Findings, and Related work were not added.
+### Paper and source register
+
+- **Identity:** Xingbo Wang, Samantha L. Huey, Rui Sheng, Saurabh Mehta, and Fei Wang, *SciDaSynth: Interactive Structured Data Extraction From Scientific Literature With Large Language Model*, Campbell Systematic Reviews, 2025; [published article](https://doi.org/10.1002/cl2.70073).
+- **Current tutorial, pipeline, evaluation, and related-work source:** [arXiv v3 PDF](https://arxiv.org/pdf/2404.13765v3), September 4, 2025. Locators use one-based PDF pages. HTML section numbers differ; a PDF source label must not be silently attached to a differently numbered HTML edition.
+- **Overview and existing rationale:** retain their source records in [papers.js](../src/data/papers.js) and [visualModels.js](../src/data/visualModels.js). The rationale uses the published article. The October 20 publisher register below is historical evidence for that increment, not a claim that every current module uses that edition.
+- **Code repository:** [xingbow/SciDaEx](https://github.com/xingbow/SciDaEx). Availability of this link does not constitute code verification. The current System Pipeline is explicitly paper-based.
+- **External explanatory sources:** PaperMage, RAG, and RAGAs. Their original-paper evidence and inclusion boundaries are in the [reference ledger](scidasynth-source-analysis.md).
+
+The October 22 documentation review inspects current implementation records. Earlier primary-source checks are retained with their dates; this review does not independently reproduce the study or re-verify every source claim.
+
+### Coverage against the six reader questions
+
+| Reader question | Current destination | Boundary |
+| --- | --- | --- |
+| What problem is addressed? | Overview and rationale observations/basis | Central extraction and reconciliation difficulties, not every introduction argument |
+| Who uses it, and when? | Overview, collection/query examples, and evaluation setup | Intended use, evaluated domain groups, and our target reader are distinct |
+| What does it do? | Four capability groups and one shared editable example | Selected mechanisms; invented records and fixed responses |
+| Why this design? | Observation → DG1–DG3 → response map | Curated explanation, not causal proof or a complete design history |
+| What supports the claims? | Study setup and interactive quality/time/perception findings | Original-study evidence with conflicting reports retained |
+| Where do claims stop? | Failure cases, limitations, reporting notes, and module scope disclosures | Selected material; not an exhaustive discussion or independent replication |
+
+### How it works: four groups and a shared example
+
+The initial step-only tutorial was expanded because it did not communicate the broader capability inventory. The current implementation presents four selectable capability cards and a shared scene with five actions: Ask, Extract, Validate, Standardize, and Accumulate & Export. Capability groups and actions are teaching organization, not identical categories.
+
+| Capability | Current interaction | Source and demonstration boundary |
+| --- | --- | --- |
+| Extraction and Structuring | Enter a question or use the prepared crop-processing request; reveal a summary and Current Result | §4.3.1, PDF p. 4; figures p. 5. Every request uses prepared records, not live extraction. |
+| Validation and Refinement | Select crop/processing cells, inspect their teaching passages, edit values, and apply corrections | §4.3.2 starts p. 4 and continues p. 6. Empty means missing extraction, not proof that the source lacks information. No real PDF parsing or metric calculation. |
+| Summarization and Standardization | Inspect crop-name variations/counts, review the proposed A/B group, choose members, and apply a shared label | §4.3.3, p. 6. The group and records are prepared, not automatic semantic clustering or a full scatter-plot implementation. |
+| Database Construction and Export | Accept Current Result into DB; optionally merge another prepared result; inspect accumulated records and export CSV | §4.3.4, p. 6. The additional result supplies a disjoint Nutrient attribute for B/C/D, illustrating a document-name merge without inventing conflict-resolution semantics. |
+
+Documents A–C supply the main crop table; the optional second result adds Document D. All passages and values are **invented teaching data**, not original study records. The earlier crop-variety-number failure remains a reported baseline case in the evaluation content; it must not be mistaken for the source of these invented rows.
+
+Edits persist across feature and section switches. Accepting results creates a separate snapshot. Later edits leave that snapshot intact but stale; CSV download is disabled until the current table is accepted again. Reset restores the prepared example. Paper changes and reloads reset local state. Nothing is stored in a database service.
+
+### System Pipeline: paper-based architecture
+
+The diagram has ten selectable elements in four explanatory groups:
+
+1. **Document preprocessing:** parse the collection; prepare figure/table content; construct the retrieval index.
+2. **Retrieval and data generation:** retrieve evidence; infer the output schema; generate records/summary; assess preliminary quality.
+3. **Interactive validation and standardization:** trace evidence and refine records; group attributes and standardize.
+4. **Iterative refinement and final output:** accumulate results and export.
+
+Node inspectors expose inputs, processing, outputs, dependencies, human actions, and evidence. Connections carry evidence and conditions; a complete connection ledger and text alternatives are available on demand. The retrieval index, Current Result, and accumulated database are different artifacts. The arrangement represents information flow, not verified runtime scheduling or API contracts.
+
+Sources: §4.1–4.3, PDF pp. 4–6, Figures 1–3. No code audit is represented, and the original system does not run here.
+
+### Design rationale
+
+The existing graph retains DG1–DG3 and associated explanatory observations/responses. DG3 distinguishes preliminary quality guidance, source verification, and refinement. Selection emphasizes related paths and displays the explanation below the graph; available feature shortcuts lead to the tutorial.
+
+This documentation pass does not revise those relationships or certify every edge against a fresh source reading. Observation summaries and diagram organization are ours; original design goals are attributed to the paper. The legacy section badge and navigation to below-map details remain unchanged and undecided.
+
+### Evaluation & Findings
+
+The page now includes the original study setup, participant and collection details, human-operated SciDaSynth/Baseline A comparison, and separately run automated Baseline B. Three findings views distinguish **data quality**, **efficiency**, and **perceptions**. Main findings link to detailed displays; methods, per-dimension evidence, failure cases, and limitations are available on demand.
+
+The data preserves reporting uncertainties rather than silently correcting them: 24 participants are reported but listed groups total 20; Baseline B scores conflict across result subsections; assignment/aggregation and some statistical details are insufficiently specified. Findings remain tied to their datasets and methods. Subjective ratings are not extraction quality, and automated-baseline failure examples are not failures measured in participants' final SciDaSynth outputs.
+
+Sources: §5–§7, PDF pp. 6–10, with node/finding-specific locators in [sciDaSynthEvaluation.js](../src/data/sciDaSynthEvaluation.js). No new study, statistical reanalysis, or comparison with ScholarPhi/Scim is claimed.
+
+### Related Work
+
+The current page displays three cited foundations: **PaperMage** for document representation, **RAG** for retrieval-conditioned generation, and **RAGAs** for quality signals. Each entry supplies contribution, connection, source links, and expandable evidence/inclusion limits.
+
+Dagdelen et al. remains a fourth evidence record in the data but is not currently displayed. These sources are selected for distinct explanatory roles, not Connected Papers similarity. The earlier Source Analysis page and its four-entry UI descriptions are historical; see the [reference ledger](scidasynth-source-analysis.md).
+
+### Across Papers and current scope boundary
+
+SciDaSynth participates in all four dimensions: **Problem**, **Reading context**, **Support**, and **Reader output**. All twelve pair results use inline visual panels. Comparison locators follow the [shared v3 source register](../src/data/comparisonSources.js); see [Across Papers](across-papers.md).
+
+Experimental-design comparison, further single-paper changes, badge cleanup, and improved rationale-detail navigation remain undecided at this wrap-up. The populated tabs do not establish that no content gaps remain.
+
+### Current implementation locations
+
+| Files | Responsibility |
+| --- | --- |
+| [SciDaSynthTutorial.jsx](../src/SciDaSynthTutorial.jsx) and matching CSS | Four capability groups, shared example, state, correction, standardization, DB snapshot/merge, and CSV |
+| [SciDaSynthPipeline.jsx](../src/SciDaSynthPipeline.jsx), matching CSS, [sciDaSynthPipeline.js](../src/data/sciDaSynthPipeline.js) | Paper-based architecture and evidence model |
+| [SciDaSynthEvaluation.jsx](../src/SciDaSynthEvaluation.jsx), matching CSS, [sciDaSynthEvaluation.js](../src/data/sciDaSynthEvaluation.js) | Setup, findings, methods, uncertainty, and limitations |
+| [SciDaSynthSources.jsx](../src/SciDaSynthSources.jsx), matching CSS, [sciDaSynthSources.js](../src/data/sciDaSynthSources.js) | Three displayed contextual sources and four retained evidence records |
+| [PaperVisuals.jsx](../src/PaperVisuals.jsx), [visualModels.js](../src/data/visualModels.js) | Shared rationale graph and paper-specific content |
+| [App.jsx](../src/App.jsx), [papers.js](../src/data/papers.js) | Six-tab routing, metadata, and abstract |
+
+### Review and validation status
+
+The October 22 documentation audit aligns this record with the current source. It does not rerun the original system or certify all links/claims or accessibility. Historical tests below apply only to their specified increments. The old `scripts/check-source-analysis.mjs` asserts a four-entry interface and old markup, so it is not a current Related Work acceptance check; it is left unchanged under the code freeze.
+
+Current known boundaries include invented tutorial data, incomplete original-study reporting, no code-backed SciDaSynth pipeline verification, and unresolved usability/research questions. These remain visible limitations, not approval to extend implementation.
+
+## Historical implementation records — October 20
+
+The remaining sections preserve earlier sources, reasons, changes, and test reports. Words such as “current,” “retained,” “unchanged,” or “deferred” within these dated records refer to those increments, not the October 22 application. In particular, the legacy TutorialFrame walkthrough, field-projection demo, single-cell editing, and statements that later tabs are absent no longer describe the current interface. Historical tests must not be read as fresh regression coverage.
 
 ## Paper identity and source register
 
@@ -165,7 +259,7 @@ These checks validate the explanatory interface and its preserved behavior. They
 
 Review status: approved first How it works improvement implemented and checked within the scope above. No commits or pushes were made.
 
-## October 20, 2026: Feature 1 interactive extraction (current)
+## October 20, 2026: Feature 1 interactive extraction (historical)
 
 ### Purpose and approved scope
 
@@ -251,4 +345,4 @@ Early browser runs stopped on test-harness assumptions about nested disclosure s
 
 **Deferred:** dedicated demonstrations for Features 2–4, semantic plots/grouping, prepared database merges, and further sections. No claim is made that they are implemented. The crop dataset remains invented; source schema evidence does not validate crop values. PDF page fragments have page-level precision and depend on viewer support. The live arXiv URL may change version in the future.
 
-Current review status: **Feature 1 implemented; stopped for user review before Features 2–4.** Only `src/SciDaSynthTutorial.jsx`, `src/SciDaSynthTutorial.css`, and this existing documentation file are changed in the working tree. ScholarPhi, Scim, other SciDaSynth sections, shared components/data, package files, and routing remain untouched. No commit or push was made.
+Review status at that checkpoint: **Feature 1 implemented; stopped for user review before Features 2–4.** Only `src/SciDaSynthTutorial.jsx`, `src/SciDaSynthTutorial.css`, and this existing documentation file are changed in the working tree. ScholarPhi, Scim, other SciDaSynth sections, shared components/data, package files, and routing remain untouched. No commit or push was made.

@@ -1,3 +1,4 @@
+import ComparisonSources from './ComparisonSources'
 import { useState } from 'react'
 import { papers } from './data/papers'
 import { comparisonRows, getPairNote } from './data/comparison'
@@ -28,7 +29,7 @@ function Evidence({ paperIds, rowId, label = 'Evidence & sources' }) {
       return <div key={id}>
         <strong>{paper.name}</strong>
         <p>{cell.text}</p>
-        <a href={cell.sourceUrl} target="_blank" rel="noopener noreferrer">{cell.section} ↗<span className="sr-only"> (opens in a new tab)</span></a>
+        <ComparisonSources cell={cell} />
       </div>
     })}
   </details>
@@ -96,8 +97,8 @@ export default function PaperRelationshipMap() {
             <div><dt>What the reader gets</dt><dd>{rowById.result.cells[paper.id].text}</dd></div>
           </dl>
           <p className="relationship-map-hint">Select a connection to compare this focus with another paper. These labels describe emphasis, not exclusive capabilities.</p>
-          <Evidence key={`${selected}-motivation`} paperIds={activeIds} rowId="motivation" label="Problem & motivation sources" />
-          <Evidence key={`${selected}-result`} paperIds={activeIds} rowId="result" label="Result & next action sources" />
+          <Evidence key={`${selected}-motivation`} paperIds={activeIds} rowId="motivation" label={`${rowById.motivation.label} sources`} />
+          <Evidence key={`${selected}-result`} paperIds={activeIds} rowId="result" label={`${rowById.result.label} sources`} />
         </> : <>
           <h3 id="relationship-map-detail-heading">A shared setting, different reading needs.</h3>
           <p>All three support research work with scientific literature. Their emphasis differs:</p>

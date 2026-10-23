@@ -1,24 +1,21 @@
 // Curated reading notes, not quotations or a live model response.
 // Source articles and licenses are recorded with the original abstracts in papers.js.
-const sourceUrls = {
-  scholarphi: 'https://arxiv.org/html/2009.14237v3',
-  scim: 'https://arxiv.org/html/2205.04561v3',
-  scidasynth: 'https://doi.org/10.1002/cl2.70073',
-}
+import { comparisonSources } from './comparisonSources'
 
-function cell(paperId, text, section) {
-  return { text, section, sourceUrl: sourceUrls[paperId] }
+function cell(paperId, text, rowId) {
+  const sources = comparisonSources[rowId][paperId]
+  return { text, sources, section: sources.map(source => source.label).join('; '), sourceUrl: sources[0].url }
 }
 
 export const comparisonRows = [
   {
     id: 'motivation',
-    label: 'Problem & Motivation',
+    label: 'Problem',
     question: 'What difficulty motivates the work?',
     cells: {
-      scholarphi: cell('scholarphi', 'Paper-specific terms and symbols can interrupt understanding. Finding their definitions elsewhere in the paper takes effort and disrupts reading.', '§1 Introduction'),
-      scim: cell('scim', 'Researchers must keep up with extensive literature. Skimming requires finding important content without reading every passage in depth.', 'Abstract; §1 Introduction'),
-      scidasynth: cell('scidasynth', 'Extracting comparable data across papers is laborious. Information scattered across text, tables, and figures can be inconsistent and difficult to standardize.', '§1 Introduction'),
+      scholarphi: cell('scholarphi', 'Paper-specific terms and symbols can interrupt understanding. Finding their definitions elsewhere in the paper takes effort and disrupts reading.', 'motivation'),
+      scim: cell('scim', 'Researchers must keep up with extensive literature. Skimming requires finding important content without reading every passage in depth.', 'motivation'),
+      scidasynth: cell('scidasynth', 'Extracting comparable data across papers is laborious. Information scattered across text, tables, and figures can be inconsistent and difficult to standardize.', 'motivation'),
     },
     pairs: {
       'scholarphi|scim': { shared: 'Both address effort involved in reading scientific papers.', difference: 'ScholarPhi focuses on understanding unfamiliar notation; Scim focuses on finding salient passages during skimming.' },
@@ -28,12 +25,12 @@ export const comparisonRows = [
   },
   {
     id: 'context',
-    label: 'Users & Use Context',
+    label: 'Reading context',
     question: 'Who needs support, and when?',
     cells: {
-      scholarphi: cell('scholarphi', 'Researchers reading scientific papers who encounter unfamiliar terms, abbreviations, or symbols defined by that paper.', '§1 Introduction; §4 User Interface'),
-      scim: cell('scim', 'Researchers skimming a paper for an initial understanding or keeping up with literature, including papers outside their expertise.', 'Abstract; §7.2.3 Circumstances in which Scim was useful'),
-      scidasynth: cell('scidasynth', 'Researchers extracting data from a collection after searching and screening papers. Evaluation includes nutrition and NLP researchers.', '§1 Introduction; §5.1.1 Participants'),
+      scholarphi: cell('scholarphi', 'Researchers reading scientific papers who encounter unfamiliar terms, abbreviations, or symbols defined by that paper.', 'context'),
+      scim: cell('scim', 'Researchers skimming a paper for an initial understanding or keeping up with literature, including papers outside their expertise.', 'context'),
+      scidasynth: cell('scidasynth', 'Researchers extracting data from a collection after searching and screening papers. Evaluation includes nutrition and NLP researchers.', 'context'),
     },
     pairs: {
       'scholarphi|scim': { shared: 'Both support researchers reading individual scientific papers.', difference: 'ScholarPhi addresses a local comprehension need; Scim supports a broader pass through a paper. This distinguishes reading activities rather than levels of expertise.' },
@@ -43,12 +40,12 @@ export const comparisonRows = [
   },
   {
     id: 'support',
-    label: 'Support & Interaction',
+    label: 'Support',
     question: 'What help is offered, and how is it used?',
     cells: {
-      scholarphi: cell('scholarphi', 'Click terms or symbols to inspect position-sensitive definitions and usages. Additional views expose equation definitions and a glossary.', '§4.1 Definition Tooltips; §4.2–4.4'),
-      scim: cell('scim', 'Read highlights grouped by content type. Adjust their density for the paper or a paragraph, and follow highlighted passages back to their context.', '§4.2 Faceted Highlights; §4.3 Controls; §4.5'),
-      scidasynth: cell('scidasynth', 'Specify information needs to create a data table. Inspect source contexts, edit extracted values, and group or standardize inconsistent entries.', '§4.3.1–4.3.3 User Interface'),
+      scholarphi: cell('scholarphi', 'Click terms or symbols to inspect position-sensitive definitions and usages. Additional views expose equation definitions and a glossary.', 'support'),
+      scim: cell('scim', 'Read highlights grouped by content type. Adjust their density for the paper or a paragraph, and follow highlighted passages back to their context.', 'support'),
+      scidasynth: cell('scidasynth', 'Specify information needs to create a data table. Inspect source contexts, edit extracted values, and group or standardize inconsistent entries.', 'support'),
     },
     pairs: {
       'scholarphi|scim': { shared: 'Both augment the paper and connect selected information to its original context.', difference: 'ScholarPhi exposes definitions on demand; Scim directs attention with adjustable highlights.' },
@@ -58,12 +55,12 @@ export const comparisonRows = [
   },
   {
     id: 'result',
-    label: 'Result & Next Action',
+    label: 'Reader output',
     question: 'What does the reader get, and what can they do next?',
     cells: {
-      scholarphi: cell('scholarphi', 'Definitions and usages remain connected to the paper. Readers can inspect their context and continue reading with clarification of the notation.', '§4.1–4.4 User Interface'),
-      scim: cell('scim', 'A paper with adjustable highlights and a compact passage list. Readers can navigate to relevant passages and inspect surrounding text.', '§4.4 Scrollbar Annotations; §4.5 Side Bar Display'),
-      scidasynth: cell('scidasynth', 'A refined, structured collection of extracted data. Users can merge tables and export CSV for subsequent analysis or reporting.', '§4.1 Workflow; §4.3.4 Iterative Table Editing and Database Construction'),
+      scholarphi: cell('scholarphi', 'Definitions and usages remain connected to the paper. Readers can inspect their context and continue reading with clarification of the notation.', 'result'),
+      scim: cell('scim', 'A paper with adjustable highlights and a compact passage list. Readers can navigate to relevant passages and inspect surrounding text.', 'result'),
+      scidasynth: cell('scidasynth', 'A refined, structured collection of extracted data. Users can merge tables and export CSV for subsequent analysis or reporting.', 'result'),
     },
     pairs: {
       'scholarphi|scim': { shared: 'Both primarily offer support within an ongoing reading experience.', difference: 'ScholarPhi provides definitions and usages; Scim provides selected passages and navigation cues.' },

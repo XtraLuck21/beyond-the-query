@@ -1,6 +1,8 @@
 # Scim: Content and Development Record
 
-Updated: October 16, 2026. Audited implementation: `2d510c4514bd2b9ff3f4fc38f25f87440d80cc95`.
+Updated: October 22, 2026. Detailed single-paper audit baseline: October 16, commit `2d510c4514bd2b9ff3f4fc38f25f87440d80cc95`.
+
+The October 22 documentation review retains the six-tab content and the audit boundaries below. Shared Across Papers now uses Problem, Reading context, Support, and Reader output with twelve inline visual results and versioned source locators; see [Across Papers](across-papers.md). That comparison-source update does not resolve every single-paper source item listed below. No additional Scim feature or broader source audit is claimed.
 
 This is the current record for all six Scim tabs in Beyond the Query. It documents implemented content, editorial decisions, sources, teaching adaptations, and outstanding work using [general_standards.md](general_standards.md). It is not a claim that the entire paper, original application, or bibliography has been reproduced.
 
@@ -288,6 +290,8 @@ Audit basis: the current implementation at `2d510c4`, compared with the October 
 
 ### Prioritized follow-up, without authorizing implementation
 
+These remain candidates, not approved next steps. At the October 22 wrap-up, the current application is retained, including legacy visual-section badges and the existing below-map rationale details. Experimental-design comparisons also remain undecided.
+
 1. **Before presenting stronger coverage or reproducibility claims:** retain the pipeline warnings and distinguish the original tool from the demo. Resolve the two handoffs only if the research needs that level of verification; a successful backend run is not a prerequisite to a qualified explanatory page.
 2. **Before study readiness:** perform a combined six-tab interaction/accessibility check and ask whether readers can locate target-user scope, interpret the rationale edge types, find reference evidence, and understand excerpt-only distribution. These are proposed checks, not already observed participant problems.
 3. **Small source-consistency candidates:** pin currently unversioned source links and make “metadata abstract” explicit if users confuse it with the full-text abstract. The current abstract itself is supported by its linked source.
@@ -309,6 +313,8 @@ No additional mandatory tab was identified in this audit. Across Papers is a sep
 | This documentation consolidation · October 16 | Extend `scim.md` from its reference section to all six tabs, backfill missing development-log milestones, and audit standards gaps. | Documentation only; application unchanged. |
 
 ## Validation record
+
+The bullets below describe the **October 16 consolidation**, not fresh October 22 test runs. The October 22 follow-up checks documentation against the current source and local links; it does not repeat the full six-tab regression or verify every upstream claim.
 
 - **This pass:** inspected module source, styles, integration, and commit history; counted tutorial and pipeline inventories directly from the data; checked metadata/full-text abstract distinction against arXiv; checked Markdown relative links/anchors and whitespace; confirmed the resulting diff is restricted to `docs/scim.md` and `docs/development-log.md`.
 - **Previously recorded:** Related work passed ESLint/build and desktop/390-pixel browser checks, including source disclosures and Enter-key collapse. See the corresponding development-log entry. Historical initial-UI checks remain historical and do not certify later revisions.

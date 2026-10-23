@@ -1,3 +1,4 @@
+import ComparisonSources from './ComparisonSources'
 import { papers } from './data/papers'
 import { comparisonRows, getPairNote } from './data/comparison'
 import './ReaderOutputComparison.css'
@@ -111,7 +112,7 @@ export default function ReaderOutputComparison({ paperIds }) {
         <div className="support-evidence-grid">{pair.map((paper) => <article key={paper.id}>
           <h4>{paper.title}</h4>
           <p>{result.cells[paper.id].text}</p>
-          <a href={result.cells[paper.id].sourceUrl} target="_blank" rel="noopener noreferrer">{result.cells[paper.id].section} ↗<span className="sr-only"> (opens in a new tab)</span></a>
+          <ComparisonSources cell={result.cells[paper.id]} />
         </article>)}</div>
       </details>
     </>

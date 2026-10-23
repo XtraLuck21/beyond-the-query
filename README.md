@@ -2,15 +2,13 @@
 
 A research prototype for exploring contextual information within and across scientific papers, developed for USC CSCI 615.
 
-The project investigates how an interface can help readers understand relationships among papers they have already collected. Our intended users are students with some experience reading research papers and a foundation in HCI, but limited familiarity with the specific subfield they are exploring.
+Explore three curated papers through source-based explanations, interactive examples, and comparisons. Our intended readers are students with some paper-reading experience and HCI knowledge who are unfamiliar with the specific subfield.
 
 ## Current scope
 
-The current prototype is a frontend-only workspace with three built-in papers, interactive explanations of their systems, source-linked design rationale maps, and curated comparison content. Our semester scope focuses on developing and refining the interface without implementing a backend.
+The prototype is a frontend-only workspace with three built-in papers. Its focus is useful contextual information, rather than prescribing a literature-review strategy or ranking systems. Content and examples are curated in advance; the original tools are explained, not integrated or executed.
 
-SciDaSynth also has a **Source Analysis** tab with four citation-grounded connections, original-paper evidence, and explicit limitations. Open **Papers → SciDaSynth → Source Analysis**. See the [source audit and evidence ledger](docs/scidasynth-source-analysis.md) for methodology, sources, and validation. Run its focused checks with `node scripts/check-source-analysis.mjs`.
-
-The focus is on making contextual information useful and accessible. The comparison matrix is one way to present that information; the prototype does not prescribe a literature review strategy or rank the papers.
+This README describes the working version reviewed on October 22, 2026. Further design changes remain undecided; this documentation update does not expand implementation scope.
 
 ## Built-in papers
 
@@ -20,124 +18,116 @@ The focus is on making contextual information useful and accessible. The compari
 | [Scim: Intelligent Skimming Support for Scientific Papers](https://arxiv.org/abs/2205.04561v3) | IUI 2023 — conference | [rayfok/scim](https://github.com/rayfok/scim) |
 | [SciDaSynth: Interactive Structured Data Extraction from Scientific Literature with Large Language Model](https://doi.org/10.1002/cl2.70073) | Campbell Systematic Reviews, 2025 — journal | [xingbow/SciDaEx](https://github.com/xingbow/SciDaEx) |
 
-These papers provide an initial set of related but contrasting examples: understanding terms and symbols, skimming passages, and extracting structured information across documents. Each has an accompanying code repository. They are a starting set for implementation, not an established representative sample of HCI research. Their systems are not integrated into this prototype.
+These examples address term/symbol understanding, skimming, and structured extraction across documents. They are an initial implementation set, not a demonstrated representative sample of HCI research.
 
-## Implemented features
+## Papers
 
-### Papers
+Choose a full-title paper row at the top of the workspace. **Hide list** collapses the selector; **Change paper** reopens it. Each paper has six content tabs; selecting a tab displays only that section.
 
-Choose a paper from the full-width list at the top of the workspace. Each row displays the full title and publication information. **Hide list** collapses the selector; **Change paper** reopens it. The wider workspace leaves room for the visualizations without a persistent sidebar.
-
-Each paper has three content tabs. Selecting a tab shows only that section, rather than scrolling through a single long page:
-
-| Tab | Content |
+| Tab | Current content |
 | --- | --- |
-| **Overview** | Author-written abstract, attribution and license details, original paper, and repository links |
-| **How it works** | User/System steps controlling one shared interactive example, with reader thought bubbles and source notes |
-| **Design rationale** | Selectable observation → design motivation/goal → interface response graph, with supporting explanations and source references |
+| **Overview** | Author-written abstract, attribution, publication information, and paper/repository links |
+| **How it works** | Core capability overview and selectable, bounded demonstrations |
+| **System Pipeline** | Selectable processing stages with inputs, processing, outputs, dependencies, and evidence |
+| **Design rationale** | Observations/basis → design motivations/goals → responses, with selected connections and supporting explanations |
+| **Evaluation & Findings** | Original-study methods, selected findings, limitations, and expandable evidence |
+| **Related work** | Selected explanatory connections, reasons for inclusion, and evidence links |
 
-All three papers now have both visual sections:
+### Paper-specific coverage
 
-| Paper | Interactive workflow | Design rationale coverage |
+| Paper | Demonstrations | Pipeline and research context |
 | --- | --- | --- |
-| **ScholarPhi** | Select LISA in a reading passage; reveal its definition; inspect source context or other usages; dismiss assistance and resume reading | Seven motivations (M1–M7) connected to four feature families: tooltips, decluttering, equation diagrams, and a priming glossary |
-| **Scim** | Reveal four content facets; adjust global and paragraph-level highlight density; select a highlight-browser entry to locate its context | Seven design goals (D1–D7) connected to highlighting, density controls, scrollbar feedback, and a linked highlight browser |
-| **SciDaSynth** | Reveal a prepared extraction table; inspect and correct a missing value; standardize selected crop labels; keep a snapshot and download CSV | Three goals (DG1–DG3), with DG3 expanded into preliminary quality evaluation, source verification, and batch refinement |
+| **ScholarPhi** | Four feature families using LISA: tooltips, Declutter, equation diagrams, and a priming glossary. The glossary defaults to **Read with glossary** (passage left, terminology right); **Preview terminology** retains advance preview. | Thirteen nodes distinguish preparation and reading using pinned code. Rationale covers M1–M7; evaluation summarizes the final study. Three backward-reference contexts and three subsequent related works have separately documented selection routes. |
+| **Scim** | Four feature families using selected real passages from Wu et al.: faceted highlights, density controls, distribution feedback, and context navigation. Labels/priorities are curated teaching data. | Eleven nodes distinguish model preparation, paper processing, and reading, with paper/code discrepancies retained. Rationale includes the formative process and D1–D7. Evaluation separates technical, lab, and diary evidence. Related work explains HiText and TLDR. |
+| **SciDaSynth** | Four capability groups share a prepared crop table: extraction, source checking/editing, standardization, and database accumulation/export. A second prepared result can add an attribute and Document D. | A paper-based architecture map has ten elements in four groups; it is not a code audit. Rationale covers DG1–DG3. Evaluation separates methods, results, failure cases, and reporting uncertainties. Related Work displays PaperMage, RAG, and RAGAs. |
 
-ScholarPhi's **Priming glossary** demonstration opens in **Read with glossary** mode: the LISA passage is on the left and eight selected glossary entries are on the right. Clicking a marked symbol locates and highlights its entry. **Preview terminology** shows the glossary alone; narrow layouts place the passage above the glossary. These mode controls are teaching adaptations, while the original paper describes both previewing terminology and using a glossary beside the paper. See the [ScholarPhi development record](docs/scholarPhi.md#53-reading-first-glossary-demonstration) for scope and sources.
+Selecting a rationale node highlights its connections and displays details below the map. These diagrams are explanatory syntheses, not measured causal models. Feature inventories are broader than the individual mechanisms simulated.
 
-In the rationale graphs, selecting a node emphasizes its connected paths and reveals the supporting observations, reasons, concrete mechanisms, and source links. Selecting it again clears the selection. Applicable feature details link to the corresponding interactive example. These maps describe more features than the tutorials simulate; they are not complete reproductions of the original systems.
+## Across Papers
 
-Tutorials include restart and previous/next controls. On narrow screens, tutorial columns stack and the rationale graph becomes a vertical layout with explicit connection labels.
+A relationship entry map offers three individual-paper entries, three pair connections, and one all-three overview. Positions and links express curated relationships, not similarity scores or proportional overlap. Map selection is independent of matrix selection.
 
-### Across Papers
+The compact matrix compares all three papers along four dimensions:
 
-View all three papers together in a matrix with four dimensions:
-
-| Dimension | Guiding question |
+| Dimension | Pair-result presentation |
 | --- | --- |
-| Problem & Motivation | What difficulty motivates the work? |
-| Users & Use Context | Who needs support, and when? |
-| Support & Interaction | What help is offered, and how is it used? |
-| Result & Next Action | What does the reader get, and what can they do next? |
+| **Problem** | Aligned Situation → Obstacle → Burden chains |
+| **Reading context** | Parallel scenario cards and attention-scope diagrams |
+| **Support** | Aligned reader questions, assistance differences, and selected interaction paths |
+| **Reader output** | Parallel output illustrations and possible next activities |
 
-Select two cells from different papers within the same row, then choose **View relationship** to see:
+Select two cells from different papers in the same row, then choose **Compare selected**. Every combination opens an inline relationship panel below the matrix, with automatic scrolling/focus and **Back to selection**. Returning preserves the selection; changing or clearing it hides the previous result. There is no comparison modal.
 
-- **Similarities**
-- **Differences**
-- **Check the source context**, including the corresponding reading notes and source links
+All twelve pair-by-dimension results have a visual presentation, shared concern, and evidence available on demand. Matrix source links open a primary location; expanded evidence lists supporting locations separately. ScholarPhi and Scim comparison links use pinned v3 HTML section anchors. SciDaSynth comparison links use its v3 PDF pages because its HTML numbering differs. PDF page navigation depends on viewer support; a section-range link opens the start of the range.
 
-The matrix contains 12 cells and 12 predefined pairwise comparisons: three paper pairs for each of four dimensions. Users can deselect cells or clear the selection. Comparison selection is preserved when switching workspace tabs, but resets on page reload.
-
-Keyboard navigation is supported for tabs and controls. The comparison dialog can be closed with its Close button or Escape. The matrix supports horizontal scrolling on narrower screens.
+See [Across Papers](docs/across-papers.md) for the full design record, source register, and interpretation boundaries.
 
 ## Content and limitations
 
-Abstracts reproduce the authors' wording, with paragraph layout adjusted for readability. Their sources and licenses are recorded in `src/data/papers.js` and displayed in the interface.
+- Abstracts retain author wording and source/license attribution. Scim's metadata abstract is distinguished in its record from the rendered full-text abstract.
+- ScholarPhi uses real LISA material with a mixture of labeled quotations, paraphrases, and adapted controls. Its glossary is eight selected entries, not an exhaustive glossary.
+- Scim uses selected excerpts from [Wu et al., NAACL 2022](https://aclanthology.org/2022.naacl-main.40/), with omissions and attribution. The prototype does not run Scim's classifier or reproduce a full PDF reader.
+- SciDaSynth's Documents A–D, passages, and values are invented teaching fixtures. Entering another question still reveals prepared data, not a generated answer. Accepted data can be downloaded as CSV; this is not an export of the reading workspace.
+- Source-based interpretations, author-reported results, code findings, and teaching adaptations have different evidence status. The paper records identify coverage and known gaps. No tab reproduces an entire paper.
+- Original-system evaluations do not establish that Beyond the Query improves comprehension. Results across different tasks/populations are not a head-to-head ranking.
 
-Matrix cells are curated paraphrases with source-section references. Pairwise notes are our interpretations of those sources, not direct quotations or findings from a head-to-head evaluation. Source links open the articles; they do not necessarily jump directly to the labeled section.
-
-The visualizations also distinguish source content from our interpretation:
-
-- **ScholarPhi:** the LISA reading example uses curated paraphrases of [Strubell et al., EMNLP 2018](https://aclanthology.org/D18-1548/). Its interactions are adapted from ScholarPhi, with source context shown inline for this tutorial.
-- **Scim:** sample passages paraphrase the Scim paper. Facet labels and highlight priorities are curated teaching examples, not live classifier output.
-- **SciDaSynth:** the crop scenario is inspired by the paper's nutrition setting. Documents A–C, source passages, and records are invented teaching fixtures, not extracted research data. The tutorial simulates one table and a snapshot, not a database of uploaded papers.
-- **Design rationale:** author goal identifiers are preserved, while observation summaries, feature groupings, and connecting explanations are curated. Graph edges express design rationale, not independently demonstrated causal effects. Inferred connections are identified in the content.
-
-All comparisons and tutorial content are predefined. The app has no paper upload, live search, LLM calls, automated extraction, repository analysis, annotation storage, or backend. The SciDaSynth tutorial can export its kept example table as CSV; this does not export the reading workspace or a research brief. After a saved table edit, the old snapshot is invalidated and must be kept again before download.
-
-Selecting a matrix cell is distinct from annotating text. Scim's simulated highlights illustrate the original system's behavior; they are not a general highlighting/comment feature for the reading workspace. A separate fine-grained comparison mode, note synthesis, and brief/RQ generation have not been implemented.
+There is no arbitrary paper import, live search, model call, automated extraction, automatic repository analysis, general text annotation/comment storage, or backend. Fine-grained comparison modes, experimental-design comparison, note synthesis, and brief/RQ generation are not implemented. A reusable skill and broader paper library remain future possibilities, not current capabilities.
 
 ### Session state
 
-- The selected paper, current section, tutorial edits, and graph selection remain in memory when switching between **Papers** and **Across Papers** or between sections of the same paper.
-- Selecting a different paper opens its **Overview** and resets the tutorial and graph state. Returning to the previous paper does not restore its edits.
-- **Restart** resets the current tutorial. Reloading the page resets all workspace state.
-- No state is saved to a server or browser storage. A downloaded CSV is a separate local file.
+- Paper sections remain mounted when switching sections or moving between **Papers** and **Across Papers**, preserving local interaction state.
+- Changing paper opens its **Overview** and resets that paper's tutorial/graph state; returning does not restore the previous edits.
+- Tutorial reset controls restore their prepared examples. Reloading resets all workspace state; there is no server or browser-storage persistence.
+- SciDaSynth edits affect Current Result. Its accepted DB snapshot remains separate; further edits make it stale and disable CSV download until the revised table is accepted again.
+- Matrix and relationship-map selections are independent. The matrix supports horizontal scrolling when necessary on narrow screens.
 
 ## Local development
 
-Use Node.js **22.22.2**, the version used to validate this project, and npm.
+Use a Node.js version compatible with the installed Vite release and npm. Node 22.22.2 was used in earlier local validation; dated logs identify other environments used for specific checks.
 
 ```sh
 npm ci
 npm run dev
 ```
 
-Open the local URL shown in the terminal (normally `http://localhost:5173/`).
+Open the URL printed in the terminal, normally `http://localhost:5173/`.
 
 | Command | Purpose |
 | --- | --- |
-| `npm run dev` | Start the local development server |
-| `npm run lint` | Check the source with ESLint |
+| `npm run dev` | Start the development server |
+| `npm run lint` | Check source with ESLint |
 | `npm run build` | Build the static site into `dist/` |
-| `npm run preview` | Preview the production build locally after building |
+| `npm run preview` | Preview a production build |
 
-## Technology and files
+The existing `scripts/check-source-analysis.mjs` targets the earlier four-entry Source Analysis interface. It is stale for the current three-entry Related Work page and is not a current acceptance check. This documentation pass leaves it unchanged.
 
-The app uses **React, JavaScript/JSX, CSS, and Vite**, with ESLint for code checks. It does not use TypeScript.
+## Technology and implementation
 
-```text
-src/
-  App.jsx                  Paper selector, workspace tabs, and paper content tabs
-  App.css                  Wide workspace and responsive paper layout
-  ComparisonMatrix.jsx     Matrix selection and relationship dialog
-  ComparisonMatrix.css     Matrix and dialog styles
-  PaperVisuals.jsx         Per-paper tutorial routing and shared rationale graph
-  PaperVisuals.css         Tutorial scenes, graph, and responsive visual styles
-  PaperTutorial.jsx        ScholarPhi's shared LISA reading example
-  TutorialFrame.jsx        Shared step/action layout for Scim and SciDaSynth
-  ScimTutorial.jsx          Faceted highlighting and context-navigation example
-  SciDaSynthTutorial.jsx    Table validation, standardization, and CSV example
-  data/
-    papers.js              Metadata, abstracts, attribution, and links
-    comparison.js          Curated matrix cells and pairwise notes
-    paperVisuals.js        ScholarPhi steps, motivations, and rationale links
-    visualModels.js        Per-paper graph configuration and Scim/SciDaSynth content
-  index.css                Global styles
-  main.jsx                 React entry point
-docs/
-  development-log.md       Decisions and implementation history
-```
+React, JavaScript/JSX, CSS, and Vite provide the frontend; ESLint checks code. TypeScript is not used.
 
-See the [Development Log](docs/development-log.md) for the decisions behind the current prototype and the work completed so far.
+| Location | Responsibility |
+| --- | --- |
+| [App.jsx](src/App.jsx) | Paper selector and workspace/content tabs |
+| [PaperVisuals.jsx](src/PaperVisuals.jsx) | Paper-specific routing and shared rationale map |
+| `ScholarPhiTutorial.jsx`, `ScimTutorial.jsx`, `SciDaSynthTutorial.jsx` | Feature overviews and demonstrations; ScholarPhi tooltips also use `PaperTutorial.jsx` |
+| `*Pipeline.jsx`, `*Evaluation.jsx`, and related-work components | Paper-specific explanations and evidence |
+| [PaperRelationshipMap.jsx](src/PaperRelationshipMap.jsx) | Across Papers relationship entry |
+| [ComparisonMatrix.jsx](src/ComparisonMatrix.jsx) | Compact matrix, selection, and inline results |
+| `ProblemRelationshipPanel.jsx`, `ReadingContextComparison.jsx`, `SupportRelationshipPanel.jsx`, `ReaderOutputComparison.jsx` | Dimension-specific pair presentations |
+| [ComparisonSources.jsx](src/ComparisonSources.jsx), [comparisonSources.js](src/data/comparisonSources.js) | Shared comparison source rendering and versioned locators |
+| `src/data/` | Curated metadata, examples, comparisons, rationale, pipeline, and source records |
+
+## Documentation guide
+
+| Record | Purpose |
+| --- | --- |
+| [Development log](docs/development-log.md) | Project decisions, implementation milestones, validation scope, and pending decisions |
+| [General standards](docs/general_standards.md) | Reusable working procedure for HCI tool-paper content and UI; eligibility and limits |
+| [ScholarPhi](docs/scholarPhi.md) | Original detailed paper record from which the general standards were derived |
+| [Scim](docs/scim.md) | Application of those standards, including feature coverage, evidence, and reference selection |
+| [SciDaSynth](docs/SciDaSynth.md) | Current six-tab inventory and retained historical increments |
+| [SciDaSynth reference ledger](docs/scidasynth-source-analysis.md) | Current Related Work selection and historical Source Analysis evidence |
+| [Across Papers](docs/across-papers.md) | Relationship map, four comparison dimensions, twelve results, and sources |
+| [Teammate's original log](docs/Bob_development-log.md) | October 16 selection rationale, preserved with a later status note |
+
+Documentation describes implemented coverage and does not certify all claims, source availability, accessibility, or learning effectiveness. Historical checks apply to the versions and scope stated in each record.

@@ -1,10 +1,16 @@
 # General Standards for Single-Paper Content and UI
 
-Version: 0.1 — working draft, October 16, 2026
+Version: 0.2 — working draft, October 22, 2026 (documentation alignment and source-location clarification)
 
 Derived from: [ScholarPhi development and context-selection record](scholarPhi.md).
 
 Scope: collecting, verifying, organizing, and presenting a single HCI tool/system paper in Beyond the Query. This document does not change the current ScholarPhi implementation. It is a proposed reusable procedure derived from one developed case, not a validated universal framework or an implemented content-generation skill.
+
+## Current application and status
+
+The procedure was derived from ScholarPhi, then used to organize [Scim](scim.md) and [SciDaSynth](SciDaSynth.md). Applying it to three curated cases does not establish universal validity or complete compliance. Paper-specific records retain source gaps, demonstration limits, and different levels of code evidence. [Across Papers](across-papers.md) has its own design record and is outside this single-paper standard.
+
+The current frontend is retained at the October 22 wrap-up. This procedure is documentation, not an implemented skill/backend, a requirement to add more tabs, or authorization for further changes. Pending UI and research choices remain pending.
 
 ## 1. Purpose and target reader
 
@@ -56,6 +62,8 @@ Add the implementation question where evidence permits: **What produces the info
 ### 4.1 Establish the source set
 
 Start with the full paper and record its title, authors, venue, year, DOI or stable URL, and exact version. Record supplements and corrections separately. Use author/project sources for demonstrations and implementation information, and the actual repository for code claims.
+
+For navigation, match every section/page label to the exact linked edition and format. Generated HTML and PDF may number sections differently. Prefer stable HTML section anchors or pinned PDF page links; distinguish PDF page indices from printed page numbers. A section range may open its starting point, and PDF fragments depend on viewer support. Where one claim needs several locations, list those links separately rather than implying that one destination covers all evidence.
 
 For code, record the repository, inspected commit, paths, relevant symbols or line anchors, and whether the code was only read or also executed. A later repository may differ from the evaluated system. Preserve discrepancies between paper, video, and code with source/version labels rather than silently combining them.
 

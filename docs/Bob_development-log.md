@@ -1,4 +1,6 @@
-﻿# Bob Development Log
+# Bob Development Log
+
+> **Editorial status note — October 22, 2026:** The entries below preserve the teammate's October 16 rationale and terminology. They are historical, not the current UI specification. Human–AI guidelines were subsequently moved from Declutter to Design rationale O7/M7; Hands-On Math was narrowed to symbol/constituent selection; Extra work was renamed Related work. The three related works exclude papers already in the workspace. Information scent remains unimplemented. See [scholarPhi.md](scholarPhi.md) for the current content, corrected placements, and selection provenance. This note does not attribute the later decisions to the original log author.
 
 ## 2026-10-16 — Reference selection
 

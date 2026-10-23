@@ -1,3 +1,4 @@
+import ComparisonSources from './ComparisonSources'
 import { papers } from './data/papers'
 import { comparisonRows, getPairNote } from './data/comparison'
 import { readingContexts, readingContextNotes } from './data/readingContexts'
@@ -68,7 +69,7 @@ export default function ReadingContextComparison({ paperIds }) {
             <p><strong>Paper-described setting:</strong> {model.reported}</p>
             <p><strong>Our comparison framing:</strong> {model.framing}</p>
             {model.evaluation && <p><strong>Evaluation context:</strong> {model.evaluation}</p>}
-            <a href={context.cells[paper.id].sourceUrl} target="_blank" rel="noopener noreferrer">{context.cells[paper.id].section} ↗<span className="sr-only"> (opens in a new tab)</span></a>
+            <ComparisonSources cell={context.cells[paper.id]} />
           </article>
         })}</div>
       </details>

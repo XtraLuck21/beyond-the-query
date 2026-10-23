@@ -1,7 +1,8 @@
 # ScholarPhi: Paper-Tab Development and Context Selection Record
 
-Last updated: October 16, 2026  
-Implementation reviewed: current working tree, including the reading-first Priming glossary update
+Last updated: October 22, 2026
+
+Single-paper implementation baseline: October 16, including the reading-first Priming glossary update. October 22 is a documentation consistency review, not a new ScholarPhi feature iteration.
 
 Scope: the ScholarPhi page in Beyond the Query, including its reference panels, Related work section, and code-based System Pipeline explanation.
 
@@ -84,7 +85,7 @@ The current ScholarPhi page has six sections:
 
 Selecting a section displays its own content rather than scrolling to a section on one long page. A full-width paper selector sits above the content and can be collapsed. Full paper titles remain the primary identifiers. The workspace was widened to provide more room for diagrams instead of permanently reserving a left sidebar.
 
-Across Papers remains a separate workspace view. Its four-dimension matrix and predefined pairwise explanations are not evidence that the ScholarPhi page covers the full paper or that the compared systems were evaluated head-to-head.
+Across Papers remains a separate workspace view. Its dimensions are **Problem**, **Reading context**, **Support**, and **Reader output**; all twelve comparisons use inline visual relationship panels. The comparison source register now pins ScholarPhi's v3 HTML section links. See [Across Papers](across-papers.md) for the current interface and source locators. This does not change ScholarPhi's single-paper content or imply head-to-head system evaluation.
 
 ### 4.2 Progressive disclosure
 
@@ -110,7 +111,7 @@ We removed the repetitive “How to read this difference” section from pairwis
 
 **Technical distinctions that the diagram preserves.** Localization and uploads repeat within entity pipelines; they are not single final operations after all extraction. Stored data is the handoff to the reader, and ordinary reading clicks do not rerun extraction. Position-sensitive definition selection, equation-label layout, and glossary filtering include browser-side processing. The visible priming glossary is distinct from the separate external-glossary extraction module. Feature availability also depends on [reader settings](https://github.com/allenai/scholarphi/blob/05712d5bcd59d37db32a390da2fa62c123d132e7/ui/src/settings.ts#L166).
 
-**Coverage boundary.** This is a curated explanatory map based on static code inspection, not execution or reproduction of ScholarPhi. The pinned repository includes later changes and is not confirmed to be the exact CHI 2021 study version. It does not establish arbitrary PDF-only processing support, complete or correct extraction, or current availability of external services. The original study's curated data remains distinct from the automatic extraction path. Citation processing is linked as a separate omitted branch; other processing routes, deployment, logging, and editing infrastructure are outside the main map. The tab currently exists only for ScholarPhi.
+**Coverage boundary.** This is a curated explanatory map based on static code inspection, not execution or reproduction of ScholarPhi. The pinned repository includes later changes and is not confirmed to be the exact CHI 2021 study version. It does not establish arbitrary PDF-only processing support, complete or correct extraction, or current availability of external services. The original study's curated data remains distinct from the automatic extraction path. Citation processing is linked as a separate omitted branch; other processing routes, deployment, logging, and editing infrastructure are outside the main map. All three papers now have a System Pipeline tab. This record describes ScholarPhi's code-based map; Scim distinguishes paper and code evidence, while SciDaSynth's map is paper-based.
 
 ## 5. How it works: coverage and demonstrations
 
@@ -312,9 +313,12 @@ The section was renamed from Extra work to Related work. Its explanations remain
 | October 16: explain each context's value | A link or relationship label alone did not explain what the user would learn. | Integrated six question-driven context explanations with explicit relationships and evidence (`3eda4e8`). |
 | October 16: document the selection approach | Future additions need a clear rationale grounded in the core paper framework. | This record formalizes framework → understanding gap → cited supporting material and distinguishes implemented content from candidates. No UI change is made by this document. |
 | October 16: connect features to implementation | Interaction demos did not show where contextual data comes from or what happens before versus during reading. | Inspected a pinned ScholarPhi revision and added System Pipeline with two phases, 13 selectable nodes, input/processing/output details, and code links. This is an explanatory frontend addition. |
+| October 22: documentation wrap-up | Shared comparison names and locators changed, and other papers gained pipeline tabs. | Updated this record's cross-paper status and removed the obsolete ScholarPhi-only pipeline statement; single-paper code is unchanged. |
 | October 16: glossary demonstration order | Preview-first presentation obscured the reading use case, and “reference” could be mistaken for citations. | Defaulted to Read with glossary, moved the passage before the glossary, retained Preview terminology, and clarified instructional text. The original priming purpose remains documented. |
 
 ## 13. Discussed but not implemented as new context
+
+**October 22 wrap-up:** the current ScholarPhi interface is retained. Removing the legacy 01/02 visual-section badges, making below-map rationale details easier to reach, and adding experimental-design comparisons remain undecided. No new navigation, source panels, or comparison dimensions are authorized by this record.
 
 The following are discussion records, not approved additions or claims of completed source screening:
 

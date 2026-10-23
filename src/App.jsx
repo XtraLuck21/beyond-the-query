@@ -54,7 +54,7 @@ function App() {
         <div className="workspace-heading">
           <p className="eyebrow">Your reading workspace</p>
           <h1>A closer look at the literature.</h1>
-          <p className="intro">Explore the papers in your collection and open their original sources.</p>
+          <p className="intro">Explore three curated papers through source-based explanations, interactive examples, and comparisons.</p>
         </div>
         <div className="workspace-tabs" role="tablist" aria-label="Workspace views">
           {views.map((view, index) => <button key={view.id} id={`tab-${view.id}`} type="button" role="tab"

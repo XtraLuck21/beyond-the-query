@@ -1,6 +1,65 @@
 # Development Log
 
-This log records project decisions and completed implementation. Features discussed but not built are identified separately; they are not commitments for the next development step.
+This log records project decisions and completed implementation. Features discussed but not built are identified separately; they are not commitments for the next development step. Entries are dated snapshots: older uses of “current,” “remaining,” or “not implemented” refer to that entry's version and may be superseded by later entries above.
+
+## 2026-10-22 — Documentation audit and implementation wrap-up
+
+### Reason and completed documentation work
+
+The README and some paper records still described earlier interfaces: three tabs per paper, comparison dialogs, a ScholarPhi-only pipeline, and SciDaSynth's Feature 1/four-entry Source Analysis increment. The current source has six tabs per paper, twelve inline visual pair comparisons, and a three-entry SciDaSynth Related Work page. We audited README and all eight Markdown files in docs against the current implementation and reconciled those differences.
+
+- **README:** updated the six-tab inventory, paper-specific examples, relationship map, four dimension labels, inline comparison behavior, source precision, session state, implementation map, and documentation index.
+- **ScholarPhi:** retained the single-paper version, corrected the obsolete pipeline exclusivity statement, and linked the current Across Papers behavior. Existing source-selection provenance and demo coverage remain intact.
+- **General standards:** documented application to Scim/SciDaSynth without implying general validation; added the source-edition/format/locator rule demonstrated by the comparison-link review. This is a procedure, not an implemented skill.
+- **Scim:** retained the detailed October 16 inventory and gaps, distinguished that historical validation from this documentation review, and linked the updated comparison view.
+- **SciDaSynth:** added a current six-tab inventory, shared four-capability/five-action example, paper-based architecture, evaluation uncertainties, contextual selection, and current state/export behavior. Preserved October 20 records as explicitly historical.
+- **SciDaSynth reference ledger:** corrected navigation to Related Work, distinguished three displayed papers from four retained data records, clarified current disclosures and the PDF locator, and marked the old four-card check script as stale.
+- **Across Papers:** added the shared source component/register to the file map and recorded the current implementation boundary.
+- **Teammate log:** preserved the original October 16 entries and added an editorial status note for later placement/terminology corrections, without attributing later decisions to the teammate.
+
+The development sequence is now explicit: ScholarPhi supplied the initial detailed record; general standards abstracted that approach; Scim applied it with additional paper-specific provenance, technical/user evaluation distinctions, and question-driven reference selection. SciDaSynth required invented demo data, a paper-based rather than code-audited pipeline, and preservation of inconsistent study reporting. These adaptations are not evidence that the framework is universally validated.
+
+### Retained code and undecided work
+
+The pending code changes remain limited to the already approved comparison-name unification, versioned source navigation, and homepage description. This documentation pass adds no application behavior and does not change the existing single-paper code or scripts.
+
+The following remain **undecided**, not the next authorized implementation steps:
+
+- Removing the legacy 01/02 visual-section badges.
+- Adding navigation between rationale nodes and explanations below the graph.
+- Adding study-design, recruited-participant, task, baseline, or measure comparisons.
+- Synchronizing the relationship map and matrix selection.
+- Other paper-content additions, interface refinements, broader coverage, or a skill/backend.
+
+Current UI completeness means that the agreed modules are populated, not that the papers are exhaustively covered, all sources are verified, or usability/learning benefits are established.
+
+### Validation boundary
+
+This pass checks documentation links, file references, whitespace, and consistency with the working tree, and confirms application source files remain unchanged from the start of the documentation task. It does not rerun application tests or upstream systems. The immediately preceding label/source update's lint, build, and twelve-result browser checks remain recorded below. Historical checks elsewhere apply only to their dated increments.
+
+The legacy `scripts/check-source-analysis.mjs` expects an earlier four-card interface and must not be presented as a passing current-page acceptance test. It remains untouched under the code wrap-up. No commit or push is performed.
+
+## 2026-10-22 — Backfill the completed SciDaSynth modules
+
+This entry records existing changes from repository history; it does not implement them again or invent an earlier test result.
+
+| Commit / milestone | Existing result and explanatory purpose |
+| --- | --- |
+| `9f224e9` — How It Works and System Pipeline | Extended feature coverage and added a ten-element, four-group paper-based architecture map to explain document processing, generation, refinement, and output. |
+| `4b952d6` — Related Work and Evaluation & Findings | Added three displayed contextual foundations and source-linked study/result/limitation content, including reporting uncertainties. A fourth contextual record remains in data. |
+| `89c2948` — refined How it works | Refined the shared prepared-table interaction across asking, extracting, checking, standardizing, and accumulating/exporting; source records remain distinct from invented demonstration data. |
+
+[The current SciDaSynth record](SciDaSynth.md) describes the final combined behavior. [The reference ledger](scidasynth-source-analysis.md) distinguishes the earlier four-card Source Analysis increment from the current three-entry Related Work page. Earlier October 20 tests in the paper record do not certify these later revisions.
+
+## 2026-10-22 — Clarify comparison labels, source locations, and the workspace introduction
+
+The pre-PD review found inconsistent dimension names between matrix rows, selection status, and accessible controls, plus comparison links that opened whole articles without matching the precision of their section labels. We standardized all dimension labels to Problem, Reading context, Support, and Reader output, including map evidence headings, and updated the homepage to describe three curated papers with explanations, examples, and comparisons.
+
+Comparison locators now share a versioned register and source-list component. ScholarPhi and Scim use checked v3 HTML section IDs. SciDaSynth uses v3 PDF pages 1, 4, and 6, consistent with the numbered PDF sections; its generated HTML shifts the section numbers. Each compact matrix Source link opens the primary location, while expanded evidence lists the supporting locations separately. Source checks distinguish SciDaSynth's intended use from its evaluation sample. See [Across Papers source register and follow-up](across-papers.md#10-october-22-follow-up-consistent-labels-and-source-navigation).
+
+ESLint and the production build passed with the existing large-chunk warning. Browser checks opened all twelve pair results and evidence disclosures and confirmed labels and source targets. The cited HTML section IDs and relevant PDF text/page locations were checked; PDF screenshot retrieval failed, so no fresh visual PDF rendering check is claimed. This does not certify every external link or every single-paper claim.
+
+The rationale-detail navigation suggestion and legacy 01/02 numbering were explained but not changed. Comparing experimental designs, participant samples, tasks, baselines, and measures remains a discussion proposal, not a new matrix dimension. No commit or push was performed.
 
 ## 2026-10-22 — Redesign Across Papers and consolidate its design record
 
@@ -26,7 +85,7 @@ All twelve pair-by-dimension results now have dimension-specific visual presenta
 
 Primary content comes from [ScholarPhi v3](https://arxiv.org/html/2009.14237v3), [Scim v3](https://arxiv.org/html/2205.04561v3), and the [published SciDaSynth article](https://doi.org/10.1002/cl2.70073). The new record maps each dimension to the current section labels and explains which parts are paraphrases, team synthesis, or teaching illustrations.
 
-These sources ground descriptions of the original tools; they do not prove that our visual comparisons improve reading. Source links currently open whole articles rather than verified passage anchors. SciDaSynth's numbered comparison labels and publisher heading presentation need further alignment checking. This documentation update records that limitation without modifying the UI or claiming a fresh primary-source audit.
+These sources ground descriptions of the original tools; they do not prove that our visual comparisons improve reading. At this initial documentation checkpoint, source links opened whole articles rather than verified passage anchors. SciDaSynth's numbered comparison labels and publisher heading presentation still needed alignment checking. The later label/source follow-up above addresses these comparison locators; this earlier checkpoint did not modify the UI or perform that source audit.
 
 ### Validation and remaining scope
 

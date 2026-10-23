@@ -1,3 +1,4 @@
+import ComparisonSources from './ComparisonSources'
 import { papers } from './data/papers'
 import { comparisonRows, getPairNote } from './data/comparison'
 import './ProblemRelationshipPanel.css'
@@ -50,7 +51,7 @@ export default function ProblemRelationshipPanel({ paperIds }) {
         <div className="support-evidence-grid">{pair.map((paper) => <article key={paper.id}>
           <h4>{paper.title}</h4>
           <p>{motivation.cells[paper.id].text}</p>
-          <a href={motivation.cells[paper.id].sourceUrl} target="_blank" rel="noopener noreferrer">{motivation.cells[paper.id].section} ↗<span className="sr-only"> (opens in a new tab)</span></a>
+          <ComparisonSources cell={motivation.cells[paper.id]} />
         </article>)}</div>
       </details>
     </>

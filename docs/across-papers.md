@@ -1,6 +1,6 @@
 # Across Papers: Content, Design, and Development Record
 
-Updated: October 22, 2026. Audited implementation: `78dbac895b1ebe750c95ea89a744e15625fbb8d3`.
+Updated: October 22, 2026, including the label/source follow-up below. Original visual implementation audit: `78dbac895b1ebe750c95ea89a744e15625fbb8d3`.
 
 This document records the current Across Papers view for ScholarPhi, Scim, and SciDaSynth: its reading questions, design decisions, implemented interactions, primary sources, editorial interpretations, and coverage limits. It consolidates the relationship-map and comparison-panel iterations completed on October 22. It does not report a user study or claim that the interface improves comprehension.
 
@@ -53,12 +53,12 @@ Position, distance, node size, and connectors do not encode similarity scores, m
 
 ## 4. Matrix dimensions and complete pair coverage
 
-| Displayed row | Existing data ID / longer label | Question | Result form | Coverage |
+| Displayed row | Stable data ID | Question | Result form | Coverage |
 | --- | --- | --- | --- | --- |
-| Problem | `motivation` / Problem & Motivation | Why is help needed? | Situation → Obstacle → Burden, two aligned chains | 3 of 3 pairs |
-| Reading context | `context` / Users & Use Context | When, with what goal, and over what scope is the tool used? | Parallel scenario cards and attention-scope diagrams | 3 of 3 pairs |
-| Support | `support` / Support & Interaction | What help is offered, and how does the reader interact with it? | Pair-specific aligned questions and separate interaction paths | 3 of 3 pairs |
-| Reader output | `result` / Result & Next Action | What does the reader receive, and what can they do next? | Parallel schematic outputs and next activities | 3 of 3 pairs |
+| Problem | `motivation` | Why is help needed? | Situation → Obstacle → Burden, two aligned chains | 3 of 3 pairs |
+| Reading context | `context` | When, with what goal, and over what scope is the tool used? | Parallel scenario cards and attention-scope diagrams | 3 of 3 pairs |
+| Support | `support` | What help is offered, and how does the reader interact with it? | Pair-specific aligned questions and separate interaction paths | 3 of 3 pairs |
+| Reader output | `result` | What does the reader receive, and what can they do next? | Parallel schematic outputs and next activities | 3 of 3 pairs |
 
 There are 12 matrix cells and 12 pair-by-dimension results: three unique pairs across four dimensions. All results now have dimension-specific presentations; none of these twelve relies only on the old Similarities / Differences prose layout. The original prose records remain in the data and continue to supply shared statements, source context, and entry-map details.
 
@@ -132,18 +132,18 @@ The matrix remains horizontally scrollable on narrow screens (760 px minimum tab
 | --- | --- | --- |
 | P1 | **Augmenting Scientific Papers with Just-in-Time, Position-Sensitive Definitions of Terms and Symbols** (ScholarPhi), CHI 2021 | [arXiv v3 full text](https://arxiv.org/html/2009.14237v3) |
 | P2 | **Scim: Intelligent Skimming Support for Scientific Papers**, IUI 2023 | [arXiv v3 full text](https://arxiv.org/html/2205.04561v3) |
-| P3 | **SciDaSynth: Interactive Structured Data Extraction from Scientific Literature with Large Language Model**, Campbell Systematic Reviews, 2025 | [Published article DOI](https://doi.org/10.1002/cl2.70073) |
+| P3 | **SciDaSynth: Interactive Structured Data Extraction from Scientific Literature with Large Language Model**, Campbell Systematic Reviews, 2025 | [Pinned arXiv v3 PDF](https://arxiv.org/pdf/2404.13765v3); publication identity remains Campbell Systematic Reviews, 2025 |
 
-The following locators are the section labels currently stored in [comparison.js](../src/data/comparison.js). They document the implemented evidence mapping; this documentation pass did not independently re-read all three publications.
+The current locators are centralized in [comparisonSources.js](../src/data/comparisonSources.js), shared by the map, matrix, and pair panels. The October 22 follow-up checked the cited content and section IDs in ScholarPhi/Scim v3 HTML and the relevant text/pages of SciDaSynth v3 PDF. This is a focused comparison-source check, not a fresh audit of every single-paper source.
 
 | Dimension | P1: ScholarPhi | P2: Scim | P3: SciDaSynth |
 | --- | --- | --- | --- |
-| Problem | §1 Introduction: unfamiliar notation and effort of finding definitions | Abstract; §1 Introduction: keeping up, skimming, and locating important content | §1 Introduction: laborious extraction, scattered information, and standardization |
-| Reading context | §1 Introduction; §4 User Interface: researchers encountering paper-specific expressions | Abstract; §7.2.3 Circumstances in which Scim was useful: initial understanding, keeping up, and unfamiliar areas | §1 Introduction: extraction after searching/screening; §5.1.1 Participants: evaluation sample only |
+| Problem | §1 Introduction: unfamiliar notation and effort of finding definitions | §1 Introduction: keeping up, skimming, and locating important content | §1 Introduction: laborious extraction, scattered information, and standardization |
+| Reading context | §1 Introduction; §4 User Interface: researchers encountering paper-specific expressions | §1 Introduction; §7.2.3 Circumstances in which Scim was useful: initial understanding, keeping up, and unfamiliar areas | §1 Introduction: extraction after searching/screening; §5.1.1 Participants: evaluation sample only |
 | Support | §4.1 Definition Tooltips; §§4.2–4.4: definitions, usages, equation definitions, glossary | §4.2 Faceted Highlights; §4.3 Controls; §4.5: categories, density, and surrounding context | §§4.3.1–4.3.3 User Interface: specify needs, validate/refine, group/standardize |
-| Reader output | §§4.1–4.4 User Interface: clarification within the paper | §4.4 Scrollbar Annotations; §4.5 Side Bar Display: selected passages and navigation | §4.1 Workflow; §4.3.4 Iterative Table Editing and Database Construction: merged tables and CSV |
+| Reader output | §§4.1–4.4 User Interface: clarification within the paper | §4.4 Scrollbar Annotations; §4.5 Side Bar Display: selected passages and navigation | §4.1 System Workflow; §4.3.4 Iterative Table Editing and Database Construction: merged tables and CSV |
 
-**Locator limitation:** current Across Papers source links open the full article or DOI destination, not anchored passages. Section labels are navigation guidance, not verified deep links. SciDaSynth's comparison labels use numbered sections while its published HTML may use named headings. The existing [SciDaSynth source register](SciDaSynth.md) provides the corresponding System Workflow, User Interface, Guided Data Validation and Refinement, Multi-Level and Multi-Faceted Data Summarization and Standardization, and Iterative Table Editing and Database Construction headings. Exact publisher navigation and numbered-label/version alignment remain follow-up verification items; no source URL or locator was changed in this documentation update.
+**Locator behavior:** ScholarPhi and Scim links now target verified HTML section IDs in v3. SciDaSynth uses v3 PDF pages: Introduction on p. 1; System Workflow and the start of §§4.3.1–4.3.2 on p. 4; validation continuation, §§4.3.3–4.3.4, and §5.1.1 Participants on p. 6. Its generated HTML has shifted section numbering, so PDF labels are not applied to HTML destinations. A section-range link opens the start of that range. Compact matrix Source links open the primary locator; expanded evidence lists the additional locators separately. PDF page navigation depends on the browser viewer. The paper-title links remain general publication entry points.
 
 ### What is evidence and what is ours?
 
@@ -164,6 +164,7 @@ No new external contextual references, similarity ranking, repository analysis, 
 | [ComparisonMatrix.jsx](../src/ComparisonMatrix.jsx), [styles](../src/ComparisonMatrix.css) | Matrix selection, result navigation, shared panel shell, dimension routing, and Support layout |
 | [PaperRelationshipMap.jsx](../src/PaperRelationshipMap.jsx), [styles](../src/PaperRelationshipMap.css) | Seven entry choices and independent map detail state |
 | [comparison.js](../src/data/comparison.js) | Original four-dimensional notes, 12 shared/difference records, source links, selection helpers |
+| [comparisonSources.js](../src/data/comparisonSources.js), [ComparisonSources.jsx](../src/ComparisonSources.jsx) | Versioned comparison locators and shared source-list rendering; compact cells use the primary location, expanded evidence lists all supporting locations |
 | [comparisonSummaries.js](../src/data/comparisonSummaries.js) | Compact matrix content, Support pair questions/flows, and Problem pair headings |
 | [ProblemRelationshipPanel.jsx](../src/ProblemRelationshipPanel.jsx), [styles](../src/ProblemRelationshipPanel.css) | Reusable situation/obstacle/burden chains and motivation evidence |
 | [ReadingContextComparison.jsx](../src/ReadingContextComparison.jsx), [styles](../src/ReadingContextComparison.css), [readingContexts.js](../src/data/readingContexts.js) | Scenario cards, SVG attention diagrams, setting/framing/evaluation separation |
@@ -197,4 +198,18 @@ All commits below are dated October 22, 2026 in the repository history. They rec
 
 This documentation pass inspected code, existing documentation, and commit history and checked local documentation links and diff scope. It did not rerun application tests, reproduce the original systems, re-audit every primary source, or conduct a user study.
 
-Open review questions include whether users distinguish Reading context from Reader output, whether broad shared statements add enough value, whether the map and matrix feel complementary despite independent selections, whether evidence is discoverable, and whether the remaining matrix width/text density is appropriate. Source deep-link/version alignment and a combined final usability/accessibility review also remain. These are follow-up questions, not scheduled features or validated findings.
+Open review questions include whether users distinguish Reading context from Reader output, whether broad shared statements add enough value, whether the map and matrix feel complementary despite independent selections, whether evidence is discoverable, and whether the remaining matrix width/text density is appropriate. A combined final usability/accessibility review remains; the comparison-source alignment follow-up below addresses the earlier locator gap. These are follow-up questions, not scheduled features or validated findings.
+
+## 10. October 22 follow-up: consistent labels and source navigation
+
+- **Reason:** the matrix used short dimension names while selection status and accessible controls retained older names. All now use Problem, Reading context, Support, and Reader output from one row-label record. Map evidence headings follow those names too. Pair-specific explanatory question titles remain.
+- **Entry description:** the homepage now introduces three curated papers, source-based explanations, interactive examples, and comparisons.
+- **Source implementation:** added a centralized locator register and a shared source-list component. The compact matrix retains one primary source link; expanded map/pair evidence exposes separate supporting locations with edition labels. Comparison content and pair selection behavior are unchanged.
+- **Verification:** ESLint and a production build passed (existing large-chunk warning remains). Browser checks opened all twelve pair results and their evidence, confirming consistent status labels and the expected edition/section/page links. External section IDs were inspected in the source DOM; SciDaSynth PDF locators were checked against the extracted PDF text. PDF screenshots could not be retrieved, so visual PDF-page rendering was not verified in this pass.
+- **Not implemented:** automatic rationale-detail navigation, removal of legacy visual section numbers, and an experimental-design comparison. These were discussed separately; the latter should distinguish intended users from recruited participants and avoid ranking unlike task results.
+
+## 11. October 22 documentation wrap-up
+
+The application is retained at the end of the label/source/introduction update. README and the paper records now describe the same four dimensions, inline result behavior, and source-link precision. Earlier log entries about dialogs, whole-article links, or older labels describe their dated versions and are superseded by Sections 3–10 of this record.
+
+Further changes remain undecided: an experimental-design comparison, removal of the single-paper 01/02 badges, easier navigation from rationale nodes to their below-map details, and integration of the map's selection with the matrix. No additional dimensions, navigation behaviors, or research claims were added during the documentation review.
