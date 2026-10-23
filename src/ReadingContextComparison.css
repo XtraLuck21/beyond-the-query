@@ -1,0 +1,34 @@
+.context-illustration-note, .context-pair-note { font-size: 12px; line-height: 1.7; color: #62736b; }
+.context-illustration-note { margin: 0 0 20px; }
+.context-pair-note { margin: 18px 0 0; }
+.context-scenarios { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 22px; }
+.context-scenario { --context-color: #315d49; --context-tint: #edf4ee; min-width: 0; border: 1px solid #dce3dc; border-radius: 12px; overflow: hidden; display: grid; grid-template-rows: auto auto 1fr; }
+.context-scenario-scim { --context-color: #385875; --context-tint: #edf3f9; }
+.context-scenario-scidasynth { --context-color: #6f5521; --context-tint: #faf3e4; }
+.context-scenario > header { padding: 20px; background: var(--context-tint); color: var(--context-color); }
+.context-scenario header .eyebrow { margin: 0 0 8px; }
+.context-scenario h3 { margin: 0; font-size: 18px; line-height: 1.5; }
+.context-scope { margin: 0; padding: 20px; border-bottom: 1px solid #e2e8e0; }
+.context-scope-label { display: block; font-size: 10px; text-transform: uppercase; letter-spacing: .07em; color: #62736b; }
+.context-scope svg { display: block; width: 100%; height: 180px; margin: 10px 0; }
+.context-scope figcaption { min-height: 40px; font-size: 12px; line-height: 1.7; color: #62736b; }
+.context-page { fill: #fff; stroke: #c7d1ca; stroke-width: 1.5; }
+.context-prose { stroke: #dbe1dc; stroke-width: 3; stroke-linecap: round; }
+.context-attention { fill: none; stroke: var(--context-color); stroke-width: 2.5; }
+.context-local-passage { fill: none; stroke: #b4c6b7; stroke-dasharray: 3 3; }
+.context-connection { fill: none; stroke: var(--context-color); stroke-width: 1.3; stroke-dasharray: 3 3; }
+.context-need { fill: var(--context-tint); stroke: var(--context-color); }
+.context-diagram-text { font-size: 11px; fill: var(--context-color); }
+.context-scenario dl { margin: 0; display: grid; grid-template-rows: repeat(3, 1fr); }
+.context-scenario dl > div { padding: 16px 20px; }
+.context-scenario dl > div + div { border-top: 1px solid #e2e8e0; }
+.context-scenario dt { margin: 0 0 6px; font-size: 11px; font-weight: 650; color: var(--context-color); text-transform: uppercase; letter-spacing: .05em; }
+.context-scenario dd { margin: 0; font-size: 14px; line-height: 1.7; }
+@media (max-width: 800px) {
+  .context-scenarios { grid-template-columns: 1fr; }
+  .context-scenario dl { grid-template-rows: none; }
+  .context-scope figcaption { min-height: 0; }
+}
+@media (max-width: 480px) {
+  .context-scenario > header, .context-scope, .context-scenario dl > div { padding: 16px; }
+}
