@@ -2,6 +2,40 @@
 
 This log records project decisions and completed implementation. Features discussed but not built are identified separately; they are not commitments for the next development step.
 
+## 2026-10-22 — Redesign Across Papers and consolidate its design record
+
+### Reason and scope
+
+The existing matrix exposed useful dimensions but repeated long descriptions and source labels. Its relationship dialog largely repeated prose. The user wanted a more approachable relationship entry and visual comparisons that reveal similarities and differences without duplicating the single-paper pages. We developed each presentation incrementally, then extended it across the fixed three-paper collection.
+
+The full [Across Papers content and design record](across-papers.md) documents the final implementation at `78dbac895b1ebe750c95ea89a744e15625fbb8d3`, the sources and section locators, all twelve pair results, and coverage limits. The initial matrix and dialog descriptions in the October 7 entries below remain historical; the current result interface is inline.
+
+### Decisions and implementation
+
+- Added a relationship entry map with three paper nodes, three pair connections, and an all-three overview (`9038923`). Its positions and links express selected editorial relationships, not similarity scores, set overlap, or workflow order. Its selection remains independent of the matrix.
+- Simplified every matrix cell to a short headline and qualifying sentence, replaced repeated selection prompts with compact indicators, and made full paper titles expandable. All three papers and four comparison dimensions remain available.
+- A first visual Support example appeared inline while other results still used dialogs. The user identified this as inconsistent and easy to miss. We unified every result below the matrix, with explicit Compare selected, automatic scrolling/focus, and Back to selection (`04d1515`). Returning preserves the selection; changing or clearing it hides the old result.
+- **Reader output:** introduced Scim × SciDaSynth (`a9fdeea`), then added both ScholarPhi pairs (`39a8a19`). Static output illustrations show contextual definitions, highlighted passages/navigation, and structured data/CSV, aligned with what readers receive and can do next. Placeholder content is explicitly illustrative.
+- **Support:** retained the initial ScholarPhi × Scim example and added the two SciDaSynth pairs (`7b2cd04`). Aligned questions distinguish definition inspection, highlight control, and verification/editing of extracted data. Separate illustrative paths show selected actions within each tool.
+- **Problem:** introduced ScholarPhi × Scim (`1c20624`), then extended to both SciDaSynth pairs (`61a3a6e`). Situation → Obstacle → Burden chains emphasize obstacles and compare local comprehension, reading priorities, and data reconciliation. They are motivation summaries, not measured causal diagrams.
+- **Reading context:** added all three pair comparisons (`78dbac8`). Scenario cards align current goal, working scope, and when support is needed. Attention diagrams distinguish an expression, passages across a paper, and a collection around an information need. Evidence disclosures separate paper-described settings, our framing, and SciDaSynth's evaluated participant groups.
+
+All twelve pair-by-dimension results now have dimension-specific visual presentations. Shared statements and two-paper evidence remain available in each. The original comparison notes continue to supply the map and source context; the redesign does not discard that evidence or add a model/backend.
+
+### Sources and interpretation boundaries
+
+Primary content comes from [ScholarPhi v3](https://arxiv.org/html/2009.14237v3), [Scim v3](https://arxiv.org/html/2205.04561v3), and the [published SciDaSynth article](https://doi.org/10.1002/cl2.70073). The new record maps each dimension to the current section labels and explains which parts are paraphrases, team synthesis, or teaching illustrations.
+
+These sources ground descriptions of the original tools; they do not prove that our visual comparisons improve reading. Source links currently open whole articles rather than verified passage anchors. SciDaSynth's numbered comparison labels and publisher heading presentation need further alignment checking. This documentation update records that limitation without modifying the UI or claiming a fresh primary-source audit.
+
+### Validation and remaining scope
+
+During the implementation iterations, ESLint and production builds passed; the existing large-chunk warning remains. Browser checks covered all twelve results after unifying the panel and all three pairs within each subsequently updated dimension, source disclosures, navigation back to selection, stale-result removal, keyboard activation, and representative wide/narrow layouts. These are implementation checks, not user-study outcomes or proof of accessibility completeness.
+
+This documentation-only pass added `docs/across-papers.md` and this entry, inspected source and commit history, and checked local Markdown links, whitespace, and changed-file scope. It did not repeat application tests or change application code. No commit or push was performed.
+
+The current comparison remains a curated, frontend-only explanation for three papers. Open questions include evidence discoverability, distinction between context and output diagrams, complementarity of map and matrix, source-link precision, and final usability review. Automatic comparison generation, general annotation, fine-grained evaluation/method comparisons, and arbitrary paper import remain outside this iteration. No additional implementation step was decided here.
+
 ## 2026-10-16 — Consolidate Scim documentation and audit the general standards
 
 ### Reason and scope
